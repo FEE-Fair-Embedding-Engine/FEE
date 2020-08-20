@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to fee’s documentation! &#8212; fee  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-fee-s-documentation">
+<h1>Welcome to fee’s documentation!<a class="headerlink" href="#welcome-to-fee-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>Documentation starts from here on. FEE - Fair Embedding Engine is pretty cool.</p>
+</div>
+<div class="section" id="module-fee.embedding.loader">
+<span id="loader"></span><h1>Loader<a class="headerlink" href="#module-fee.embedding.loader" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="fee.embedding.loader.Downloader">
+<em class="property">class </em><code class="sig-prename descclassname">fee.embedding.loader.</code><code class="sig-name descname">Downloader</code><a class="headerlink" href="#fee.embedding.loader.Downloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download word embeddings from web.</p>
+<p>Currently supported downloads:
+- GloVe wikitext…. etc etc
+- More</p>
+<dl class="simple">
+<dt>emb_dict (dict): Key-value string pair with keys as embedding name </dt><dd><p>and value as embedding download url.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="fee.embedding.loader.Downloader.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">emb_name</span></em>, <em class="sig-param"><span class="n">fname</span></em>, <em class="sig-param"><span class="n">dir</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.Downloader.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download embedding <cite>emb_name</cite></p>
+<p>Longer desc…….</p>
+<dl>
+<dt>Example:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">downloader</span> <span class="pre">=</span> <span class="pre">Downloader()</span>
+<span class="pre">emb_path</span> <span class="pre">=</span> <span class="pre">downloader.get('glove')</span>
+<span class="pre">`</span></code></p>
+</dd>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>emb_name (str): Embeddinfg file name. See self.emb_dict for </dt><dd><p>set of available embeddings.</p>
+</dd>
+</dl>
+<p>fname (str): File name.
+dir (str): Directory name.</p>
+</dd>
+<dt>Return:</dt><dd><p>emb_path (str): Path to downloaded file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="fee.embedding.loader.WE">
+<em class="property">class </em><code class="sig-prename descclassname">fee.embedding.loader.</code><code class="sig-name descname">WE</code><a class="headerlink" href="#fee.embedding.loader.WE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Word embedding class.</p>
+<p>The main class that facilitates the word embedding structure.</p>
+<p>dim (int): Dimension of embedding
+vecs (np.array):</p>
+<dl class="py method">
+<dt id="fee.embedding.loader.WE.fname_to_format">
+<code class="sig-name descname">fname_to_format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.fname_to_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get embedding format from file name.</p>
+<p>Format can usually be extracted from the filename extension. We
+currently support the loading of embeddings in binary (.bin), 
+text (.txt) and numpy format (.npy).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>fname (str): file name</p>
+</dd>
+<dt>Return:</dt><dd><p>format (str): format (txt, bin or npy)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.embedding.loader.WE.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ename</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">normalize</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load word embedding from filename or embedding name.</p>
+<p>Loads word embeddings from either filename <cite>fname</cite> or the 
+embedding name <cite>enmae</cite>. Following formats are supported:
+- bin: Binary format, load through gensim.
+- txt: Text w2v or GloVe format.
+- npy: Numpy format. <cite>fname.wv.npy</cite> contans the numpy vector</p>
+<blockquote>
+<div><p>while <cite>fname.vocab</cite> contains the vocabulary list.</p>
+</div></blockquote>
+<dl>
+<dt>Example:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">we</span> <span class="pre">=</span> <span class="pre">WE()</span>
+<span class="pre">E</span> <span class="pre">=</span> <span class="pre">we.load('glove6B.txt')</span>
+<span class="pre">`</span></code></p>
+</dd>
+<dt>Args:</dt><dd><p>fname (str): Path to the embedding file on disk.
+format (str): Format of word embedding. Following are the</p>
+<blockquote>
+<div><dl class="simple">
+<dt>supported formats:</dt><dd><ul class="simple">
+<li><p>binary</p></li>
+<li><p>text</p></li>
+<li><p>numpy array</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>ename (str): Name of embedding. This will download embedding</dt><dd><p>using the <cite>Downloader</cite> class. In case both 
+ename and fname are provided, ename is given
+priority.</p>
+</dd>
+</dl>
+<p>normalize (bool): Normalize word vectors or not.</p>
+</dd>
+<dt>Return:</dt><dd><p>self (WE object): Return self, the word embedding object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.embedding.loader.WE.normalize">
+<code class="sig-name descname">normalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize word embeddings.</p>
+<blockquote>
+<div><p>Normaliation is done as follows:</p>
+</div></blockquote>
+<p>ec{v}_{norm} := 
+ec{v}/|
+ec{v}|</p>
+<blockquote>
+<div><p>where |</p>
+</div></blockquote>
+<p>ec{v}| is the L2 norm of 
+ec{v}</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.embedding.loader.WE.reindex">
+<code class="sig-name descname">reindex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.reindex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reindex word vectors.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.embedding.loader.WE.v">
+<code class="sig-name descname">v</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access vector for a word</p>
+<p>Returns the <cite>self.dim</cite> dimensional vector for the word <cite>word</cite>.</p>
+<dl class="simple">
+<dt>Example:</dt><dd><p>E = WE().load(‘glove’)
+test = E.v(‘test’)</p>
+</dd>
+<dt>Args:</dt><dd><p>word (str): Word to access vector of.</p>
+</dd>
+<dt>Return:</dt><dd><p>vec (np.array): <cite>self.dim</cite> dimension vector for <cite>word</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fee.debias.hard_debias">
+<span id="debiasing"></span><h1>Debiasing<a class="headerlink" href="#module-fee.debias.hard_debias" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="fee.debias.hard_debias.HardDebias">
+<em class="property">class </em><code class="sig-prename descclassname">fee.debias.hard_debias.</code><code class="sig-name descname">HardDebias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hard_debias.HardDebias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hard debiasing class.</p>
+<dl class="py method">
+<dt id="fee.debias.hard_debias.HardDebias.equalize">
+<code class="sig-name descname">equalize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hard_debias.HardDebias.equalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equalize word vectors using the gender direction and a set of 
+equalizing word pairs. This is the second step of hard debiasing 
+procedure.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>E (WE class object): Word embeddings object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.debias.hard_debias.HardDebias.neutralize">
+<code class="sig-name descname">neutralize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">word_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hard_debias.HardDebias.neutralize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Neutralize word vectors using the gender direction. This is the 
+first step of hard debiasing procedure.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>E (WE class object): Word embeddings object.
+word_list (list): List of words to debias.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.debias.hard_debias.HardDebias.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hard_debias.HardDebias.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Debias word vectors using the hard debiasing method.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>word_list (list): List of words to debias.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-fee.debias.hsr_debias"></span><dl class="py class">
+<dt id="fee.debias.hsr_debias.HSRDebias">
+<em class="property">class </em><code class="sig-prename descclassname">fee.debias.hsr_debias.</code><code class="sig-name descname">HSRDebias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias" title="Permalink to this definition">¶</a></dt>
+<dd><p>HSR Debiasing class (Half Sibling Regression)</p>
+<dl class="py method">
+<dt id="fee.debias.hsr_debias.HSRDebias.hsr">
+<code class="sig-name descname">hsr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gender_vecs</span></em>, <em class="sig-param"><span class="n">nongender_vecs</span></em>, <em class="sig-param"><span class="n">nongender_list</span></em>, <em class="sig-param"><span class="n">alpha</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias.hsr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Half Sibling Regression method</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>gender_vecs (np.array): 2D numpy array of gendered words
+nongender_vecs (np.array): 2D numpy array of non-gendered words
+nongender_list (list): list of nongender words.
+alpha (float): alpha hyperparameter.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.debias.hsr_debias.HSRDebias.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gender_list</span></em>, <em class="sig-param"><span class="n">nongender_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">60</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the Half Sibling Regression method</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>gender_list (list): list of gendered words.
+nongender_list (list): list of nongendered words.
+alpha (float): alpha hyperparameter.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.debias.hsr_debias.HSRDebias.subset">
+<code class="sig-name descname">subset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias.subset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create subset such that the words exist in vocabulary.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>words (list): list of words to debias.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-fee.debias.ran_debias"></span></div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">fee</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Vaibhav Kumar, Tenzin, Vaibhav Kumar.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

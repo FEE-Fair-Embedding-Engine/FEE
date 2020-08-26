@@ -23,28 +23,71 @@ def _get_N_info(E, words, sel_max=1, desel_max=100):
     return N_info
 
 def get_ns_idb(word, N):
+    """Get indirect bias and neighbours
+
+    Args:
+        word (str): word to get neighbours and pair idb
+        N (dict): neighbourhood-idb dictionary
+    """
     return N[word]
 
 def calc_ns_idb(E, word, g):
+    """Calculate neighbourhood dictionary for one word with indirect bias
+    pair information.
+
+    Args:
+        word (str): word to compute neighbours and pair idb
+        E (WE class object): Word embeddings object
+
+    """
     tops = get_nbs(E, word, 101) 
     wv = E.v(word)
     d = dict(zip([E.words[v] for v in tops], [get_pair_idb(E.vecs[v], wv, g, E) for v in tops]))
     return d
 
 def get_neighbors_idb_dict(words, E):
+    """create neighbourhood dictionary for each word with indirect bias
+    pair information.
+
+    Args:
+        words (list): list of words to compute neighbours and pair idb
+        E (WE class object): Word embeddings object
+
+    """
     g = get_g(E)
     neighbour_idb_dict = dict(zip([w for w in words], 
                             [calc_ns_idb(E, w, g) for w in words]))
     return neighbour_idb_dict       
 
 def init_vector(word, E):
+    """initialize vector for optimization
+    
+    Args:
+        word (str): word to debias
+        E (WE class object): Word embeddings object
+    """
     v = deepcopy(E.v(word)) 
     return torch.FloatTensor(v)
 
 def torch_cosine_similarity(X, vectors):
+    """torch tensor cosine similarity for groups
+
+    Args:
+        X (torch.Tensor): torch tensor 1D
+        vectors (torch.Tensor): torch tensor 2D
+    """
     return torch.matmul(vectors, X) / (vectors.norm(dim=1) * X.norm(dim=0))
 
 def ran_objective(X, sel, desel, g, ws):
+    """objective function for RAN
+
+    Args:
+        X (torch.Tensor): original word vector
+        sel (torch.Tensor): selection tensors for attraction
+        X (torch.Tensor): deselection tensors for repulsion
+        g (torch.Tensor): gender direction tensor
+        ws (list): list of objective weights
+    """
     w1, w2, w3 = ws
     A = torch.abs(torch_cosine_similarity(X, sel) - 1).mean(dim=0)/2
     if not isinstance(desel, bool):
@@ -57,7 +100,20 @@ def ran_objective(X, sel, desel, g, ws):
 
 #CPU
 class RANOpt(nn.Module):
+    """RAN objective optimization class.
+    """
     def __init__(self, E, word, X, N, g, ws=[0.33, 0.33, 0.33], ripa=False):
+        """ 
+        
+        Args:
+            E (WE class object): Word embeddings object.
+            word (np.array): the original vector to debias
+            N (dict): neighbourhood dictionary
+            g (np.array): Gender Direction, if None, it is computed again.
+        Kwargs:
+            ws (list): weights for RAN objective
+            ripa (bool): use RIPA based neutralization or not
+        """
         super(RANOpt, self).__init__()
         sel_max = 1
         desel_max = 100
@@ -83,13 +139,31 @@ class RANOpt(nn.Module):
 
 
 class RANDebias():
+    """Class to perform Repulsion-Attraction-Neutralization based
+    debiasing.
+    """
     def __init__(self, E, g=None):
+        """
+        Args:
+            E (WE class object): Word embeddings object.
+        
+        Kwargs:
+            g (np.array): Gender Direction, if None, it is computed again.
+        
+        """
         self.E = E
         if g is None:
             g = get_g(E)
         self.g = g    
 
     def minimize(self, word, X, lr, max_epochs, *args, **kwargs):
+        """minimize RANObjective using gradient optimization
+        Args:
+            word (str): word to debias
+            X (np.array): the initialized new debiased vector
+            lr (float): learning rate for gradient descent
+            max_epochs (int): number of epochs
+        """
         m = RANOpt(self.E, word, X, *args, **kwargs)
         optimizer = torch.optim.Adam(m.parameters(), lr=lr)
         for epoch in range(max_epochs):
@@ -99,13 +173,19 @@ class RANDebias():
             optimizer.step()
         return m.X
 
-    def get_new_word_embs(self, word,*args, **kwargs):
+    def get_new_word_embs(self, word, *args, **kwargs):
         X = init_vector(word, self.E).requires_grad_(True) 
         debiased_X = self.minimize(word, X, *args, **kwargs)
         return debiased_X/torch.norm(debiased_X)
 
 
     def run(self, words):
+        """Run RANDebias for word list `words`
+        
+        Args:
+            words (list): Words list to debias.
+                
+        """
         g = torch.Tensor(self.g)
         learning_rate = 0.01
         lambda_weights = [1/8, 6/8, 1/8]

@@ -139,5 +139,7 @@ class HardDebias():
         Args:
             word_list (list): List of words to debias.
     
+        Return:
+            Debiased word vectors
         """             
         return self.equalize(self.neutralize(self.E, word_list))

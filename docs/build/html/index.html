@@ -219,6 +219,8 @@ word_list (list): List of words to debias.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>word_list (list): List of words to debias.</p>
 </dd>
+<dt>Return:</dt><dd><p>Debiased word vectors</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -265,7 +267,108 @@ alpha (float): alpha hyperparameter.</p>
 
 </dd></dl>
 
-<span class="target" id="module-fee.debias.ran_debias"></span></div>
+<span class="target" id="module-fee.debias.ran_debias"></span><dl class="py class">
+<dt id="fee.debias.ran_debias.RANDebias">
+<em class="property">class </em><code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">RANDebias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.RANDebias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to perform Repulsion-Attraction-Neutralization based
+debiasing.</p>
+<dl class="py method">
+<dt id="fee.debias.ran_debias.RANDebias.minimize">
+<code class="sig-name descname">minimize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">lr</span></em>, <em class="sig-param"><span class="n">max_epochs</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.RANDebias.minimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>minimize RANObjective using gradient optimization
+Args:</p>
+<blockquote>
+<div><p>word (str): word to debias
+X (np.array): the initialized new debiased vector
+lr (float): learning rate for gradient descent
+max_epochs (int): number of epochs</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.debias.ran_debias.RANDebias.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.RANDebias.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run RANDebias for word list <cite>words</cite></p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>words (list): Words list to debias.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.debias.ran_debias.calc_ns_idb">
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">calc_ns_idb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.calc_ns_idb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate neighbourhood dictionary for one word with indirect bias
+pair information.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>word (str): word to compute neighbours and pair idb
+E (WE class object): Word embeddings object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.debias.ran_debias.get_neighbors_idb_dict">
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">get_neighbors_idb_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em>, <em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.get_neighbors_idb_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>create neighbourhood dictionary for each word with indirect bias
+pair information.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>words (list): list of words to compute neighbours and pair idb
+E (WE class object): Word embeddings object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.debias.ran_debias.get_ns_idb">
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">get_ns_idb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.get_ns_idb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get indirect bias and neighbours</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>word (str): word to get neighbours and pair idb
+N (dict): neighbourhood-idb dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.debias.ran_debias.init_vector">
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">init_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.init_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>initialize vector for optimization</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>word (str): word to debias
+E (WE class object): Word embeddings object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.debias.ran_debias.ran_objective">
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">ran_objective</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">sel</span></em>, <em class="sig-param"><span class="n">desel</span></em>, <em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">ws</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.ran_objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>objective function for RAN</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X (torch.Tensor): original word vector
+sel (torch.Tensor): selection tensors for attraction
+X (torch.Tensor): deselection tensors for repulsion
+g (torch.Tensor): gender direction tensor
+ws (list): list of objective weights</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.debias.ran_debias.torch_cosine_similarity">
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">torch_cosine_similarity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">vectors</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.torch_cosine_similarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>torch tensor cosine similarity for groups</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X (torch.Tensor): torch tensor 1D
+vectors (torch.Tensor): torch tensor 2D</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">

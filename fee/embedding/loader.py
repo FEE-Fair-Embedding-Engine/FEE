@@ -248,10 +248,6 @@ if __name__ == "__main__":
     print(E)
 
 
-# if __name__ == '__main__' :
-#     loader = Loader()    
-#     words, vecs = loader.load(emb_name = 'glove_6B', dim = '300') # 6billion tokens, 300 dim glove embeddings - simple name for user.
-#     print(words[0],'\t', vecs[0])
    
 
 

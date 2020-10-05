@@ -20,18 +20,20 @@ class DirectBias():
         self.c = c
 
     def _direct_bias(self, vec):
-        """direct bias computation
+        """Direct bias computation
 
         Args:
             vec (np.array): numpy array to calculate direct bias for
         """
-       return np.power(np.abs(vec.dot(self.g)), self.c)     
+        return np.power(np.abs(vec.dot(self.g)), self.c)     
 
     def compute(self, word_list):
-        """compute direct bias
+        """Compute direct bias
 
         Args:
             word_list (list): list of words to compute bias for. 
+        Returns:
+            The direct bias of each word in the `word_list`.
         """
         if not isinstance(word_list, list):
             word_list = [word_list]

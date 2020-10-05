@@ -6,54 +6,10 @@ import re
 import gc
 import numpy as np
 import codecs
+import gensim.downloader as api
+from gensim.test.utils import get_tmpfile
 
-
-
-class Downloader():
-    """Download word embeddings from web.
-
-    Currently supported downloads:
-    - GloVe wikitext.... etc etc
-    - More
-
-    Attributes
-    ----------
-    emb_dict (dict): Key-value string pair with keys as embedding name 
-                     and value as embedding download url.
-
-    """
-    def __init__(self):
-        """
-        Initialize Downloader object.
-        """
-        self.emb_dict = {}
-
-
-    def get(self, emb_name, fname, dir):
-        """Download embedding `emb_name`
-
-        Longer desc.......
-
-        Example:
-            ```
-            downloader = Downloader()
-            emb_path = downloader.get('glove')
-            ```
-
-        Args:
-            emb_name (str): Embeddinfg file name. See self.emb_dict for 
-                            set of available embeddings.
-            fname (str): File name.
-            dir (str): Directory name.
-
-        Return:
-            emb_path (str): Path to downloaded file.                         
-        """
-
-        emb_path = download(emb_name) #Download code here
-        return emb_path
-
-
+         
 class WE():
     """The Word embedding class.
 
@@ -69,7 +25,7 @@ class WE():
         """
         Initialize WE object.
         """
-        self.downloader = Downloader()
+        # self.downloader = Downloader()
         self.desc = "Word embedding loader for "
 
 
@@ -98,8 +54,17 @@ class WE():
             format = 'npy'
         return format            
 
+    def get_gensim_word_vecs(self, model):
+        """ Loading word and vecs using gensim scripts.
+        Args:
+            model (gensim object): Model for accessing all the words in 
+                                   vocab, and their vectors.  
+        """
+        words = sorted([w for w in model.vocab], key=lambda w: model.vocab[w].index)
+        vecs = np.array([model[w] for w in words])
+        return words, vecs
     
-    def _load(self, fname, format):
+    def _load(self, fname, format, dim = 300):
         """Internal load function.
 
         There shall be no exceptions in this function. Verify everything
@@ -112,26 +77,32 @@ class WE():
                             - binary
                             - text
                             - numpy array
+            dim (int): The dimension of embedding vectors.
         
         Return:
             words (list): List of vocabulary words.
             vecs (np.array): Word vectors of size (self.n, self.dim)     
+
         """
         vecs = []
         words = []
+        
+        if format is None:
+            format = self.fname_to_format(fname)  
+
         if format == 'bin':
             import gensim.models
             model = gensim.models.KeyedVectors.load_word2vec_format(fname, binary=True)
-            words = sorted([w for w in model.vocab], key=lambda w: model.vocab[w].index)
-            vecs = [model[w] for w in words]
+            words, vecs = self.get_gensim_word_vecs(model)
+            
         elif format == 'txt':
             with open(fname, "r") as f:
                 lines = f.readlines()
                 for line in lines:
                     tokens = line.split()
-                    v = np.array([float(x) for x in tokens[-300:]])
-                    w = "_".join([str(x) for x in tokens[:-300]])
-                    if len(v) != 300:
+                    v = np.array([float(x) for x in tokens[-dim:]])
+                    w = "_".join([str(x) for x in tokens[:-dim]])
+                    if len(v) != dim:
                         print(f"Weird line: {tokens} | {len(v)}")
                         continue
                     words.append(w)
@@ -147,25 +118,28 @@ class WE():
         self.desc = f"File: {fname}\tFormat: {format}\t" \
                     f"#Words: {self.n}\tDimension: {self.dim}"
         return words, vecs    
-
-    
-    
     
     def load(self, fname=None, format=None, ename=None, 
-            normalize=False):
+            normalize=False, dim = 300):
         """Load word embedding from filename or embedding name.
 
         Loads word embeddings from either filename `fname` or the 
-        embedding name `enmae`. Following formats are supported:
+        embedding name `ename`. Following formats are supported:
         - bin: Binary format, load through gensim.
         - txt: Text w2v or GloVe format.
         - npy: Numpy format. `fname.wv.npy` contans the numpy vector
                while `fname.vocab` contains the vocabulary list.
+        All Gensim pre-trained embeddings are integrated for easy access
+        via `ename`. `ename` are same as the gensim conventions. 
 
         Example:
             ```
             we = WE()
-            E = we.load('glove6B.txt')
+            E = we.load('glove6B.txt', dim = 300)
+            ```
+            ```
+            we = WE()
+            E = we.load(ename = 'glove-wiki-gigaword-50')
             ```
 
         Args:
@@ -180,17 +154,19 @@ class WE():
                          ename and fname are provided, ename is given
                          priority.
             normalize (bool): Normalize word vectors or not.
+            dim (int): The dimension of embedding vectors. 
+                       Default dimension is 300
 
         Return:
             self (WE object): Return self, the word embedding object.                         
         """
         if ename is not None:
-            fname = self.downloader.get(ename)
+            model = api.load(ename)
+            words, vecs = self.get_gensim_word_vecs(model)
 
-        if format is None:
-            format = self.fname_to_format(fname)  
+        else:
+            words, vecs = self._load(fname, format, dim)
 
-        words, vecs = self._load(fname, format)
         self.words = words
         self.vecs = vecs
         self.reindex()
@@ -243,17 +219,7 @@ class WE():
 
 
 
-if __name__ == "__main__":
-    E = WE().load("../../../Poincare/glove", normalize=True)
-    print(E)
-
-
-   
-
-
-
-
-
-
-
-
+# if __name__ == "__main__":
+#     E = WE().load(ename = "glove-wiki-gigaword-100", normalize=True)
+#     print(E.v('dog'))
+#     print(E)

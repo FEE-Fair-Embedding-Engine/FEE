@@ -447,9 +447,13 @@ nobleman:noblewoman	car:bus	puppy:kitten	pilot:socialite"""
 
 class SemBias():
     def __init__(self, E):
+        """
+        Args: 
+            E (WE class object): Word embeddings object.
+        """
         self.E = E
 
-    def eval_bias_analogy(self, E):
+    def eval_bias_analogy(self,):
         """
         Source: https://github.com/uclanlp/gn_glove
         """
@@ -489,4 +493,4 @@ class SemBias():
         """Returns accuracy for definitional, stereotype and none type
         analogies.
         """
-        return self.eval_bias_analogy(self.E)
+        return self.eval_bias_analogy()

@@ -108,7 +108,7 @@ def _gipe(biased_words, E_new, E_orig=None, g=None, thresh=0.05, n=100):
     neighbours = {}
     incoming_edges = defaultdict(list)
     etas = {}
-    N = get_neighbors_idb_dict( E_new, biased_words)
+    N = get_neighbors_idb_dict(E_new, biased_words)
 
     # for word in tqdm(biased_words): #Creating BBN
     for word in biased_words: #Creating BBN
@@ -182,5 +182,8 @@ class GIPE():
             The final computed GIPE score of a word embedding over the given 
             word lists, and the corresponding created BBN.
         """
+        assert isinstance(words, list), "Argument words must be a list." 
+        assert len(words)>1, "More than one word needed to compute the graph in GIPE." 
+
         return _gipe(words, self.E_new, self.E_orig, 
                         self.g, self.thresh, self.n)            

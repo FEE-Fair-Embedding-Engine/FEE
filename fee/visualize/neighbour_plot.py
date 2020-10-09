@@ -8,6 +8,7 @@ from sklearn.manifold import TSNE
 def color_fader(c1, c2, mix=0): 
     """Fade color between `c1` and `c2` with `mix`.
     See: https://stackoverflow.com/questions/25668828/how-to-create-colour-gradient-in-python
+    
     """    
     c1=np.array(mpl.colors.to_rgb(c1))
     c2=np.array(mpl.colors.to_rgb(c2))
@@ -15,6 +16,7 @@ def color_fader(c1, c2, mix=0):
 
 def generate_palette(c1, c2, n):
     """Generate color palette of length `n` between c1 and c2
+    
     """
     return [color_fader(c1, c2, m) for m in np.linspace(0, 1, n)]    
 
@@ -40,6 +42,8 @@ class NeighbourPlot():
         Args:
             word (str): word to computer neighbours for        
             n (int): number of neighbours to compute        
+        
+        
         """
         ns_idx = np.argsort(self.E.vecs.dot(self.E.v(word)))[-n:-1][::-1]
         return [self.E.words[i] for i in ns_idx]
@@ -48,6 +52,7 @@ class NeighbourPlot():
         """Sort `words` by bias by projection.
         Args:
             words (list): list of words (str)        
+        
         """        
         bias_dict = {}
         for w in words:
@@ -68,6 +73,7 @@ class NeighbourPlot():
             s (int): matplotlib compatible font size for 
                             scatter plot  
             annotate (bool): annotate points in scatter plot?  
+        
         """                        
         assert len(words) == len(colors), "Size mismatch in colors and words"   
         vecs = [self.E.v(w) for w in words]

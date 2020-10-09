@@ -11,6 +11,7 @@ class NeighboursAnalysis():
         Kwargs:
             g (np.array): gender direction
             random_state (int): random seed for reproduction
+        
         """
         self.E = E
         if g is None:
@@ -24,6 +25,7 @@ class NeighboursAnalysis():
             word (str): Word to compute neighbours for
         Kwargs:
             n (int): number of neighbours to compute
+        
         """        
         ns_idx = np.argsort(self.E.vecs.dot(self.E.v(word)))[-n:-1][::-1]
         return [self.E.words[i] for i in ns_idx]
@@ -34,6 +36,7 @@ class NeighboursAnalysis():
             words (list): List of neighbours
         Kwargs:
             n (int): number of neighbours to compute
+        
         """          
         bias_dict = {}
         for w in words:
@@ -52,6 +55,7 @@ class NeighboursAnalysis():
         Kwargs:
             n (int): number of neighbours to compute
             ret_report (bool): return or print the report dataframe
+        
         """            
         neighbours = self.get_neighbours(word, n)  
         report_df = self.print_neighbours(neighbours, n)

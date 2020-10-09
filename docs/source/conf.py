@@ -37,6 +37,8 @@ autodoc_mock_imports = ['numpy',
                         'wordcloud',
                         'sklearn',
                         'gensim',
+                        'seaborn',
+                        'sympy',
                         ]
 
 # Add any paths that contain templates here, relative to this directory.

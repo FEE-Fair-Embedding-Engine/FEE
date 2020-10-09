@@ -22,6 +22,7 @@ class PCAComponents():
             num_components (int): number of principal components
             dpi (int): dpi of the figures  
             figsize (tuple): size of figures in (HxW)  
+        
         """           
         plt.figure(figsize=figsize, dpi=dpi)
         matrix = []
@@ -48,6 +49,7 @@ class PCAComponents():
             num_components (int): number of principal components
             figsize (tuple): size of figures in (HxW)  
             dpi (int): dpi of the figures  
+        
         """              
         assert len(pairs) >= num_components, f"# pairs ({len(pairs)}) should be greater than the number of components ({num_components})."
         self.PlotPCA(pairs, title, num_components, dpi, figsize)        

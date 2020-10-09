@@ -11,6 +11,7 @@ class GCT():
             E (WE class object): Word embeddings object
         Kwargs:
             random_state (int): for reproducibility
+        
         """           
         self.E = E
         self.random_state = random_state 
@@ -19,6 +20,7 @@ class GCT():
         """Apply kmeans clustering over vecs
         Args:
             vecs (np.array): list of word vectors to cluster
+        
         """
         labels = KMeans(n_clusters=2, 
                         random_state=self.random_state
@@ -35,6 +37,7 @@ class GCT():
             figsize (tuple): size of figures in (HxW)  
             dpi (int): dpi of the figures  
             colors (list): list of two matplotlib compatible colors  
+        
         """        
         fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
         X_embedded = TSNE(n_components=2, 
@@ -61,6 +64,7 @@ class GCT():
             dpi (int): dpi of the figures  
             figsize (tuple): size of figures in (HxW)  
             colors (list): list of two matplotlib compatible colors  
+        
         """               
         vecs = [self.E.v(w) for w in word_list]    
         labels = self.cluster(vecs)

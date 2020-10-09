@@ -26,6 +26,44 @@ Debiasing
 .. automodule:: fee.debias.ran_debias
    :members: 
 
+Reports
+=========================   
+.. automodule:: fee.reports.biased_neighbours
+   :members: 
+.. automodule:: fee.reports.word_report
+   :members: 
+.. automodule:: fee.reports.global_report
+   :members: 
+
+Metrics
+=========================   
+.. automodule:: fee.metrics.weat
+   :members: 
+.. automodule:: fee.metrics.sembias
+   :members: 
+.. automodule:: fee.metrics.proximity_bias
+   :members: 
+.. automodule:: fee.metrics.pmn
+   :members: 
+.. automodule:: fee.metrics.gipe
+   :members:             
+.. automodule:: fee.metrics.direct_bias
+   :members:   
+.. automodule:: fee.metrics.indirect_bias
+   :members:         
+
+Visualizations
+=========================   
+.. automodule:: fee.visualize.neighbour_bias_wordcloud
+   :members: 
+.. automodule:: fee.visualize.neighbour_plot
+   :members: 
+.. automodule:: fee.visualize.gender_cluster_tsne
+   :members: 
+.. automodule:: fee.visualize.pca_components
+   :members:       
+   
+
 Indices and tables
 ==================
 

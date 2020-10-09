@@ -356,6 +356,226 @@ vectors (torch.Tensor): torch tensor 2D</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-fee.reports.biased_neighbours">
+<span id="reports"></span><h1>Reports<a class="headerlink" href="#module-fee.reports.biased_neighbours" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-fee.reports.word_report"></span><span class="target" id="module-fee.reports.global_report"></span></div>
+<div class="section" id="module-fee.metrics.weat">
+<span id="metrics"></span><h1>Metrics<a class="headerlink" href="#module-fee.metrics.weat" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="fee.metrics.weat.WEAT">
+<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">WEAT</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.WEAT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform WEAT (Word Embedding Association Test) bias tests on a language model.
+Follows from Caliskan et al 2017 (10.1126/science.aal4230).
+Code mostly “stolen” from: <a class="reference external" href="https://github.com/chadaeun/weat_replication/blob/master/lib/weat.py">https://github.com/chadaeun/weat_replication/blob/master/lib/weat.py</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.metrics.weat.cos_sim">
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">cos_sim</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v1</span></em>, <em class="sig-param"><span class="n">v2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.cos_sim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns cosine of the angle between two vectors</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.metrics.weat.unit_vector">
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">unit_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.unit_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns unit vector</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.metrics.weat.weat_association">
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_association</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">W</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.weat_association" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns association of the word w in W with the attribute for WEAT score.
+s(w, A, B)
+:param W: target words’ vector representations
+:param A: attribute words’ vector representations
+:param B: attribute words’ vector representations
+:return: (len(W), ) shaped numpy ndarray. each rows represent association of the word w in W</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.metrics.weat.weat_differential_association">
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_differential_association</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.weat_differential_association" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns differential association of two sets of target words with the attribute for WEAT score.
+s(X, Y, A, B)
+:param X: target words’ vector representations
+:param Y: target words’ vector representations
+:param A: attribute words’ vector representations
+:param B: attribute words’ vector representations
+:return: differential association (float value)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.metrics.weat.weat_p_value">
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_p_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.weat_p_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns one-sided p-value of the permutation test for WEAT score
+CAUTION: this function is not appropriately implemented, so it runs very slowly
+:param X: target words’ vector representations
+:param Y: target words’ vector representations
+:param A: attribute words’ vector representations
+:param B: attribute words’ vector representations
+:return: p-value (float value)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.metrics.weat.weat_score">
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em>, <em class="sig-param"><span class="n">p_val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.weat_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns WEAT score
+X, Y, A, B must be (len(words), dim) shaped numpy ndarray
+CAUTION: this function assumes that there’s no intersection word between X and Y
+:param X: target words’ vector representations
+:param Y: target words’ vector representations
+:param A: attribute words’ vector representations
+:param B: attribute words’ vector representations
+:return: WEAT score</p>
+</dd></dl>
+
+<span class="target" id="module-fee.metrics.sembias"></span><span class="target" id="module-fee.metrics.proximity_bias"></span><span class="target" id="module-fee.metrics.pmn"></span><dl class="py class">
+<dt id="fee.metrics.pmn.PMN">
+<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.pmn.</code><code class="sig-name descname">PMN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.pmn.PMN" title="Permalink to this definition">¶</a></dt>
+<dd><p>The class that computes the Percentage of Male Neighbours (PMN)
+in the top n neighbours for a word.</p>
+<dl class="py method">
+<dt id="fee.metrics.pmn.PMN.compute">
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.pmn.PMN.compute" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args: </dt><dd><dl class="simple">
+<dt>words (str or list[str]): A word or a list of worrds to</dt><dd><p>compute the PMN for.</p>
+</dd>
+</dl>
+</dd>
+<dt>Reutrn:</dt><dd><p>The percentage of male neighbours. Note that the remaining
+percentage of neighbours can be considered to be female.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-fee.metrics.gipe"></span><dl class="py function">
+<dt id="fee.metrics.gipe.get_neighbors">
+<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">get_neighbors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.gipe.get_neighbors" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Args:</dt><dd><p>N (dict[dict]): A dict of dict, storing the neighbours of
+each word with IDB values.
+word (str): The target word whose neighbours are to be</p>
+<blockquote>
+<div><p>fecthed.</p>
+</div></blockquote>
+<p>k (int): top <cite>k</cite> neighbours.</p>
+</dd>
+<dt>Returns:</dt><dd><p>A list of top <cite>k</cite> neighbours for <cite>word</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.metrics.gipe.get_neighbors_idb_dict">
+<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">get_neighbors_idb_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.gipe.get_neighbors_idb_dict" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Args:</dt><dd><dl>
+<dt>Args:</dt><dd><p>E (WE class object): Word embeddings object.
+word (str): The word in consideration.</p>
+</dd>
+<dt>Returns:</dt><dd><p>A dict of dicts, storing the neighbours of each word 
+with IDB values.</p>
+<p># The key of larger dict resembles the source node, its value
+# is again a dict which has keys and values. These are
+# respetively the target node and the weight of an edge
+# that is conceptually formed between the two nodes 
+# (keys of two dicts).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.metrics.gipe.get_ns_idb">
+<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">get_ns_idb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.gipe.get_ns_idb" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><p>E (WE class object): Word embeddings object.
+word (str): The word in consideration.
+g (np.array): Gender direction.</p>
+</dd>
+<dt>Returns:</dt><dd><p>A dictionary of top 100 neighbours of <cite>word</cite> and the 
+indirect bias between <cite>word</cite> and each neighbour.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.metrics.gipe.prox_bias">
+<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">prox_bias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vals</span></em>, <em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">thresh</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.gipe.prox_bias" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Returns:</dt><dd><p>the ratio of total neighbours that have IDB above <cite>thresh</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.metrics.gipe.score">
+<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vals</span></em>, <em class="sig-param"><span class="n">weights</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.gipe.score" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><p>vals (dict): A dict of words and their corresponding proximity bias.
+weights (dict): The weights of an edge according to GIPE metric.</p>
+</dd>
+<dt>Returns:</dt><dd><p>The final computed GIPE score</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-fee.metrics.direct_bias"></span><span class="target" id="module-fee.metrics.indirect_bias"></span><dl class="py class">
+<dt id="fee.metrics.indirect_bias.IndirectBias">
+<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.indirect_bias.</code><code class="sig-name descname">IndirectBias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.indirect_bias.IndirectBias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The class for computing indirect bias between a pair of words.</p>
+<dl class="py method">
+<dt id="fee.metrics.indirect_bias.IndirectBias.compute">
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.indirect_bias.IndirectBias.compute" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args: </dt><dd><p>w (str): One of a pair of words.  
+v (str): The other word from the pair.</p>
+</dd>
+<dt>Returns:</dt><dd><p>The indirect bias between the embeddings of <cite>w</cite> and <cite>v</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.metrics.indirect_bias.IndirectBias.fix">
+<code class="sig-name descname">fix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.001</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.indirect_bias.IndirectBias.fix" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><p>w (np.array): word vector</p>
+</dd>
+<dt>kwargs:</dt><dd><dl class="simple">
+<dt>eps (float): threshold. If the difference between the norm</dt><dd><p>of <cite>w</cite> and 1, is greater than <cite>eps</cite>. Then 
+normalize <cite>w</cite>.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>The normalized <cite>w</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fee.visualize.neighbour_bias_wordcloud">
+<span id="visualizations"></span><h1>Visualizations<a class="headerlink" href="#module-fee.visualize.neighbour_bias_wordcloud" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-fee.visualize.neighbour_plot"></span><dl class="py function">
+<dt id="fee.visualize.neighbour_plot.color_fader">
+<code class="sig-prename descclassname">fee.visualize.neighbour_plot.</code><code class="sig-name descname">color_fader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c1</span></em>, <em class="sig-param"><span class="n">c2</span></em>, <em class="sig-param"><span class="n">mix</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.visualize.neighbour_plot.color_fader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fade color between <cite>c1</cite> and <cite>c2</cite> with <cite>mix</cite>.
+See: <a class="reference external" href="https://stackoverflow.com/questions/25668828/how-to-create-colour-gradient-in-python">https://stackoverflow.com/questions/25668828/how-to-create-colour-gradient-in-python</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.visualize.neighbour_plot.generate_palette">
+<code class="sig-prename descclassname">fee.visualize.neighbour_plot.</code><code class="sig-name descname">generate_palette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c1</span></em>, <em class="sig-param"><span class="n">c2</span></em>, <em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.visualize.neighbour_plot.generate_palette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate color palette of length <cite>n</cite> between c1 and c2</p>
+</dd></dl>
+
+<span class="target" id="module-fee.visualize.gender_cluster_tsne"></span><span class="target" id="module-fee.visualize.pca_components"></span></div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">

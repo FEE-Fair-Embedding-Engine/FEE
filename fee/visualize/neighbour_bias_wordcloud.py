@@ -15,6 +15,7 @@ class NBWordCloud():
         Kwargs:
             g (np.array): gender direction
             random_state (int): for reproducibility
+        
         """        
         self.E = E
         if g is None:
@@ -49,6 +50,7 @@ class NBWordCloud():
             dpi (int): dpi of the figures  
             width (int): width of the wordcloud image  
             height (int): height of the wordcloud image  
+        
         """           
         wordcloud = WordCloud(width=width, height=height).generate_from_frequencies(freq_dict)
         plt.figure(figsize=figsize, dpi=dpi)
@@ -70,6 +72,7 @@ class NBWordCloud():
             dpi (int): dpi of the figures  
             width (int): width of the wordcloud image  
             height (int): height of the wordcloud image  
+        
         """                     
         neighbours = self.get_neighbours(word, n)  
         neighbours_sorted_dict = self.bias_by_projection_sort(neighbours)  

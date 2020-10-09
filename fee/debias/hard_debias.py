@@ -71,6 +71,7 @@ def _hard_neutralize(v, g):
 
 class HardDebias():
     """Hard debiasing class.
+    
     """
     def __init__(self, E, g=None):
         """HardDebias debiasing method class. 

@@ -58,7 +58,7 @@ sklearn
 ```
 
 # Documentation
-The official documentation (WIP) is hosted on ReadTheDocs: https://fair-embedding-engine.readthedocs.io/en/latest/
+The official documentation (WIP) is hosted on [ReadTheDocs.](https://fair-embedding-engine.readthedocs.io/en/latest/)
 
 
 # Conclusion

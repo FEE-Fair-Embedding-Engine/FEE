@@ -3,12 +3,13 @@ from ..utils import get_g, cosine
 import pandas as pd
 
 class NeighboursAnalysis():
+    """`NeighboursAnalysis` report"""
+
     def __init__(self, E, g=None, random_state=42):
         """Analyze Neighbours of a word in the embedding through 
         cosine similarities and bias by projection.
         Args:
             E (WE class object): Word embeddings object
-        Kwargs:
             g (np.array): gender direction
             random_state (int): random seed for reproduction
         
@@ -23,7 +24,6 @@ class NeighboursAnalysis():
         """Compute list of `n` neighbours for `word`
         Args:
             word (str): Word to compute neighbours for
-        Kwargs:
             n (int): number of neighbours to compute
         
         """        
@@ -34,7 +34,6 @@ class NeighboursAnalysis():
         """Pretty print `n` neighbours 
         Args:
             words (list): List of neighbours
-        Kwargs:
             n (int): number of neighbours to compute
         
         """          
@@ -52,7 +51,6 @@ class NeighboursAnalysis():
         """Generate the report for neighbours of word
         Args:
             word (str): Word to generate report for
-        Kwargs:
             n (int): number of neighbours to compute
             ret_report (bool): return or print the report dataframe
         

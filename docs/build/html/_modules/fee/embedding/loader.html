@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fee.embedding.loader &#8212; FEE -- Fair Embedding Engine 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.embedding.loader</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for fee.embedding.loader</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="c1"># from tqdl import download</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">codecs</span>
+<span class="kn">import</span> <span class="nn">gensim.downloader</span> <span class="k">as</span> <span class="nn">api</span>
+<span class="kn">from</span> <span class="nn">gensim.test.utils</span> <span class="kn">import</span> <span class="n">get_tmpfile</span>
+
+         
+<div class="viewcode-block" id="WE"><a class="viewcode-back" href="../../../index.html#fee.embedding.loader.WE">[docs]</a><span class="k">class</span> <span class="nc">WE</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The Word embedding class.</span>
+
+<span class="sd">    The main class that facilitates the word embedding structure. </span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dim (int): Dimension of embedding</span>
+<span class="sd">    vecs (np.array): </span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize WE object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># self.downloader = Downloader()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;Word embedding loader for &quot;</span>
+
+
+    
+<div class="viewcode-block" id="WE.fname_to_format"><a class="viewcode-back" href="../../../index.html#fee.embedding.loader.WE.fname_to_format">[docs]</a>    <span class="k">def</span> <span class="nf">fname_to_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get embedding format from file name.</span>
+
+<span class="sd">        Format can usually be extracted from the filename extension. We</span>
+<span class="sd">        currently support the loading of embeddings in binary (.bin), </span>
+<span class="sd">        text (.txt) and numpy format (.npy). </span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            fname (str): file name</span>
+<span class="sd">        </span>
+<span class="sd">        Return:</span>
+<span class="sd">            format (str): format (txt, bin or npy)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">fname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="s2">&quot;fname can&#39;t be None&quot;</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.txt&#39;</span><span class="p">):</span>
+            <span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;txt&#39;</span>
+        <span class="k">elif</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.bin&#39;</span><span class="p">):</span>
+            <span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;bin&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;npy&#39;</span>
+        <span class="k">return</span> <span class="nb">format</span>            </div>
+
+<div class="viewcode-block" id="WE.get_gensim_word_vecs"><a class="viewcode-back" href="../../../index.html#fee.embedding.loader.WE.get_gensim_word_vecs">[docs]</a>    <span class="k">def</span> <span class="nf">get_gensim_word_vecs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Loading word and vecs using gensim scripts.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            model (gensim object): Model for accessing all the words in </span>
+<span class="sd">                                   vocab, and their vectors.  </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">vocab</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">vocab</span><span class="p">[</span><span class="n">w</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">vecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">model</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">words</span><span class="p">,</span> <span class="n">vecs</span></div>
+    
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="mi">300</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal load function.</span>
+
+<span class="sd">        There shall be no exceptions in this function. Verify everything</span>
+<span class="sd">        beforehand. Loads word embedding at location `fname` on disk.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fname (str): Path to the embedding file on disk.</span>
+<span class="sd">            format (str): Format of word embedding. Following are the</span>
+<span class="sd">                          supported formats:</span>
+<span class="sd">                            - binary</span>
+<span class="sd">                            - text</span>
+<span class="sd">                            - numpy array</span>
+<span class="sd">            dim (int): The dimension of embedding vectors.</span>
+<span class="sd">        </span>
+<span class="sd">        Return:</span>
+<span class="sd">            words (list): List of vocabulary words.</span>
+<span class="sd">            vecs (np.array): Word vectors of size (self.n, self.dim)     </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vecs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fname_to_format</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>  
+
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;bin&#39;</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">gensim.models</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">gensim</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">KeyedVectors</span><span class="o">.</span><span class="n">load_word2vec_format</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">words</span><span class="p">,</span> <span class="n">vecs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gensim_word_vecs</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+            
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;txt&#39;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                    <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">[</span><span class="o">-</span><span class="n">dim</span><span class="p">:]])</span>
+                    <span class="n">w</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">[:</span><span class="o">-</span><span class="n">dim</span><span class="p">]])</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">dim</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weird line: </span><span class="si">{</span><span class="n">tokens</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">continue</span>
+                    <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+                    <span class="n">vecs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;.vocab&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> 
+                            <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_embed</span><span class="p">:</span>
+                <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f_embed</span><span class="p">]</span>
+            <span class="n">vecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;.wv.npy&#39;</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">vecs</span><span class="o">.</span><span class="n">shape</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;File: </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="se">\t</span><span class="s2">Format: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\t</span><span class="s2">&quot;</span> \
+                    <span class="sa">f</span><span class="s2">&quot;#Words: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="si">}</span><span class="se">\t</span><span class="s2">Dimension: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">words</span><span class="p">,</span> <span class="n">vecs</span>    
+    
+<div class="viewcode-block" id="WE.load"><a class="viewcode-back" href="../../../index.html#fee.embedding.loader.WE.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+            <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="mi">300</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load word embedding from filename or embedding name.</span>
+
+<span class="sd">        Loads word embeddings from either filename `fname` or the </span>
+<span class="sd">        embedding name `ename`. Following formats are supported:</span>
+<span class="sd">        - bin: Binary format, load through gensim.</span>
+<span class="sd">        - txt: Text w2v or GloVe format.</span>
+<span class="sd">        - npy: Numpy format. `fname.wv.npy` contans the numpy vector</span>
+<span class="sd">               while `fname.vocab` contains the vocabulary list.</span>
+<span class="sd">        All Gensim pre-trained embeddings are integrated for easy access</span>
+<span class="sd">        via `ename`. `ename` are same as the gensim conventions. </span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            ```</span>
+<span class="sd">            we = WE()</span>
+<span class="sd">            E = we.load(&#39;glove6B.txt&#39;, dim = 300)</span>
+<span class="sd">            ```</span>
+<span class="sd">            ```</span>
+<span class="sd">            we = WE()</span>
+<span class="sd">            E = we.load(ename = &#39;glove-wiki-gigaword-50&#39;)</span>
+<span class="sd">            ```</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fname (str): Path to the embedding file on disk.</span>
+<span class="sd">            format (str): Format of word embedding. Following are the</span>
+<span class="sd">                          supported formats:</span>
+<span class="sd">                            - binary</span>
+<span class="sd">                            - text</span>
+<span class="sd">                            - numpy array</span>
+<span class="sd">            ename (str): Name of embedding. This will download embedding</span>
+<span class="sd">                         using the `Downloader` class. In case both </span>
+<span class="sd">                         ename and fname are provided, ename is given</span>
+<span class="sd">                         priority.</span>
+<span class="sd">            normalize (bool): Normalize word vectors or not.</span>
+<span class="sd">            dim (int): The dimension of embedding vectors. </span>
+<span class="sd">                       Default dimension is 300</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            self (WE object): Return self, the word embedding object.                         </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ename</span><span class="p">)</span>
+            <span class="n">words</span><span class="p">,</span> <span class="n">vecs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gensim_word_vecs</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">words</span><span class="p">,</span> <span class="n">vecs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">words</span> <span class="o">=</span> <span class="n">words</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vecs</span> <span class="o">=</span> <span class="n">vecs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reindex</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalized</span> <span class="o">=</span> <span class="n">normalize</span>
+        <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>    </div>
+
+<div class="viewcode-block" id="WE.reindex"><a class="viewcode-back" href="../../../index.html#fee.embedding.loader.WE.reindex">[docs]</a>    <span class="k">def</span> <span class="nf">reindex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reindex word vectors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">{</span><span class="n">w</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">words</span><span class="p">)}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vecs</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">words</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WE.v"><a class="viewcode-back" href="../../../index.html#fee.embedding.loader.WE.v">[docs]</a>    <span class="k">def</span> <span class="nf">v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Access vector for a word</span>
+
+<span class="sd">        Returns the `self.dim` dimensional vector for the word `word`.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            E = WE().load(&#39;glove&#39;)</span>
+<span class="sd">            test = E.v(&#39;test&#39;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            word (str): Word to access vector of.</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            vec (np.array): `self.dim` dimension vector for `word`.    </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vecs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">word</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">vec</span></div>
+
+<div class="viewcode-block" id="WE.normalize"><a class="viewcode-back" href="../../../index.html#fee.embedding.loader.WE.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalize word embeddings.</span>
+
+<span class="sd">        Normaliation is done as follows:</span>
+<span class="sd">            \vec{v}_{norm} := \vec{v}/|\vec{v}|</span>
+<span class="sd">            where |\vec{v}| is the L2 norm of \vec{v}</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vecs</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vecs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reindex</span><span class="p">()</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">desc</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Normalized: True&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalized</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Class `__repr__` object for pretty informational print.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">desc</span>            </div>
+
+
+
+<span class="c1"># if __name__ == &quot;__main__&quot;:</span>
+<span class="c1">#     E = WE().load(ename = &quot;glove-wiki-gigaword-100&quot;, normalize=True)</span>
+<span class="c1">#     print(E.v(&#39;dog&#39;))</span>
+<span class="c1">#     print(E)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.embedding.loader</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Vaibhav Kumar, Tenzin Singhay Bhotia, Vaibhav Kumar.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

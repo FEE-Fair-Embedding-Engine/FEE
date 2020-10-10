@@ -2,6 +2,7 @@ import numpy as np
 
 class HSRDebias():
     """HSR Debiasing class (Half Sibling Regression)
+    
     """
     def __init__(self, E):
         """HSR debiasing method class. 

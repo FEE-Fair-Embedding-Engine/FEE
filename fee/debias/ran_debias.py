@@ -28,6 +28,7 @@ def get_ns_idb(word, N):
     Args:
         word (str): word to get neighbours and pair idb
         N (dict): neighbourhood-idb dictionary
+
     """
     return N[word]
 
@@ -65,6 +66,7 @@ def init_vector(word, E):
     Args:
         word (str): word to debias
         E (WE class object): Word embeddings object
+
     """
     v = deepcopy(E.v(word)) 
     return torch.FloatTensor(v)
@@ -75,6 +77,7 @@ def torch_cosine_similarity(X, vectors):
     Args:
         X (torch.Tensor): torch tensor 1D
         vectors (torch.Tensor): torch tensor 2D
+
     """
     return torch.matmul(vectors, X) / (vectors.norm(dim=1) * X.norm(dim=0))
 
@@ -87,6 +90,7 @@ def ran_objective(X, sel, desel, g, ws):
         X (torch.Tensor): deselection tensors for repulsion
         g (torch.Tensor): gender direction tensor
         ws (list): list of objective weights
+
     """
     w1, w2, w3 = ws
     A = torch.abs(torch_cosine_similarity(X, sel) - 1).mean(dim=0)/2
@@ -110,9 +114,9 @@ class RANOpt(nn.Module):
             word (np.array): the original vector to debias
             N (dict): neighbourhood dictionary
             g (np.array): Gender Direction, if None, it is computed again.
-        Kwargs:
             ws (list): weights for RAN objective
             ripa (bool): use RIPA based neutralization or not
+
         """
         super(RANOpt, self).__init__()
         sel_max = 1
@@ -146,8 +150,6 @@ class RANDebias():
         """
         Args:
             E (WE class object): Word embeddings object.
-        
-        Kwargs:
             g (np.array): Gender Direction, if None, it is computed again.
         
         """
@@ -163,6 +165,7 @@ class RANDebias():
             X (np.array): the initialized new debiased vector
             lr (float): learning rate for gradient descent
             max_epochs (int): number of epochs
+        
         """
         m = RANOpt(self.E, word, X, *args, **kwargs)
         optimizer = torch.optim.Adam(m.parameters(), lr=lr)

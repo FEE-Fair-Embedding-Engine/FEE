@@ -3,9 +3,11 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 
 class PCAComponents():
+    """`PCAComponents` Class"""
     def __init__(self, E):
         """Plot the PCA principle component bar graph for some direction 
         of `E` computed using a list of pairs of words.
+        
         Args:
             E (WE class object): Word embeddings object
         
@@ -14,6 +16,7 @@ class PCAComponents():
 
     def PlotPCA(self, pairs, title, num_components, dpi, figsize):
         """Main `PCAComponents` visualization driver function
+        
         Args:
             pairs (list): A list of pair (tuple/list) of words. The 
                         direction is computed by PCA of set of 
@@ -41,6 +44,7 @@ class PCAComponents():
     def run(self, pairs, title=None, num_components=10, dpi=300, 
             figsize=(8, 5)):
         """Run the `PCAComponents` visualization
+        
         Args:
             pairs (list): A list of pair (tuple/list) of words. The 
                         direction is computed by PCA of set of 

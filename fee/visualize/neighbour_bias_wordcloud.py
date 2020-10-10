@@ -6,13 +6,14 @@ from wordcloud import WordCloud
 
 
 class NBWordCloud():
+    """`NBWordCloud` Class"""
     def __init__(self, E, g=None, random_state=42):
         """WordCloud for the neighbourhood of a word. The size of 
         neighbouring words is directly propotional to the bias by
         projection of these words.
+
         Args:
             E (WE class object): Word embeddings object
-        Kwargs:
             g (np.array): gender direction
             random_state (int): for reproducibility
         
@@ -43,6 +44,7 @@ class NBWordCloud():
 
     def visualize(self, freq_dict, title, figsize, dpi, width, height):
         """Main `NBWordCloud` visualization driver function
+
         Args:
             freq_dict (dict): dictionary to map size of each word
             title (str): title of the plot
@@ -64,6 +66,7 @@ class NBWordCloud():
     def run(self, word, title=None, n=100, dpi=300, figsize=(8, 5),
                 width=800, height=500):
         """Run the `NBWordCloud` visualization 
+
         Args:
             word (str): word to compute neighbours of and make this plot
             title (str): title of the plot

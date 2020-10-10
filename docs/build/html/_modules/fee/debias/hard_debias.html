@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fee.debias.hard_debias &#8212; FEE -- Fair Embedding Engine 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.debias.hard_debias</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for fee.debias.hard_debias</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">get_g</span>
+
+<span class="n">EQ_PAIRS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s2">&quot;monastery&quot;</span><span class="p">,</span> <span class="s2">&quot;convent&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;spokesman&quot;</span><span class="p">,</span> <span class="s2">&quot;spokeswoman&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Catholic_priest&quot;</span><span class="p">,</span> <span class="s2">&quot;nun&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Dad&quot;</span><span class="p">,</span> <span class="s2">&quot;Mom&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Men&quot;</span><span class="p">,</span> <span class="s2">&quot;Women&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;councilman&quot;</span><span class="p">,</span> <span class="s2">&quot;councilwoman&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;grandpa&quot;</span><span class="p">,</span> <span class="s2">&quot;grandma&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;grandsons&quot;</span><span class="p">,</span> <span class="s2">&quot;granddaughters&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;prostate_cancer&quot;</span><span class="p">,</span> <span class="s2">&quot;ovarian_cancer&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;testosterone&quot;</span><span class="p">,</span> <span class="s2">&quot;estrogen&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;uncle&quot;</span><span class="p">,</span> <span class="s2">&quot;aunt&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;wives&quot;</span><span class="p">,</span> <span class="s2">&quot;husbands&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Father&quot;</span><span class="p">,</span> <span class="s2">&quot;Mother&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Grandpa&quot;</span><span class="p">,</span> <span class="s2">&quot;Grandma&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;He&quot;</span><span class="p">,</span> <span class="s2">&quot;She&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;boy&quot;</span><span class="p">,</span> <span class="s2">&quot;girl&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;boys&quot;</span><span class="p">,</span> <span class="s2">&quot;girls&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;brother&quot;</span><span class="p">,</span> <span class="s2">&quot;sister&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;brothers&quot;</span><span class="p">,</span> <span class="s2">&quot;sisters&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;businessman&quot;</span><span class="p">,</span> <span class="s2">&quot;businesswoman&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;chairman&quot;</span><span class="p">,</span> <span class="s2">&quot;chairwoman&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;colt&quot;</span><span class="p">,</span> <span class="s2">&quot;filly&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;congressman&quot;</span><span class="p">,</span> <span class="s2">&quot;congresswoman&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;dad&quot;</span><span class="p">,</span> <span class="s2">&quot;mom&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;dads&quot;</span><span class="p">,</span> <span class="s2">&quot;moms&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;dudes&quot;</span><span class="p">,</span> <span class="s2">&quot;gals&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;ex_girlfriend&quot;</span><span class="p">,</span> <span class="s2">&quot;ex_boyfriend&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;father&quot;</span><span class="p">,</span> <span class="s2">&quot;mother&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;fatherhood&quot;</span><span class="p">,</span> <span class="s2">&quot;motherhood&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;fathers&quot;</span><span class="p">,</span> <span class="s2">&quot;mothers&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;fella&quot;</span><span class="p">,</span> <span class="s2">&quot;granny&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;fraternity&quot;</span><span class="p">,</span> <span class="s2">&quot;sorority&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;gelding&quot;</span><span class="p">,</span> <span class="s2">&quot;mare&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;gentleman&quot;</span><span class="p">,</span> <span class="s2">&quot;lady&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;gentlemen&quot;</span><span class="p">,</span> <span class="s2">&quot;ladies&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;grandfather&quot;</span><span class="p">,</span> <span class="s2">&quot;grandmother&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;grandson&quot;</span><span class="p">,</span> <span class="s2">&quot;granddaughter&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;he&quot;</span><span class="p">,</span> <span class="s2">&quot;she&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;himself&quot;</span><span class="p">,</span> <span class="s2">&quot;herself&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;his&quot;</span><span class="p">,</span> <span class="s2">&quot;her&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;king&quot;</span><span class="p">,</span> <span class="s2">&quot;queen&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;kings&quot;</span><span class="p">,</span> <span class="s2">&quot;queens&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;male&quot;</span><span class="p">,</span> <span class="s2">&quot;female&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;males&quot;</span><span class="p">,</span> <span class="s2">&quot;females&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;man&quot;</span><span class="p">,</span> <span class="s2">&quot;woman&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;men&quot;</span><span class="p">,</span> <span class="s2">&quot;women&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;nephew&quot;</span><span class="p">,</span> <span class="s2">&quot;niece&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;prince&quot;</span><span class="p">,</span> <span class="s2">&quot;princess&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;schoolboy&quot;</span><span class="p">,</span> <span class="s2">&quot;schoolgirl&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;son&quot;</span><span class="p">,</span> <span class="s2">&quot;daughter&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;sons&quot;</span><span class="p">,</span> <span class="s2">&quot;daughters&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;twin_brother&quot;</span><span class="p">,</span> <span class="s2">&quot;twin_sister&quot;</span><span class="p">]</span>
+ <span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">_hard_neutralize</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove the gender component from a word vector.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        v (np.array): Word vector.</span>
+<span class="sd">        g (np.array): Gender Direction.</span>
+<span class="sd">    </span>
+<span class="sd">    Return:</span>
+<span class="sd">        np.array: return the neutralized embedding</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">v</span> <span class="o">-</span> <span class="n">g</span> <span class="o">*</span> <span class="n">v</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>    
+
+<div class="viewcode-block" id="HardDebias"><a class="viewcode-back" href="../../../index.html#fee.debias.hard_debias.HardDebias">[docs]</a><span class="k">class</span> <span class="nc">HardDebias</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Hard debiasing class.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;HardDebias debiasing method class. </span>
+<span class="sd">        </span>
+<span class="sd">        This debiasing word vectors in two step</span>
+<span class="sd">        stages, first it neutralizes and then equailizes the vectors.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            E (WE class object): Word embeddings object.</span>
+<span class="sd">            g (np.array): Gender Direction, if None, it is computed again.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">get_g</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="o">==</span> <span class="n">E</span><span class="o">.</span><span class="n">dim</span>   
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">g</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E</span> <span class="o">=</span> <span class="n">E</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">equalize_pairs</span> <span class="o">=</span> <span class="n">EQ_PAIRS</span>
+
+    
+<div class="viewcode-block" id="HardDebias.neutralize"><a class="viewcode-back" href="../../../index.html#fee.debias.hard_debias.HardDebias.neutralize">[docs]</a>    <span class="k">def</span> <span class="nf">neutralize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">word_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Neutralize word vectors using the gender direction. This is the </span>
+<span class="sd">        first step of hard debiasing procedure.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            E (WE class object): Word embeddings object.</span>
+<span class="sd">            word_list (list): List of words to debias.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">words</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">word_list</span><span class="p">:</span>
+                <span class="n">E</span><span class="o">.</span><span class="n">vecs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_hard_neutralize</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">vecs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">E</span>    </div>
+    
+<div class="viewcode-block" id="HardDebias.equalize"><a class="viewcode-back" href="../../../index.html#fee.debias.hard_debias.HardDebias.equalize">[docs]</a>    <span class="k">def</span> <span class="nf">equalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Equalize word vectors using the gender direction and a set of </span>
+<span class="sd">        equalizing word pairs. This is the second step of hard debiasing </span>
+<span class="sd">        procedure.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            E (WE class object): Word embeddings object.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>                
+        <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span> <span class="k">for</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">equalize_pairs</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span>
+                                        <span class="p">(</span><span class="n">e1</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">e2</span><span class="o">.</span><span class="n">lower</span><span class="p">()),</span>
+                                        <span class="p">(</span><span class="n">e1</span><span class="o">.</span><span class="n">title</span><span class="p">(),</span> <span class="n">e2</span><span class="o">.</span><span class="n">title</span><span class="p">()),</span>
+                                        <span class="p">(</span><span class="n">e1</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">e2</span><span class="o">.</span><span class="n">upper</span><span class="p">())]</span>
+                    <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="ow">in</span> <span class="n">E</span><span class="o">.</span><span class="n">index</span> <span class="ow">and</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">E</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">_hard_neutralize</span><span class="p">((</span><span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">b</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">z</span> <span class="o">=</span> <span class="o">-</span><span class="n">z</span>
+                <span class="n">E</span><span class="o">.</span><span class="n">vecs</span><span class="p">[</span><span class="n">E</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">a</span><span class="p">]]</span> <span class="o">=</span> <span class="n">z</span> <span class="o">*</span> <span class="n">g</span> <span class="o">+</span> <span class="n">y</span>
+                <span class="n">E</span><span class="o">.</span><span class="n">vecs</span><span class="p">[</span><span class="n">E</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">b</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="n">z</span> <span class="o">*</span> <span class="n">g</span> <span class="o">+</span> <span class="n">y</span>
+        <span class="k">return</span> <span class="n">E</span>        </div>
+        
+    
+<div class="viewcode-block" id="HardDebias.run"><a class="viewcode-back" href="../../../index.html#fee.debias.hard_debias.HardDebias.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Debias word vectors using the hard debiasing method. </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            word_list (list): List of words to debias.</span>
+<span class="sd">    </span>
+<span class="sd">        Return:</span>
+<span class="sd">            Debiased word vectors</span>
+<span class="sd">        &quot;&quot;&quot;</span>             
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">equalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neutralize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">,</span> <span class="n">word_list</span><span class="p">))</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.debias.hard_debias</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Vaibhav Kumar, Tenzin Singhay Bhotia, Vaibhav Kumar.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

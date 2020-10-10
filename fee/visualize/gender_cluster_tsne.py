@@ -4,12 +4,13 @@ from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
 
 class GCT():
+    """`GCT` Class"""
     def __init__(self, E, random_state=0):
         """Gender Cluster tnse Plot: plot the tSNE visualization for the 
         neighbourhood of word color coded by computer cluster.
+
         Args:
             E (WE class object): Word embeddings object
-        Kwargs:
             random_state (int): for reproducibility
         
         """           
@@ -18,6 +19,7 @@ class GCT():
 
     def cluster(self, vecs):
         """Apply kmeans clustering over vecs
+
         Args:
             vecs (np.array): list of word vectors to cluster
         
@@ -30,6 +32,7 @@ class GCT():
     def visualize(self, vecs, words, labels, title, figsize, dpi, 
                 colors):
         """Main GCT visualization driver function
+
         Args:
             vecs (np.array): list of word vectors to cluster
             words (list): list of words (list of string)
@@ -58,6 +61,7 @@ class GCT():
     def run(self, word_list, title=None, dpi=300, 
             figsize=(8, 5), colors=['k', 'r']):
         """Run the GCT visualization
+
         Args:
             word_list (list): list of words (list of string)
             title (str): title of the plot

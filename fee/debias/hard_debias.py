@@ -81,8 +81,6 @@ class HardDebias():
         
         Args:
             E (WE class object): Word embeddings object.
-        
-        Kwargs:
             g (np.array): Gender Direction, if None, it is computed again.
         
         """

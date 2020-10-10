@@ -22,6 +22,7 @@ def prox_bias(vals, l, thresh):
     """
         Returns:
             the ratio of total neighbours that have IDB above `thresh`.
+    
     """
     return len(vals[vals>thresh]) / l
 
@@ -34,6 +35,7 @@ def get_ns_idb(E, word, g):
         Returns:
             A dictionary of top 100 neighbours of `word` and the 
             indirect bias between `word` and each neighbour.
+    
     """
     tops = get_nbs(E, word, 101) 
     wv = E.v(word)
@@ -46,15 +48,17 @@ def get_neighbors_idb_dict(E, words):
         Args:
             E (WE class object): Word embeddings object.
             word (str): The word in consideration.
-        Returns:
-            A dict of dicts, storing the neighbours of each word 
-            with IDB values.
+    
+    Returns:
+        A dict of dicts, storing the neighbours of each word 
+        with IDB values.
 
             # The key of larger dict resembles the source node, its value
             # is again a dict which has keys and values. These are
             # respetively the target node and the weight of an edge
             # that is conceptually formed between the two nodes 
             # (keys of two dicts).
+
     """
     g = get_g(E)
     neighbour_idb_dict = dict(zip([w for w in words], 
@@ -63,11 +67,15 @@ def get_neighbors_idb_dict(E, words):
 
 def score(vals, weights):
     """
-        Args:
-            vals (dict): A dict of words and their corresponding proximity bias.
-            weights (dict): The weights of an edge according to GIPE metric.
-        Returns:
-            The final computed GIPE score
+    Score the values and weights.
+    
+    Args:
+        vals (dict): A dict of words and their corresponding proximity bias.
+        weights (dict): The weights of an edge according to GIPE metric.
+        
+    Returns:
+        The final computed GIPE score
+    
     """
     score = 0
     sum = 0
@@ -83,7 +91,8 @@ def score(vals, weights):
     return score
 
 def _gipe(biased_words, E_new, E_orig=None, g=None, thresh=0.05, n=100):
-    """
+    """GIPE metric 
+
         Args:
             biased_words (list[str]): A list of string of words, on
                                       which GIPE will be computed.
@@ -135,8 +144,11 @@ def _gipe(biased_words, E_new, E_orig=None, g=None, thresh=0.05, n=100):
 
 
 class GIPE():
+    """The GIPE metric class"""
     def __init__(self, E_new, E_orig=None, g=None, thresh=0.05, n=100):
         """
+        GIPE
+
         Args:
             E_new (WE class object): Represents the new embedding object,
                                      which consists of the debiased embeddings.
@@ -181,6 +193,7 @@ class GIPE():
         Returns:
             The final computed GIPE score of a word embedding over the given 
             word lists, and the corresponding created BBN.
+            
         """
         assert isinstance(words, list), "Argument words must be a list." 
         assert len(words)>1, "More than one word needed to compute the graph in GIPE." 

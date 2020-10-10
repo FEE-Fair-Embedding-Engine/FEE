@@ -1,0 +1,285 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fee.metrics.gipe &#8212; FEE -- Fair Embedding Engine 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.metrics.gipe</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for fee.metrics.gipe</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">get_g</span><span class="p">,</span> <span class="n">get_pair_idb</span><span class="p">,</span> <span class="n">get_nbs</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+
+<div class="viewcode-block" id="get_neighbors"><a class="viewcode-back" href="../../../index.html#fee.metrics.gipe.get_neighbors">[docs]</a><span class="k">def</span> <span class="nf">get_neighbors</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            N (dict[dict]): A dict of dict, storing the neighbours of</span>
+<span class="sd">            each word with IDB values.</span>
+<span class="sd">            word (str): The target word whose neighbours are to be</span>
+<span class="sd">                        fecthed.</span>
+<span class="sd">            k (int): top `k` neighbours.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of top `k` neighbours for `word`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">word</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">1</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="prox_bias"><a class="viewcode-back" href="../../../index.html#fee.metrics.gipe.prox_bias">[docs]</a><span class="k">def</span> <span class="nf">prox_bias</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">thresh</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            the ratio of total neighbours that have IDB above `thresh`.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">vals</span><span class="o">&gt;</span><span class="n">thresh</span><span class="p">])</span> <span class="o">/</span> <span class="n">l</span></div>
+
+<div class="viewcode-block" id="get_ns_idb"><a class="viewcode-back" href="../../../index.html#fee.metrics.gipe.get_ns_idb">[docs]</a><span class="k">def</span> <span class="nf">get_ns_idb</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            E (WE class object): Word embeddings object.</span>
+<span class="sd">            word (str): The word in consideration.</span>
+<span class="sd">            g (np.array): Gender direction.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary of top 100 neighbours of `word` and the </span>
+<span class="sd">            indirect bias between `word` and each neighbour.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tops</span> <span class="o">=</span> <span class="n">get_nbs</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span> 
+    <span class="n">wv</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">E</span><span class="o">.</span><span class="n">words</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tops</span><span class="p">],</span> <span class="p">[</span><span class="n">get_pair_idb</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">vecs</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="n">wv</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tops</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">d</span></div>
+
+<div class="viewcode-block" id="get_neighbors_idb_dict"><a class="viewcode-back" href="../../../index.html#fee.metrics.gipe.get_neighbors_idb_dict">[docs]</a><span class="k">def</span> <span class="nf">get_neighbors_idb_dict</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        Args:</span>
+<span class="sd">            E (WE class object): Word embeddings object.</span>
+<span class="sd">            word (str): The word in consideration.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        A dict of dicts, storing the neighbours of each word </span>
+<span class="sd">        with IDB values.</span>
+
+<span class="sd">            # The key of larger dict resembles the source node, its value</span>
+<span class="sd">            # is again a dict which has keys and values. These are</span>
+<span class="sd">            # respetively the target node and the weight of an edge</span>
+<span class="sd">            # that is conceptually formed between the two nodes </span>
+<span class="sd">            # (keys of two dicts).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">get_g</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+    <span class="n">neighbour_idb_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">],</span> 
+                            <span class="p">[</span><span class="n">get_ns_idb</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">neighbour_idb_dict</span>                        </div>
+
+<div class="viewcode-block" id="score"><a class="viewcode-back" href="../../../index.html#fee.metrics.gipe.score">[docs]</a><span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Score the values and weights.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        vals (dict): A dict of words and their corresponding proximity bias.</span>
+<span class="sd">        weights (dict): The weights of an edge according to GIPE metric.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        The final computed GIPE score</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">+=</span> <span class="n">weights</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">*</span> <span class="n">vals</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+            <span class="nb">sum</span> <span class="o">+=</span> <span class="n">weights</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">aux_w</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1">#By default, the weight is 1 (1 is the lowest possible weight, means lowest &quot;penalty&quot;)</span>
+            <span class="n">score</span> <span class="o">+=</span> <span class="n">vals</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">*</span> <span class="n">aux_w</span>
+            <span class="nb">sum</span> <span class="o">+=</span> <span class="n">aux_w</span>
+    <span class="n">score</span> <span class="o">/=</span> <span class="nb">sum</span>
+    <span class="k">return</span> <span class="n">score</span></div>
+
+<span class="k">def</span> <span class="nf">_gipe</span><span class="p">(</span><span class="n">biased_words</span><span class="p">,</span> <span class="n">E_new</span><span class="p">,</span> <span class="n">E_orig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;GIPE metric </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            biased_words (list[str]): A list of string of words, on</span>
+<span class="sd">                                      which GIPE will be computed.</span>
+<span class="sd">            E_new (WE class object): Represents the new embedding object,</span>
+<span class="sd">                                     which consists of the debiased embeddings.</span>
+<span class="sd">            E_orig (WE class object): Represents the old/original embedding </span>
+<span class="sd">                                      object, which consists of the non-debiased</span>
+<span class="sd">                                      embeddings.</span>
+<span class="sd">        kwargs:</span>
+<span class="sd">            g (np.array): Gender direction.</span>
+<span class="sd">            thresh (float): The minimum indirect bias threshold, above which</span>
+<span class="sd">                            the association between a word and its neighbour</span>
+<span class="sd">                            is considered biased.</span>
+<span class="sd">            n (int): The top `n` neighbours to be considered.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            The final computed GIPE score of a word embedding over the given </span>
+<span class="sd">            word lists, and the corresponding created BBN.</span>
+<span class="sd">            </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">neighbours</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">incoming_edges</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">etas</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">get_neighbors_idb_dict</span><span class="p">(</span><span class="n">E_new</span><span class="p">,</span> <span class="n">biased_words</span><span class="p">)</span>
+
+    <span class="c1"># for word in tqdm(biased_words): #Creating BBN</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">biased_words</span><span class="p">:</span> <span class="c1">#Creating BBN</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">neighbours</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_neighbors</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="c1">#Neighbours according to current embedding</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">neighbours</span><span class="p">[</span><span class="n">word</span><span class="p">])</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2"> is weird.&quot;</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">neighbours</span><span class="p">[</span><span class="n">word</span><span class="p">]):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">get_pair_idb</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">E_orig</span><span class="p">))</span>  <span class="c1">#Beta according to original (same in case of non-debiased) embedding</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">incoming_edges</span><span class="p">[</span><span class="n">element</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">etas</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">prox_bias</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="n">l</span><span class="p">,</span> <span class="n">thresh</span><span class="p">)</span>
+
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">incoming_edges</span><span class="p">:</span>
+        <span class="n">idbs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">incoming_edges</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+        <span class="n">weights</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">idbs</span><span class="p">[</span><span class="n">idbs</span><span class="o">&gt;</span><span class="n">thresh</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">idbs</span><span class="p">)</span> <span class="o">+</span> <span class="n">eps</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">score</span><span class="p">(</span><span class="n">etas</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+
+
+<div class="viewcode-block" id="GIPE"><a class="viewcode-back" href="../../../index.html#fee.metrics.gipe.GIPE">[docs]</a><span class="k">class</span> <span class="nc">GIPE</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The GIPE metric class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E_new</span><span class="p">,</span> <span class="n">E_orig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        GIPE</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            E_new (WE class object): Represents the new embedding object,</span>
+<span class="sd">                                     which consists of the debiased embeddings.</span>
+<span class="sd">            E_orig (WE class object): Represents the old/original embedding </span>
+<span class="sd">                                      object, which consists of the non-debiased</span>
+<span class="sd">                                      embeddings.</span>
+<span class="sd">        kwargs:</span>
+<span class="sd">            g (np.array): Gender direction.</span>
+<span class="sd">            thresh (float): The minimum indirect bias threshold, above which</span>
+<span class="sd">                            the association between a word and its neighbour</span>
+<span class="sd">                            is considered biased.</span>
+<span class="sd">            n (int): The top `n` neighbours to be considered.</span>
+<span class="sd">            </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">E_new</span><span class="o">.</span><span class="n">normalized</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Normalizing...&quot;</span><span class="p">)</span>
+            <span class="n">E_new</span> <span class="o">=</span> <span class="n">E_new</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">E_orig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">E_orig</span><span class="o">.</span><span class="n">normalized</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Normalizing...&quot;</span><span class="p">)</span>
+            <span class="n">E_orig</span> <span class="o">=</span> <span class="n">E_orig</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>        
+
+        <span class="k">if</span> <span class="n">E_orig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">E_orig</span> <span class="o">=</span> <span class="n">E_new</span>
+
+        <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">get_g</span><span class="p">(</span><span class="n">E_new</span><span class="p">)</span>        
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">g</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E_new</span> <span class="o">=</span> <span class="n">E_new</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E_orig</span> <span class="o">=</span> <span class="n">E_orig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresh</span> <span class="o">=</span> <span class="n">thresh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+
+
+<div class="viewcode-block" id="GIPE.compute"><a class="viewcode-back" href="../../../index.html#fee.metrics.gipe.GIPE.compute">[docs]</a>    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            words (list[str]): A list of string of words, on</span>
+<span class="sd">                                      which GIPE will be computed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The final computed GIPE score of a word embedding over the given </span>
+<span class="sd">            word lists, and the corresponding created BBN.</span>
+<span class="sd">            </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="nb">list</span><span class="p">),</span> <span class="s2">&quot;Argument words must be a list.&quot;</span> 
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;More than one word needed to compute the graph in GIPE.&quot;</span> 
+
+        <span class="k">return</span> <span class="n">_gipe</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">E_new</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">E_orig</span><span class="p">,</span> 
+                        <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thresh</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>            </div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.metrics.gipe</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Vaibhav Kumar, Tenzin Singhay Bhotia, Vaibhav Kumar.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

@@ -17,6 +17,8 @@ def _prox_bias(word, E, g=None, thresh=0.05, n=100):
     return _bias_ratio(np.array(values), n, thresh)
 
 class ProxBias():
+    """Proximity Bias Metric Class
+    """
     def __init__(self, E, g=None, thresh=0.05, n=100):
         """
         Args: 

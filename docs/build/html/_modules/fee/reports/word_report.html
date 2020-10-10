@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fee.reports.word_report &#8212; FEE -- Fair Embedding Engine 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.reports.word_report</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for fee.reports.word_report</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">get_g</span>
+<span class="kn">from</span> <span class="nn">..metrics</span> <span class="kn">import</span> <span class="n">DirectBias</span><span class="p">,</span> <span class="n">ProxBias</span>
+<span class="kn">from</span> <span class="nn">..visualize</span> <span class="kn">import</span> <span class="n">NeighbourPlot</span><span class="p">,</span> <span class="n">NBWordCloud</span>
+<span class="kn">from</span> <span class="nn">.biased_neighbours</span> <span class="kn">import</span> <span class="n">NeighboursAnalysis</span>
+ 
+
+<div class="viewcode-block" id="WordReport"><a class="viewcode-back" href="../../../index.html#fee.reports.word_report.WordReport">[docs]</a><span class="k">class</span> <span class="nc">WordReport</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;`WordReport` class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a word level report for some word in `E`. This </span>
+<span class="sd">        report computes and prints direct bias, proximity bias and</span>
+<span class="sd">        neighbours of a word along with their bias by projection (same</span>
+<span class="sd">        as direct bias). Additionally, the report includes tSNE </span>
+<span class="sd">        visualization for the neighbourhood of word color coded by </span>
+<span class="sd">        bias by projection. Finally, the report also plots the </span>
+<span class="sd">        WordCloud of the given word size coded by bias by projection.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            E (WE class object): Word embeddings object</span>
+<span class="sd">            g (np.array): gender direction</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>         
+        <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">get_g</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="o">==</span> <span class="n">E</span><span class="o">.</span><span class="n">dim</span>   
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">g</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E</span> <span class="o">=</span> <span class="n">E</span>
+    
+<div class="viewcode-block" id="WordReport.generate"><a class="viewcode-back" href="../../../index.html#fee.reports.word_report.WordReport.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate the wordreport for word `word`. </span>
+<span class="sd">        Args:</span>
+<span class="sd">            word (str): Word to show the report for</span>
+<span class="sd">            n (int): number of neighbours of `word` to consider  </span>
+<span class="sd">            figsize (tuple): size of figures in (HxW)  </span>
+<span class="sd">            dpi (int): dpi of the figures  </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>         
+        <span class="n">direct_bias</span> <span class="o">=</span> <span class="n">DirectBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="n">prox_bias</span> <span class="o">=</span> <span class="n">ProxBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="n">neighbours_bias</span> <span class="o">=</span> <span class="n">NeighboursAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;==============================&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Direct bias (Bias by projection on the PCA based gender direction): </span><span class="si">{</span><span class="n">direct_bias</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;==============================&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Proximity bias (Ratio of biased neighbours by Indirect Bias): </span><span class="si">{</span><span class="n">prox_bias</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;==============================&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Neighbour Analysis: </span><span class="se">\n</span><span class="si">{</span><span class="n">neighbours_bias</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;==============================&quot;</span><span class="p">)</span>
+        
+        <span class="n">NeighbourPlot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">annotate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                        <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                        <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;tSNE plot for neighbours of </span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2"> (color coded by bias by projection)&quot;</span><span class="p">)</span>
+        <span class="n">NBWordCloud</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">,</span>
+                        <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Wordcloud for neighbours of </span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2"> (size coded by bias by projection)&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.reports.word_report</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Vaibhav Kumar, Tenzin Singhay Bhotia, Vaibhav Kumar.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

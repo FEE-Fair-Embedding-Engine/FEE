@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fee.metrics.weat &#8212; FEE -- Fair Embedding Engine 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.metrics.weat</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for fee.metrics.weat</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">random</span> 
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sympy.utilities.iterables</span> <span class="kn">import</span> <span class="n">multiset_permutations</span>
+
+
+<div class="viewcode-block" id="unit_vector"><a class="viewcode-back" href="../../../index.html#fee.metrics.weat.unit_vector">[docs]</a><span class="k">def</span> <span class="nf">unit_vector</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns unit vector</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">vec</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cos_sim"><a class="viewcode-back" href="../../../index.html#fee.metrics.weat.cos_sim">[docs]</a><span class="k">def</span> <span class="nf">cos_sim</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns cosine of the angle between two vectors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">v1_u</span> <span class="o">=</span> <span class="n">unit_vector</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+    <span class="n">v2_u</span> <span class="o">=</span> <span class="n">unit_vector</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">v1_u</span><span class="p">,</span> <span class="n">v2_u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="weat_association"><a class="viewcode-back" href="../../../index.html#fee.metrics.weat.weat_association">[docs]</a><span class="k">def</span> <span class="nf">weat_association</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns association of the word w in W with the attribute for WEAT score.</span>
+<span class="sd">    s(w, A, B)</span>
+<span class="sd">    :param W: target words&#39; vector representations</span>
+<span class="sd">    :param A: attribute words&#39; vector representations</span>
+<span class="sd">    :param B: attribute words&#39; vector representations</span>
+<span class="sd">    :return: (len(W), ) shaped numpy ndarray. each rows represent association of the word w in W</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cos_sim</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">A</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cos_sim</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">B</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="weat_differential_association"><a class="viewcode-back" href="../../../index.html#fee.metrics.weat.weat_differential_association">[docs]</a><span class="k">def</span> <span class="nf">weat_differential_association</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns differential association of two sets of target words with the attribute for WEAT score.</span>
+<span class="sd">    s(X, Y, A, B)</span>
+<span class="sd">    :param X: target words&#39; vector representations</span>
+<span class="sd">    :param Y: target words&#39; vector representations</span>
+<span class="sd">    :param A: attribute words&#39; vector representations</span>
+<span class="sd">    :param B: attribute words&#39; vector representations</span>
+<span class="sd">    :return: differential association (float value)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weat_association</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weat_association</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="weat_p_value"><a class="viewcode-back" href="../../../index.html#fee.metrics.weat.weat_p_value">[docs]</a><span class="k">def</span> <span class="nf">weat_p_value</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns one-sided p-value of the permutation test for WEAT score</span>
+<span class="sd">    CAUTION: this function is not appropriately implemented, so it runs very slowly</span>
+<span class="sd">    :param X: target words&#39; vector representations</span>
+<span class="sd">    :param Y: target words&#39; vector representations</span>
+<span class="sd">    :param A: attribute words&#39; vector representations</span>
+<span class="sd">    :param B: attribute words&#39; vector representations</span>
+<span class="sd">    :return: p-value (float value)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">diff_association</span> <span class="o">=</span> <span class="n">weat_differential_association</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+    <span class="n">target_words</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># get all the partitions of X union Y into two sets of equal size.</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_words</span><span class="p">))</span>
+    <span class="n">idx</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">target_words</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">partition_diff_association</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">multiset_permutations</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="n">partition_X</span> <span class="o">=</span> <span class="n">target_words</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">partition_Y</span> <span class="o">=</span> <span class="n">target_words</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">]</span>
+        <span class="n">partition_diff_association</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weat_differential_association</span><span class="p">(</span><span class="n">partition_X</span><span class="p">,</span> <span class="n">partition_Y</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span>
+
+    <span class="n">partition_diff_association</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">partition_diff_association</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">partition_diff_association</span> <span class="o">&gt;</span> <span class="n">diff_association</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">partition_diff_association</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="weat_score"><a class="viewcode-back" href="../../../index.html#fee.metrics.weat.weat_score">[docs]</a><span class="k">def</span> <span class="nf">weat_score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">p_val</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns WEAT score</span>
+<span class="sd">    X, Y, A, B must be (len(words), dim) shaped numpy ndarray</span>
+<span class="sd">    CAUTION: this function assumes that there&#39;s no intersection word between X and Y</span>
+<span class="sd">    :param X: target words&#39; vector representations</span>
+<span class="sd">    :param Y: target words&#39; vector representations</span>
+<span class="sd">    :param A: attribute words&#39; vector representations</span>
+<span class="sd">    :param B: attribute words&#39; vector representations</span>
+<span class="sd">    :return: WEAT score</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">x_association</span> <span class="o">=</span> <span class="n">weat_association</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+    <span class="n">y_association</span> <span class="o">=</span> <span class="n">weat_association</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+
+
+    <span class="n">tmp1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x_association</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_association</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">tmp2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x_association</span><span class="p">,</span> <span class="n">y_association</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">w_score</span> <span class="o">=</span> <span class="n">tmp1</span> <span class="o">/</span> <span class="n">tmp2</span>
+
+    <span class="k">if</span> <span class="n">p_val</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">weat_p_value</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">w_score</span><span class="p">,</span> <span class="n">p</span>
+
+    <span class="k">return</span> <span class="n">w_score</span></div>
+
+
+<div class="viewcode-block" id="WEAT"><a class="viewcode-back" href="../../../index.html#fee.metrics.weat.WEAT">[docs]</a><span class="k">class</span> <span class="nc">WEAT</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform WEAT (Word Embedding Association Test) bias tests on a language model.</span>
+<span class="sd">    Follows from Caliskan et al 2017 (10.1126/science.aal4230).</span>
+<span class="sd">    Code mostly &quot;stolen&quot; from: https://github.com/chadaeun/weat_replication/blob/master/lib/weat.py</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E</span> <span class="o">=</span> <span class="n">E</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_db</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;instruments&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;bagpipe&quot;</span><span class="p">,</span> <span class="s2">&quot;cello&quot;</span><span class="p">,</span> <span class="s2">&quot;guitar&quot;</span><span class="p">,</span> <span class="s2">&quot;lute&quot;</span><span class="p">,</span> <span class="s2">&quot;trombone&quot;</span><span class="p">,</span> <span class="s2">&quot;banjo&quot;</span><span class="p">,</span> <span class="s2">&quot;clarinet&quot;</span><span class="p">,</span> <span class="s2">&quot;harmonica&quot;</span><span class="p">,</span> <span class="s2">&quot;mandolin&quot;</span><span class="p">,</span> <span class="s2">&quot;trumpet&quot;</span><span class="p">,</span> <span class="s2">&quot;bassoon&quot;</span><span class="p">,</span> <span class="s2">&quot;drum&quot;</span><span class="p">,</span> <span class="s2">&quot;harp&quot;</span><span class="p">,</span> <span class="s2">&quot;oboe&quot;</span><span class="p">,</span> <span class="s2">&quot;tuba&quot;</span><span class="p">,</span> <span class="s2">&quot;bell&quot;</span><span class="p">,</span> <span class="s2">&quot;fiddle&quot;</span><span class="p">,</span> <span class="s2">&quot;harpsichord&quot;</span><span class="p">,</span> <span class="s2">&quot;piano&quot;</span><span class="p">,</span> <span class="s2">&quot;viola&quot;</span><span class="p">,</span> <span class="s2">&quot;bongo&quot;</span><span class="p">,</span><span class="s2">&quot;flute&quot;</span><span class="p">,</span> <span class="s2">&quot;horn&quot;</span><span class="p">,</span> <span class="s2">&quot;saxophone&quot;</span><span class="p">,</span> <span class="s2">&quot;violin&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;weapons&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;arrow&quot;</span><span class="p">,</span> <span class="s2">&quot;club&quot;</span><span class="p">,</span> <span class="s2">&quot;gun&quot;</span><span class="p">,</span> <span class="s2">&quot;missile&quot;</span><span class="p">,</span> <span class="s2">&quot;spear&quot;</span><span class="p">,</span> <span class="s2">&quot;axe&quot;</span><span class="p">,</span> <span class="s2">&quot;dagger&quot;</span><span class="p">,</span> <span class="s2">&quot;harpoon&quot;</span><span class="p">,</span> <span class="s2">&quot;pistol&quot;</span><span class="p">,</span> <span class="s2">&quot;sword&quot;</span><span class="p">,</span> <span class="s2">&quot;blade&quot;</span><span class="p">,</span> <span class="s2">&quot;dynamite&quot;</span><span class="p">,</span> <span class="s2">&quot;hatchet&quot;</span><span class="p">,</span> <span class="s2">&quot;rifle&quot;</span><span class="p">,</span> <span class="s2">&quot;tank&quot;</span><span class="p">,</span> <span class="s2">&quot;bomb&quot;</span><span class="p">,</span> <span class="s2">&quot;firearm&quot;</span><span class="p">,</span> <span class="s2">&quot;knife&quot;</span><span class="p">,</span> <span class="s2">&quot;shotgun&quot;</span><span class="p">,</span> <span class="s2">&quot;teargas&quot;</span><span class="p">,</span> <span class="s2">&quot;cannon&quot;</span><span class="p">,</span> <span class="s2">&quot;grenade&quot;</span><span class="p">,</span> <span class="s2">&quot;mace&quot;</span><span class="p">,</span> <span class="s2">&quot;slingshot&quot;</span><span class="p">,</span> <span class="s2">&quot;whip&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;flowers&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;aster&quot;</span><span class="p">,</span> <span class="s2">&quot;clover&quot;</span><span class="p">,</span> <span class="s2">&quot;hyacinth&quot;</span><span class="p">,</span> <span class="s2">&quot;marigold&quot;</span><span class="p">,</span> <span class="s2">&quot;poppy&quot;</span><span class="p">,</span> <span class="s2">&quot;azalea&quot;</span><span class="p">,</span> <span class="s2">&quot;crocus&quot;</span><span class="p">,</span> <span class="s2">&quot;iris&quot;</span><span class="p">,</span> <span class="s2">&quot;orchid&quot;</span><span class="p">,</span> <span class="s2">&quot;rose&quot;</span><span class="p">,</span> <span class="s2">&quot;blue-bell&quot;</span><span class="p">,</span> <span class="s2">&quot;daffodil&quot;</span><span class="p">,</span> <span class="s2">&quot;lilac&quot;</span><span class="p">,</span> <span class="s2">&quot;pansy&quot;</span><span class="p">,</span> <span class="s2">&quot;tulip&quot;</span><span class="p">,</span> <span class="s2">&quot;buttercup&quot;</span><span class="p">,</span> <span class="s2">&quot;daisy&quot;</span><span class="p">,</span> <span class="s2">&quot;lily&quot;</span><span class="p">,</span> <span class="s2">&quot;peony&quot;</span><span class="p">,</span> <span class="s2">&quot;violet&quot;</span><span class="p">,</span> <span class="s2">&quot;carnation&quot;</span><span class="p">,</span> <span class="s2">&quot;gladiola&quot;</span><span class="p">,</span> <span class="s2">&quot;magnolia&quot;</span><span class="p">,</span> <span class="s2">&quot;petunia&quot;</span><span class="p">,</span> <span class="s2">&quot;zinnia&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;insects&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;caterpillar&quot;</span><span class="p">,</span> <span class="s2">&quot;flea&quot;</span><span class="p">,</span> <span class="s2">&quot;locust&quot;</span><span class="p">,</span> <span class="s2">&quot;spider&quot;</span><span class="p">,</span> <span class="s2">&quot;bedbug&quot;</span><span class="p">,</span> <span class="s2">&quot;centipede&quot;</span><span class="p">,</span> <span class="s2">&quot;fly&quot;</span><span class="p">,</span> <span class="s2">&quot;maggot&quot;</span><span class="p">,</span> <span class="s2">&quot;tarantula&quot;</span><span class="p">,</span> <span class="s2">&quot;bee&quot;</span><span class="p">,</span> <span class="s2">&quot;cockroach&quot;</span><span class="p">,</span> <span class="s2">&quot;gnat&quot;</span><span class="p">,</span> <span class="s2">&quot;mosquito&quot;</span><span class="p">,</span> <span class="s2">&quot;termite&quot;</span><span class="p">,</span> <span class="s2">&quot;beetle&quot;</span><span class="p">,</span> <span class="s2">&quot;cricket&quot;</span><span class="p">,</span> <span class="s2">&quot;hornet&quot;</span><span class="p">,</span> <span class="s2">&quot;moth&quot;</span><span class="p">,</span> <span class="s2">&quot;wasp&quot;</span><span class="p">,</span> <span class="s2">&quot;blackfly&quot;</span><span class="p">,</span><span class="s2">&quot;dragonfly&quot;</span><span class="p">,</span> <span class="s2">&quot;horsefly&quot;</span><span class="p">,</span> <span class="s2">&quot;roach&quot;</span><span class="p">,</span> <span class="s2">&quot;weevil&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;pleasant&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;caress&quot;</span><span class="p">,</span> <span class="s2">&quot;freedom&quot;</span><span class="p">,</span> <span class="s2">&quot;health&quot;</span><span class="p">,</span> <span class="s2">&quot;love&quot;</span><span class="p">,</span> <span class="s2">&quot;peace&quot;</span><span class="p">,</span> <span class="s2">&quot;cheer&quot;</span><span class="p">,</span> <span class="s2">&quot;friend&quot;</span><span class="p">,</span> <span class="s2">&quot;heaven&quot;</span><span class="p">,</span> <span class="s2">&quot;loyal&quot;</span><span class="p">,</span> <span class="s2">&quot;pleasure&quot;</span><span class="p">,</span> <span class="s2">&quot;diamond&quot;</span><span class="p">,</span> <span class="s2">&quot;gentle&quot;</span><span class="p">,</span> <span class="s2">&quot;honest&quot;</span><span class="p">,</span> <span class="s2">&quot;lucky&quot;</span><span class="p">,</span> <span class="s2">&quot;rainbow&quot;</span><span class="p">,</span> <span class="s2">&quot;diploma&quot;</span><span class="p">,</span> <span class="s2">&quot;gift&quot;</span><span class="p">,</span> <span class="s2">&quot;honor&quot;</span><span class="p">,</span> <span class="s2">&quot;miracle&quot;</span><span class="p">,</span> <span class="s2">&quot;sunrise&quot;</span><span class="p">,</span> <span class="s2">&quot;family&quot;</span><span class="p">,</span> <span class="s2">&quot;happy&quot;</span><span class="p">,</span> <span class="s2">&quot;laughter&quot;</span><span class="p">,</span> <span class="s2">&quot;paradise&quot;</span><span class="p">,</span> <span class="s2">&quot;vacation&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;unpleasant&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;abuse&quot;</span><span class="p">,</span> <span class="s2">&quot;crash&quot;</span><span class="p">,</span> <span class="s2">&quot;filth&quot;</span><span class="p">,</span> <span class="s2">&quot;murder&quot;</span><span class="p">,</span> <span class="s2">&quot;sickness&quot;</span><span class="p">,</span> <span class="s2">&quot;accident&quot;</span><span class="p">,</span> <span class="s2">&quot;death&quot;</span><span class="p">,</span> <span class="s2">&quot;grief&quot;</span><span class="p">,</span> <span class="s2">&quot;poison&quot;</span><span class="p">,</span> <span class="s2">&quot;stink&quot;</span><span class="p">,</span> <span class="s2">&quot;assault&quot;</span><span class="p">,</span> <span class="s2">&quot;disaster&quot;</span><span class="p">,</span> <span class="s2">&quot;hatred&quot;</span><span class="p">,</span> <span class="s2">&quot;pollute&quot;</span><span class="p">,</span> <span class="s2">&quot;tragedy&quot;</span><span class="p">,</span> <span class="s2">&quot;divorce&quot;</span><span class="p">,</span> <span class="s2">&quot;jail&quot;</span><span class="p">,</span> <span class="s2">&quot;poverty&quot;</span><span class="p">,</span> <span class="s2">&quot;ugly&quot;</span><span class="p">,</span> <span class="s2">&quot;cancer&quot;</span><span class="p">,</span> <span class="s2">&quot;kill&quot;</span><span class="p">,</span> <span class="s2">&quot;rotten&quot;</span><span class="p">,</span> <span class="s2">&quot;vomit&quot;</span><span class="p">,</span> <span class="s2">&quot;agony&quot;</span><span class="p">,</span> <span class="s2">&quot;prison&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;math&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;math&quot;</span><span class="p">,</span> <span class="s2">&quot;algebra&quot;</span><span class="p">,</span> <span class="s2">&quot;geometry&quot;</span><span class="p">,</span> <span class="s2">&quot;calculus&quot;</span><span class="p">,</span> <span class="s2">&quot;equations&quot;</span><span class="p">,</span> <span class="s2">&quot;computation&quot;</span><span class="p">,</span> <span class="s2">&quot;numbers&quot;</span><span class="p">,</span> <span class="s2">&quot;addition&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;arts&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;poetry&quot;</span><span class="p">,</span> <span class="s2">&quot;art&quot;</span><span class="p">,</span> <span class="s2">&quot;dance&quot;</span><span class="p">,</span> <span class="s2">&quot;literature&quot;</span><span class="p">,</span> <span class="s2">&quot;novel&quot;</span><span class="p">,</span> <span class="s2">&quot;symphony&quot;</span><span class="p">,</span> <span class="s2">&quot;drama&quot;</span><span class="p">,</span> <span class="s2">&quot;sculpture&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;male&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;male&quot;</span><span class="p">,</span> <span class="s2">&quot;man&quot;</span><span class="p">,</span> <span class="s2">&quot;boy&quot;</span><span class="p">,</span> <span class="s2">&quot;brother&quot;</span><span class="p">,</span> <span class="s2">&quot;he&quot;</span><span class="p">,</span> <span class="s2">&quot;him&quot;</span><span class="p">,</span> <span class="s2">&quot;his&quot;</span><span class="p">,</span> <span class="s2">&quot;son&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;female&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;female&quot;</span><span class="p">,</span> <span class="s2">&quot;woman&quot;</span><span class="p">,</span> <span class="s2">&quot;girl&quot;</span><span class="p">,</span> <span class="s2">&quot;sister&quot;</span><span class="p">,</span> <span class="s2">&quot;she&quot;</span><span class="p">,</span> <span class="s2">&quot;her&quot;</span><span class="p">,</span> <span class="s2">&quot;hers&quot;</span><span class="p">,</span> <span class="s2">&quot;daughter&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;science&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;science&quot;</span><span class="p">,</span> <span class="s2">&quot;technology&quot;</span><span class="p">,</span> <span class="s2">&quot;physics&quot;</span><span class="p">,</span> <span class="s2">&quot;chemistry&quot;</span><span class="p">,</span> <span class="s2">&quot;Einstein&quot;</span><span class="p">,</span> <span class="s2">&quot;NASA&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment&quot;</span><span class="p">,</span> <span class="s2">&quot;astronomy&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;arts_2&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;poetry&quot;</span><span class="p">,</span> <span class="s2">&quot;art&quot;</span><span class="p">,</span> <span class="s2">&quot;Shakespeare&quot;</span><span class="p">,</span> <span class="s2">&quot;dance&quot;</span><span class="p">,</span> <span class="s2">&quot;literature&quot;</span><span class="p">,</span> <span class="s2">&quot;novel&quot;</span><span class="p">,</span> <span class="s2">&quot;symphony&quot;</span><span class="p">,</span> <span class="s2">&quot;drama&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;male_2&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;brother&quot;</span><span class="p">,</span> <span class="s2">&quot;father&quot;</span><span class="p">,</span> <span class="s2">&quot;uncle&quot;</span><span class="p">,</span> <span class="s2">&quot;grandfather&quot;</span><span class="p">,</span> <span class="s2">&quot;son&quot;</span><span class="p">,</span> <span class="s2">&quot;he&quot;</span><span class="p">,</span> <span class="s2">&quot;his&quot;</span><span class="p">,</span> <span class="s2">&quot;him&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;female_2&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sister&quot;</span><span class="p">,</span> <span class="s2">&quot;mother&quot;</span><span class="p">,</span> <span class="s2">&quot;aunt&quot;</span><span class="p">,</span> <span class="s2">&quot;grandmother&quot;</span><span class="p">,</span> <span class="s2">&quot;daughter&quot;</span><span class="p">,</span> <span class="s2">&quot;she&quot;</span><span class="p">,</span> <span class="s2">&quot;hers&quot;</span><span class="p">,</span> <span class="s2">&quot;he&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;mental_disease&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sad&quot;</span><span class="p">,</span> <span class="s2">&quot;hopeless&quot;</span><span class="p">,</span> <span class="s2">&quot;gloomy&quot;</span><span class="p">,</span> <span class="s2">&quot;tearful&quot;</span><span class="p">,</span> <span class="s2">&quot;miserable&quot;</span><span class="p">,</span> <span class="s2">&quot;depressed&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;physical_disease&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sick&quot;</span><span class="p">,</span> <span class="s2">&quot;illness&quot;</span><span class="p">,</span> <span class="s2">&quot;influenza&quot;</span><span class="p">,</span> <span class="s2">&quot;disease&quot;</span><span class="p">,</span> <span class="s2">&quot;virus&quot;</span><span class="p">,</span> <span class="s2">&quot;cancer&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;temporary&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;impermanent&quot;</span><span class="p">,</span> <span class="s2">&quot;unstable&quot;</span><span class="p">,</span> <span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;fleeting&quot;</span><span class="p">,</span> <span class="s2">&quot;short-term&quot;</span><span class="p">,</span> <span class="s2">&quot;brief&quot;</span><span class="p">,</span> <span class="s2">&quot;occasional&quot;</span><span class="p">],</span>
+            <span class="s1">&#39;permanent&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;stable&quot;</span><span class="p">,</span> <span class="s2">&quot;always&quot;</span><span class="p">,</span> <span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="s2">&quot;persistent&quot;</span><span class="p">,</span> <span class="s2">&quot;chronic&quot;</span><span class="p">,</span> <span class="s2">&quot;prolonged&quot;</span><span class="p">,</span> <span class="s2">&quot;forever&quot;</span><span class="p">],</span>
+        <span class="p">}</span>    
+
+    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">p_val</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_db</span><span class="p">[</span><span class="n">arg</span><span class="p">])</span>  
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid group name, available groups:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_db</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+                    <span class="k">raise</span> <span class="n">e</span>    
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>        
+
+        <span class="n">target_1</span><span class="p">,</span> <span class="n">target_2</span><span class="p">,</span> <span class="n">attributes_1</span><span class="p">,</span> <span class="n">attributes_2</span> <span class="o">=</span> <span class="n">groups</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">target_1</span><span class="p">]</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">target_2</span><span class="p">]</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">attributes_1</span><span class="p">]</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">attributes_2</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">weat_score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">p_val</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.metrics.weat</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Vaibhav Kumar, Tenzin Singhay Bhotia, Vaibhav Kumar.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

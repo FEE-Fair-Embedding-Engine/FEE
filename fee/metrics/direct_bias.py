@@ -3,6 +3,7 @@ from ..utils import get_g
 
 
 class DirectBias():
+    """Direct Bias Metric"""
     def __init__(self, E, c=1, g=None):
         """Direct bias calculation
         Args:
@@ -24,6 +25,7 @@ class DirectBias():
 
         Args:
             vec (np.array): numpy array to calculate direct bias for
+        
         """
         return np.power(np.abs(vec.dot(self.g)), self.c)     
 
@@ -34,6 +36,7 @@ class DirectBias():
             word_list (list): list of words to compute bias for. 
         Returns:
             The direct bias of each word in the `word_list`.
+        
         """
         if not isinstance(word_list, list):
             word_list = [word_list]

@@ -21,12 +21,13 @@ def generate_palette(c1, c2, n):
     return [color_fader(c1, c2, m) for m in np.linspace(0, 1, n)]    
 
 class NeighbourPlot():
+    """`NeighbourPlot` Class"""
     def __init__(self, E, g=None, random_state=42):
         """tSNE plot for the neighbourhood of a word color coded by 
         their bias by projection.
+
         Args:
             E (WE class object): Word embeddings object
-        Kwargs:
             g (np.array): gender direction
             random_state (int): for reproducibility
         
@@ -39,10 +40,10 @@ class NeighbourPlot():
     
     def get_neighbours(self, word, n=100):
         """Get `n` neighbours for word `word`.
+
         Args:
-            word (str): word to computer neighbours for        
+            word (str): word to computer neighbours for   
             n (int): number of neighbours to compute        
-        
         
         """
         ns_idx = np.argsort(self.E.vecs.dot(self.E.v(word)))[-n:-1][::-1]
@@ -50,6 +51,7 @@ class NeighbourPlot():
     
     def bias_by_projection_sort(self, words):
         """Sort `words` by bias by projection.
+
         Args:
             words (list): list of words (str)        
         
@@ -64,6 +66,7 @@ class NeighbourPlot():
     def visualize(self, words, ranks, title, figsize, dpi, colors, s, 
                     annotate=False):
         """Run the `NeighbourPlot` visualization 
+
         Args:
             words (list): list of neighbours
             title (str): title of the plot
@@ -97,6 +100,7 @@ class NeighbourPlot():
     def run(self, word, title=None, n=100, dpi=300, figsize=(8, 5), 
             colors=['blue', 'red'], fontsize=7, annotate=True):
         """Run the `NeighbourPlot` visualization 
+
         Args:
             word (str): word to compute neighbours of and make this plot
             title (str): title of the plot

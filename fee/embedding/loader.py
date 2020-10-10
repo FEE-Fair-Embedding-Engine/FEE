@@ -29,6 +29,7 @@ class WE():
         self.desc = "Word embedding loader for "
 
 
+    
     def fname_to_format(self, fname):
         """Get embedding format from file name.
 
@@ -42,6 +43,7 @@ class WE():
         Return:
             format (str): format (txt, bin or npy)
         """
+        
         if fname is None:
             raise "fname can't be None"
             return None
@@ -59,6 +61,7 @@ class WE():
         Args:
             model (gensim object): Model for accessing all the words in 
                                    vocab, and their vectors.  
+        
         """
         words = sorted([w for w in model.vocab], key=lambda w: model.vocab[w].index)
         vecs = np.array([model[w] for w in words])
@@ -159,6 +162,7 @@ class WE():
 
         Return:
             self (WE object): Return self, the word embedding object.                         
+        
         """
         if ename is not None:
             model = api.load(ename)
@@ -196,6 +200,7 @@ class WE():
 
         Return:
             vec (np.array): `self.dim` dimension vector for `word`.    
+        
         """
         vec = self.vecs[self.index[word]]
         return vec
@@ -206,6 +211,7 @@ class WE():
         Normaliation is done as follows:
             \vec{v}_{norm} := \vec{v}/|\vec{v}|
             where |\vec{v}| is the L2 norm of \vec{v}
+        
         """
         self.vecs /= np.linalg.norm(self.vecs, axis=1)[:, np.newaxis]
         self.reindex()        
@@ -214,6 +220,7 @@ class WE():
 
     def __repr__(self):
         """Class `__repr__` object for pretty informational print.
+        
         """
         return self.desc            
 

@@ -446,6 +446,8 @@ nobleman:noblewoman	car:bus	puppy:kitten	pilot:socialite"""
 
 
 class SemBias():
+    """Sembias test Class
+    """
     def __init__(self, E):
         """
         Args: 

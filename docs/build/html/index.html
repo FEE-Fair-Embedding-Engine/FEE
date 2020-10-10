@@ -5,80 +5,117 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to fee’s documentation! &#8212; fee  documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <title>Welcome to FEE – Fair Embedding Engine’s documentation! &#8212; FEE -- Fair Embedding Engine 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
+    
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="search" title="Search" href="search.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to FEE – Fair Embedding Engine’s documentation!</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
-  <div class="section" id="welcome-to-fee-s-documentation">
-<h1>Welcome to fee’s documentation!<a class="headerlink" href="#welcome-to-fee-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="hide-header section" id="welcome-to-fee-fair-embedding-engine-s-documentation">
+<h1>Welcome to FEE – Fair Embedding Engine’s documentation!<a class="headerlink" href="#welcome-to-fee-fair-embedding-engine-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Fair Embedding Engine: A Library for Analyzing and Mitigating Gender
+Bias in Word Embeddings.</p>
+<p>Non-contextual word embedding models have been shown to inherit
+human-like stereotypical biases of gender, race and religion from the
+training corpora. To counter this issue, a large body of research has
+emerged which aims to mitigate these biases while keeping the syntactic
+and semantic utility of embeddings intact. This paper describes Fair
+Embedding Engine (FEE), a library for analysing and mitigating gender
+bias in word embeddings. FEE combines various state of the art
+techniques for quantifying, visualising and mitigating gender bias in
+word embeddings under a standard abstraction. FEE will aid practitioners
+in fast track analysis of existing debiasing methods on their embedding
+models. Further, it will also allow rapid prototyping of new methods by
+evaluating their performance on a suite of standard metrics.</p>
 <div class="toctree-wrapper compound">
 </div>
-<p>Documentation starts from here on. FEE - Fair Embedding Engine is pretty cool.</p>
 </div>
 <div class="section" id="module-fee.embedding.loader">
 <span id="loader"></span><h1>Loader<a class="headerlink" href="#module-fee.embedding.loader" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="fee.embedding.loader.WE">
-<em class="property">class </em><code class="sig-prename descclassname">fee.embedding.loader.</code><code class="sig-name descname">WE</code><a class="headerlink" href="#fee.embedding.loader.WE" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">fee.embedding.loader.</code><code class="sig-name descname">WE</code><a class="reference internal" href="_modules/fee/embedding/loader.html#WE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.embedding.loader.WE" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Word embedding class.</p>
 <p>The main class that facilitates the word embedding structure.</p>
-<p>dim (int): Dimension of embedding
-vecs (np.array):</p>
+<dl class="py attribute">
+<dt id="fee.embedding.loader.WE.dim">
+<code class="sig-name descname">dim</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.dim" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dimension of embedding</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="fee.embedding.loader.WE.vecs">
+<code class="sig-name descname">vecs</code><span class="sig-paren">(</span><em class="sig-param">np.array</em><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.vecs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Initialize WE object.</p>
 <dl class="py method">
 <dt id="fee.embedding.loader.WE.fname_to_format">
-<code class="sig-name descname">fname_to_format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.fname_to_format" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fname_to_format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/embedding/loader.html#WE.fname_to_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.embedding.loader.WE.fname_to_format" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get embedding format from file name.</p>
 <p>Format can usually be extracted from the filename extension. We
-currently support the loading of embeddings in binary (.bin), 
+currently support the loading of embeddings in binary (.bin),
 text (.txt) and numpy format (.npy).</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>fname (str): file name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fname</strong> (<em>str</em>) – file name</p>
 </dd>
-<dt>Return:</dt><dd><p>format (str): format (txt, bin or npy)</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>format (txt, bin or npy)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>format (str)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="fee.embedding.loader.WE.get_gensim_word_vecs">
-<code class="sig-name descname">get_gensim_word_vecs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.get_gensim_word_vecs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_gensim_word_vecs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/embedding/loader.html#WE.get_gensim_word_vecs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.embedding.loader.WE.get_gensim_word_vecs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loading word and vecs using gensim scripts.
-Args:</p>
+:param model: Model for accessing all the words in</p>
 <blockquote>
-<div><dl class="simple">
-<dt>model (gensim object): Model for accessing all the words in </dt><dd><p>vocab, and their vectors.</p>
-</dd>
-</dl>
+<div><p>vocab, and their vectors.</p>
 </div></blockquote>
+<dl class="field-list simple">
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="fee.embedding.loader.WE.load">
-<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ename</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">normalize</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">dim</span><span class="o">=</span><span class="default_value">300</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.load" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ename</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">normalize</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">dim</span><span class="o">=</span><span class="default_value">300</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/embedding/loader.html#WE.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.embedding.loader.WE.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load word embedding from filename or embedding name.</p>
-<p>Loads word embeddings from either filename <cite>fname</cite> or the 
+<p>Loads word embeddings from either filename <cite>fname</cite> or the
 embedding name <cite>ename</cite>. Following formats are supported:
 - bin: Binary format, load through gensim.
 - txt: Text w2v or GloVe format.
@@ -88,8 +125,8 @@ embedding name <cite>ename</cite>. Following formats are supported:
 </div></blockquote>
 <p>All Gensim pre-trained embeddings are integrated for easy access
 via <cite>ename</cite>. <cite>ename</cite> are same as the gensim conventions.</p>
-<dl>
-<dt>Example:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">`</span>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">we</span> <span class="pre">=</span> <span class="pre">WE()</span>
 <span class="pre">E</span> <span class="pre">=</span> <span class="pre">we.load('glove6B.txt',</span> <span class="pre">dim</span> <span class="pre">=</span> <span class="pre">300)</span>
 <span class="pre">`</span></code>
@@ -97,71 +134,78 @@ via <cite>ename</cite>. <cite>ename</cite> are same as the gensim conventions.</
 <span class="pre">we</span> <span class="pre">=</span> <span class="pre">WE()</span>
 <span class="pre">E</span> <span class="pre">=</span> <span class="pre">we.load(ename</span> <span class="pre">=</span> <span class="pre">'glove-wiki-gigaword-50')</span>
 <span class="pre">`</span></code></p>
-</dd>
-<dt>Args:</dt><dd><p>fname (str): Path to the embedding file on disk.
-format (str): Format of word embedding. Following are the</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> (<em>str</em>) – Path to the embedding file on disk.</p></li>
+<li><p><strong>format</strong> (<em>str</em>) – <p>Format of word embedding. Following are the
+supported formats:</p>
 <blockquote>
-<div><dl class="simple">
-<dt>supported formats:</dt><dd><ul class="simple">
+<div><ul>
 <li><p>binary</p></li>
 <li><p>text</p></li>
 <li><p>numpy array</p></li>
 </ul>
-</dd>
-</dl>
 </div></blockquote>
-<dl class="simple">
-<dt>ename (str): Name of embedding. This will download embedding</dt><dd><p>using the <cite>Downloader</cite> class. In case both 
+</p></li>
+<li><p><strong>ename</strong> (<em>str</em>) – Name of embedding. This will download embedding
+using the <cite>Downloader</cite> class. In case both
 ename and fname are provided, ename is given
-priority.</p>
+priority.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em>) – Normalize word vectors or not.</p></li>
+<li><p><strong>dim</strong> (<em>int</em>) – The dimension of embedding vectors.
+Default dimension is 300</p></li>
+</ul>
 </dd>
-</dl>
-<p>normalize (bool): Normalize word vectors or not.
-dim (int): The dimension of embedding vectors.</p>
-<blockquote>
-<div><p>Default dimension is 300</p>
-</div></blockquote>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Return self, the word embedding object.</p>
 </dd>
-<dt>Return:</dt><dd><p>self (WE object): Return self, the word embedding object.</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>self (WE object)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="fee.embedding.loader.WE.normalize">
-<code class="sig-name descname">normalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.normalize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">normalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/embedding/loader.html#WE.normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.embedding.loader.WE.normalize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize word embeddings.</p>
 <blockquote>
 <div><p>Normaliation is done as follows:</p>
 </div></blockquote>
-<p>ec{v}_{norm} := 
+<p>ec{v}_{norm} :=
 ec{v}/|
 ec{v}|</p>
 <blockquote>
 <div><p>where |</p>
 </div></blockquote>
-<p>ec{v}| is the L2 norm of 
+<p>ec{v}| is the L2 norm of
 ec{v}</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="fee.embedding.loader.WE.reindex">
-<code class="sig-name descname">reindex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.reindex" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reindex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/embedding/loader.html#WE.reindex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.embedding.loader.WE.reindex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reindex word vectors.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="fee.embedding.loader.WE.v">
-<code class="sig-name descname">v</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.embedding.loader.WE.v" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">v</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/embedding/loader.html#WE.v"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.embedding.loader.WE.v" title="Permalink to this definition">¶</a></dt>
 <dd><p>Access vector for a word</p>
 <p>Returns the <cite>self.dim</cite> dimensional vector for the word <cite>word</cite>.</p>
-<dl class="simple">
-<dt>Example:</dt><dd><p>E = WE().load(‘glove’)
+<p class="rubric">Example</p>
+<p>E = WE().load(‘glove’)
 test = E.v(‘test’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Word to access vector of.</p>
 </dd>
-<dt>Args:</dt><dd><p>word (str): Word to access vector of.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>self.dim</cite> dimension vector for <cite>word</cite>.</p>
 </dd>
-<dt>Return:</dt><dd><p>vec (np.array): <cite>self.dim</cite> dimension vector for <cite>word</cite>.</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>vec (np.array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -173,40 +217,57 @@ test = E.v(‘test’)</p>
 <span id="debiasing"></span><h1>Debiasing<a class="headerlink" href="#module-fee.debias.hard_debias" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="fee.debias.hard_debias.HardDebias">
-<em class="property">class </em><code class="sig-prename descclassname">fee.debias.hard_debias.</code><code class="sig-name descname">HardDebias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hard_debias.HardDebias" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">fee.debias.hard_debias.</code><code class="sig-name descname">HardDebias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/hard_debias.html#HardDebias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.hard_debias.HardDebias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hard debiasing class.</p>
+<p>HardDebias debiasing method class.</p>
+<p>This debiasing word vectors in two step
+stages, first it neutralizes and then equailizes the vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object.</p></li>
+<li><p><strong>g</strong> (<em>np.array</em>) – Gender Direction, if None, it is computed again.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt id="fee.debias.hard_debias.HardDebias.equalize">
-<code class="sig-name descname">equalize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hard_debias.HardDebias.equalize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Equalize word vectors using the gender direction and a set of 
-equalizing word pairs. This is the second step of hard debiasing 
+<code class="sig-name descname">equalize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/hard_debias.html#HardDebias.equalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.hard_debias.HardDebias.equalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equalize word vectors using the gender direction and a set of
+equalizing word pairs. This is the second step of hard debiasing
 procedure.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>E (WE class object): Word embeddings object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="fee.debias.hard_debias.HardDebias.neutralize">
-<code class="sig-name descname">neutralize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">word_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hard_debias.HardDebias.neutralize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Neutralize word vectors using the gender direction. This is the 
+<code class="sig-name descname">neutralize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">word_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/hard_debias.html#HardDebias.neutralize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.hard_debias.HardDebias.neutralize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Neutralize word vectors using the gender direction. This is the
 first step of hard debiasing procedure.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>E (WE class object): Word embeddings object.
-word_list (list): List of words to debias.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object.</p></li>
+<li><p><strong>word_list</strong> (<em>list</em>) – List of words to debias.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="fee.debias.hard_debias.HardDebias.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hard_debias.HardDebias.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/hard_debias.html#HardDebias.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.hard_debias.HardDebias.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Debias word vectors using the hard debiasing method.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>word_list (list): List of words to debias.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word_list</strong> (<em>list</em>) – List of words to debias.</p>
 </dd>
-<dt>Return:</dt><dd><p>Debiased word vectors</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Debiased word vectors</p>
 </dd>
 </dl>
 </dd></dl>
@@ -215,39 +276,52 @@ word_list (list): List of words to debias.</p>
 
 <span class="target" id="module-fee.debias.hsr_debias"></span><dl class="py class">
 <dt id="fee.debias.hsr_debias.HSRDebias">
-<em class="property">class </em><code class="sig-prename descclassname">fee.debias.hsr_debias.</code><code class="sig-name descname">HSRDebias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">fee.debias.hsr_debias.</code><code class="sig-name descname">HSRDebias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/hsr_debias.html#HSRDebias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias" title="Permalink to this definition">¶</a></dt>
 <dd><p>HSR Debiasing class (Half Sibling Regression)</p>
+<p>HSR debiasing method class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt id="fee.debias.hsr_debias.HSRDebias.hsr">
-<code class="sig-name descname">hsr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gender_vecs</span></em>, <em class="sig-param"><span class="n">nongender_vecs</span></em>, <em class="sig-param"><span class="n">nongender_list</span></em>, <em class="sig-param"><span class="n">alpha</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias.hsr" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">hsr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gender_vecs</span></em>, <em class="sig-param"><span class="n">nongender_vecs</span></em>, <em class="sig-param"><span class="n">nongender_list</span></em>, <em class="sig-param"><span class="n">alpha</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/hsr_debias.html#HSRDebias.hsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias.hsr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Half Sibling Regression method</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>gender_vecs (np.array): 2D numpy array of gendered words
-nongender_vecs (np.array): 2D numpy array of non-gendered words
-nongender_list (list): list of nongender words.
-alpha (float): alpha hyperparameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gender_vecs</strong> (<em>np.array</em>) – 2D numpy array of gendered words</p></li>
+<li><p><strong>nongender_vecs</strong> (<em>np.array</em>) – 2D numpy array of non-gendered words</p></li>
+<li><p><strong>nongender_list</strong> (<em>list</em>) – list of nongender words.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – alpha hyperparameter.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="fee.debias.hsr_debias.HSRDebias.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gender_list</span></em>, <em class="sig-param"><span class="n">nongender_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">60</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gender_list</span></em>, <em class="sig-param"><span class="n">nongender_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">60</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/hsr_debias.html#HSRDebias.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the Half Sibling Regression method</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>gender_list (list): list of gendered words.
-nongender_list (list): list of nongendered words.
-alpha (float): alpha hyperparameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gender_list</strong> (<em>list</em>) – list of gendered words.</p></li>
+<li><p><strong>nongender_list</strong> (<em>list</em>) – list of nongendered words.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – alpha hyperparameter.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="fee.debias.hsr_debias.HSRDebias.subset">
-<code class="sig-name descname">subset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias.subset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">subset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/hsr_debias.html#HSRDebias.subset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.hsr_debias.HSRDebias.subset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create subset such that the words exist in vocabulary.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>words (list): list of words to debias.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>words</strong> (<em>list</em>) – list of words to debias.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -256,28 +330,38 @@ alpha (float): alpha hyperparameter.</p>
 
 <span class="target" id="module-fee.debias.ran_debias"></span><dl class="py class">
 <dt id="fee.debias.ran_debias.RANDebias">
-<em class="property">class </em><code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">RANDebias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.RANDebias" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">RANDebias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/ran_debias.html#RANDebias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.ran_debias.RANDebias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to perform Repulsion-Attraction-Neutralization based
 debiasing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object.</p></li>
+<li><p><strong>g</strong> (<em>np.array</em>) – Gender Direction, if None, it is computed again.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt id="fee.debias.ran_debias.RANDebias.minimize">
-<code class="sig-name descname">minimize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">lr</span></em>, <em class="sig-param"><span class="n">max_epochs</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.RANDebias.minimize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">minimize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">lr</span></em>, <em class="sig-param"><span class="n">max_epochs</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/ran_debias.html#RANDebias.minimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.ran_debias.RANDebias.minimize" title="Permalink to this definition">¶</a></dt>
 <dd><p>minimize RANObjective using gradient optimization
-Args:</p>
-<blockquote>
-<div><p>word (str): word to debias
-X (np.array): the initialized new debiased vector
-lr (float): learning rate for gradient descent
-max_epochs (int): number of epochs</p>
-</div></blockquote>
+:param word: word to debias
+:type word: str
+:param X: the initialized new debiased vector
+:type X: np.array
+:param lr: learning rate for gradient descent
+:type lr: float
+:param max_epochs: number of epochs
+:type max_epochs: int</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="fee.debias.ran_debias.RANDebias.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.RANDebias.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/ran_debias.html#RANDebias.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.ran_debias.RANDebias.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run RANDebias for word list <cite>words</cite></p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>words (list): Words list to debias.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>words</strong> (<em>list</em>) – Words list to debias.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -286,71 +370,89 @@ max_epochs (int): number of epochs</p>
 
 <dl class="py function">
 <dt id="fee.debias.ran_debias.calc_ns_idb">
-<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">calc_ns_idb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.calc_ns_idb" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">calc_ns_idb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/ran_debias.html#calc_ns_idb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.ran_debias.calc_ns_idb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate neighbourhood dictionary for one word with indirect bias
 pair information.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>word (str): word to compute neighbours and pair idb
-E (WE class object): Word embeddings object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<em>str</em>) – word to compute neighbours and pair idb</p></li>
+<li><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="fee.debias.ran_debias.get_neighbors_idb_dict">
-<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">get_neighbors_idb_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em>, <em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.get_neighbors_idb_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">get_neighbors_idb_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em>, <em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/ran_debias.html#get_neighbors_idb_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.ran_debias.get_neighbors_idb_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>create neighbourhood dictionary for each word with indirect bias
 pair information.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>words (list): list of words to compute neighbours and pair idb
-E (WE class object): Word embeddings object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>words</strong> (<em>list</em>) – list of words to compute neighbours and pair idb</p></li>
+<li><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="fee.debias.ran_debias.get_ns_idb">
-<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">get_ns_idb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.get_ns_idb" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">get_ns_idb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/ran_debias.html#get_ns_idb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.ran_debias.get_ns_idb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get indirect bias and neighbours</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>word (str): word to get neighbours and pair idb
-N (dict): neighbourhood-idb dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<em>str</em>) – word to get neighbours and pair idb</p></li>
+<li><p><strong>N</strong> (<em>dict</em>) – neighbourhood-idb dictionary</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="fee.debias.ran_debias.init_vector">
-<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">init_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.init_vector" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">init_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/ran_debias.html#init_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.ran_debias.init_vector" title="Permalink to this definition">¶</a></dt>
 <dd><p>initialize vector for optimization</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>word (str): word to debias
-E (WE class object): Word embeddings object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<em>str</em>) – word to debias</p></li>
+<li><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="fee.debias.ran_debias.ran_objective">
-<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">ran_objective</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">sel</span></em>, <em class="sig-param"><span class="n">desel</span></em>, <em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">ws</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.ran_objective" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">ran_objective</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">sel</span></em>, <em class="sig-param"><span class="n">desel</span></em>, <em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">ws</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/ran_debias.html#ran_objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.ran_debias.ran_objective" title="Permalink to this definition">¶</a></dt>
 <dd><p>objective function for RAN</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>X (torch.Tensor): original word vector
-sel (torch.Tensor): selection tensors for attraction
-X (torch.Tensor): deselection tensors for repulsion
-g (torch.Tensor): gender direction tensor
-ws (list): list of objective weights</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>torch.Tensor</em>) – original word vector</p></li>
+<li><p><strong>sel</strong> (<em>torch.Tensor</em>) – selection tensors for attraction</p></li>
+<li><p><strong>X</strong> – deselection tensors for repulsion</p></li>
+<li><p><strong>g</strong> (<em>torch.Tensor</em>) – gender direction tensor</p></li>
+<li><p><strong>ws</strong> (<em>list</em>) – list of objective weights</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="fee.debias.ran_debias.torch_cosine_similarity">
-<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">torch_cosine_similarity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">vectors</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.debias.ran_debias.torch_cosine_similarity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.debias.ran_debias.</code><code class="sig-name descname">torch_cosine_similarity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">vectors</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/debias/ran_debias.html#torch_cosine_similarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.debias.ran_debias.torch_cosine_similarity" title="Permalink to this definition">¶</a></dt>
 <dd><p>torch tensor cosine similarity for groups</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>X (torch.Tensor): torch tensor 1D
-vectors (torch.Tensor): torch tensor 2D</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>torch.Tensor</em>) – torch tensor 1D</p></li>
+<li><p><strong>vectors</strong> (<em>torch.Tensor</em>) – torch tensor 2D</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -358,12 +460,145 @@ vectors (torch.Tensor): torch tensor 2D</p>
 </div>
 <div class="section" id="module-fee.reports.biased_neighbours">
 <span id="reports"></span><h1>Reports<a class="headerlink" href="#module-fee.reports.biased_neighbours" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-fee.reports.word_report"></span><span class="target" id="module-fee.reports.global_report"></span></div>
+<dl class="py class">
+<dt id="fee.reports.biased_neighbours.NeighboursAnalysis">
+<em class="property">class </em><code class="sig-prename descclassname">fee.reports.biased_neighbours.</code><code class="sig-name descname">NeighboursAnalysis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">42</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/reports/biased_neighbours.html#NeighboursAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.reports.biased_neighbours.NeighboursAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>NeighboursAnalysis</cite> report</p>
+<p>Analyze Neighbours of a word in the embedding through
+cosine similarities and bias by projection.
+:param E: Word embeddings object
+:type E: WE class object
+:param g: gender direction
+:type g: np.array
+:param random_state: random seed for reproduction
+:type random_state: int</p>
+<dl class="py method">
+<dt id="fee.reports.biased_neighbours.NeighboursAnalysis.generate">
+<code class="sig-name descname">generate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">ret_report</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/reports/biased_neighbours.html#NeighboursAnalysis.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.reports.biased_neighbours.NeighboursAnalysis.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the report for neighbours of word
+:param word: Word to generate report for
+:type word: str
+:param n: number of neighbours to compute
+:type n: int
+:param ret_report: return or print the report dataframe
+:type ret_report: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.reports.biased_neighbours.NeighboursAnalysis.get_neighbours">
+<code class="sig-name descname">get_neighbours</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/reports/biased_neighbours.html#NeighboursAnalysis.get_neighbours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.reports.biased_neighbours.NeighboursAnalysis.get_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute list of <cite>n</cite> neighbours for <cite>word</cite>
+:param word: Word to compute neighbours for
+:type word: str
+:param n: number of neighbours to compute
+:type n: int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.reports.biased_neighbours.NeighboursAnalysis.print_neighbours">
+<code class="sig-name descname">print_neighbours</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em>, <em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/reports/biased_neighbours.html#NeighboursAnalysis.print_neighbours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.reports.biased_neighbours.NeighboursAnalysis.print_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pretty print <cite>n</cite> neighbours
+:param words: List of neighbours
+:type words: list
+:param n: number of neighbours to compute
+:type n: int</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-fee.reports.word_report"></span><dl class="py class">
+<dt id="fee.reports.word_report.WordReport">
+<em class="property">class </em><code class="sig-prename descclassname">fee.reports.word_report.</code><code class="sig-name descname">WordReport</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/reports/word_report.html#WordReport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.reports.word_report.WordReport" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>WordReport</cite> class</p>
+<p>Generate a word level report for some word in <cite>E</cite>. This
+report computes and prints direct bias, proximity bias and
+neighbours of a word along with their bias by projection (same
+as direct bias). Additionally, the report includes tSNE
+visualization for the neighbourhood of word color coded by
+bias by projection. Finally, the report also plots the
+WordCloud of the given word size coded by bias by projection.
+:param E: Word embeddings object
+:type E: WE class object
+:param g: gender direction
+:type g: np.array</p>
+<dl class="py method">
+<dt id="fee.reports.word_report.WordReport.generate">
+<code class="sig-name descname">generate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/reports/word_report.html#WordReport.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.reports.word_report.WordReport.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the wordreport for word <cite>word</cite>.
+:param word: Word to show the report for
+:type word: str
+:param n: number of neighbours of <cite>word</cite> to consider
+:type n: int
+:param figsize: size of figures in (HxW)
+:type figsize: tuple
+:param dpi: dpi of the figures
+:type dpi: int</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-fee.reports.global_report"></span><dl class="py class">
+<dt id="fee.reports.global_report.GlobalReport">
+<em class="property">class </em><code class="sig-prename descclassname">fee.reports.global_report.</code><code class="sig-name descname">GlobalReport</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/reports/global_report.html#GlobalReport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.reports.global_report.GlobalReport" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>GlobalReport</cite> Class</p>
+<p>Generate a global bias report for a word embedding. This
+report computes the least and most biased words in an embedding
+and plot them. Bias by projection (direct bias) is used as the
+metric to compute this report. The report also plots the overall
+distribution of bias in the embedding <cite>E</cite>.
+:param E: Word embeddings object
+:type E: WE class object
+:param g: gender direction
+:type g: np.array</p>
+<dl class="py method">
+<dt id="fee.reports.global_report.GlobalReport.generate">
+<code class="sig-name descname">generate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/reports/global_report.html#GlobalReport.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.reports.global_report.GlobalReport.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the global report for embedding <cite>E</cite>
+:param n: No. of most/least biased words to print.
+:type n: int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.reports.global_report.GlobalReport.get_values_and_words">
+<code class="sig-name descname">get_values_and_words</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/reports/global_report.html#GlobalReport.get_values_and_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.reports.global_report.GlobalReport.get_values_and_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of words in <cite>E</cite> sorted by bias by projection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.reports.global_report.GlobalReport.plot">
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">values</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/reports/global_report.html#GlobalReport.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.reports.global_report.GlobalReport.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the biased words.
+:param values: list of bias by projection
+:type values: list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.reports.global_report.GlobalReport.print_df">
+<code class="sig-name descname">print_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sorted_values</span></em>, <em class="sig-param"><span class="n">sorted_words</span></em>, <em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/reports/global_report.html#GlobalReport.print_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.reports.global_report.GlobalReport.print_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pretty print the dataframe containing most and least biased
+words in <cite>E</cite>.
+:param sorted_words: list of bias by projection for</p>
+<blockquote>
+<div><p><cite>sorted_words</cite></p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sorted_words</strong> (<em>list</em>) – list of words</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – no. of least/most biased words to print</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-fee.metrics.weat">
 <span id="metrics"></span><h1>Metrics<a class="headerlink" href="#module-fee.metrics.weat" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="fee.metrics.weat.WEAT">
-<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">WEAT</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.WEAT" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">WEAT</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/weat.html#WEAT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.weat.WEAT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform WEAT (Word Embedding Association Test) bias tests on a language model.
 Follows from Caliskan et al 2017 (10.1126/science.aal4230).
 Code mostly “stolen” from: <a class="reference external" href="https://github.com/chadaeun/weat_replication/blob/master/lib/weat.py">https://github.com/chadaeun/weat_replication/blob/master/lib/weat.py</a></p>
@@ -371,19 +606,19 @@ Code mostly “stolen” from: <a class="reference external" href="https://githu
 
 <dl class="py function">
 <dt id="fee.metrics.weat.cos_sim">
-<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">cos_sim</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v1</span></em>, <em class="sig-param"><span class="n">v2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.cos_sim" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">cos_sim</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v1</span></em>, <em class="sig-param"><span class="n">v2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/weat.html#cos_sim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.weat.cos_sim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns cosine of the angle between two vectors</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="fee.metrics.weat.unit_vector">
-<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">unit_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.unit_vector" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">unit_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vec</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/weat.html#unit_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.weat.unit_vector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns unit vector</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="fee.metrics.weat.weat_association">
-<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_association</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">W</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.weat_association" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_association</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">W</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/weat.html#weat_association"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.weat.weat_association" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns association of the word w in W with the attribute for WEAT score.
 s(w, A, B)
 :param W: target words’ vector representations
@@ -394,7 +629,7 @@ s(w, A, B)
 
 <dl class="py function">
 <dt id="fee.metrics.weat.weat_differential_association">
-<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_differential_association</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.weat_differential_association" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_differential_association</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/weat.html#weat_differential_association"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.weat.weat_differential_association" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns differential association of two sets of target words with the attribute for WEAT score.
 s(X, Y, A, B)
 :param X: target words’ vector representations
@@ -406,7 +641,7 @@ s(X, Y, A, B)
 
 <dl class="py function">
 <dt id="fee.metrics.weat.weat_p_value">
-<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_p_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.weat_p_value" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_p_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/weat.html#weat_p_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.weat.weat_p_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns one-sided p-value of the permutation test for WEAT score
 CAUTION: this function is not appropriately implemented, so it runs very slowly
 :param X: target words’ vector representations
@@ -418,7 +653,7 @@ CAUTION: this function is not appropriately implemented, so it runs very slowly
 
 <dl class="py function">
 <dt id="fee.metrics.weat.weat_score">
-<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em>, <em class="sig-param"><span class="n">p_val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.weat.weat_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.metrics.weat.</code><code class="sig-name descname">weat_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em>, <em class="sig-param"><span class="n">p_val</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/weat.html#weat_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.weat.weat_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns WEAT score
 X, Y, A, B must be (len(words), dim) shaped numpy ndarray
 CAUTION: this function assumes that there’s no intersection word between X and Y
@@ -429,20 +664,92 @@ CAUTION: this function assumes that there’s no intersection word between X and
 :return: WEAT score</p>
 </dd></dl>
 
-<span class="target" id="module-fee.metrics.sembias"></span><span class="target" id="module-fee.metrics.proximity_bias"></span><span class="target" id="module-fee.metrics.pmn"></span><dl class="py class">
-<dt id="fee.metrics.pmn.PMN">
-<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.pmn.</code><code class="sig-name descname">PMN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.pmn.PMN" title="Permalink to this definition">¶</a></dt>
-<dd><p>The class that computes the Percentage of Male Neighbours (PMN)
-in the top n neighbours for a word.</p>
-<dl class="py method">
-<dt id="fee.metrics.pmn.PMN.compute">
-<code class="sig-name descname">compute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.pmn.PMN.compute" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Args: </dt><dd><dl class="simple">
-<dt>words (str or list[str]): A word or a list of worrds to</dt><dd><p>compute the PMN for.</p>
+<span class="target" id="module-fee.metrics.sembias"></span><dl class="py class">
+<dt id="fee.metrics.sembias.SemBias">
+<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.sembias.</code><code class="sig-name descname">SemBias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/sembias.html#SemBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.sembias.SemBias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sembias test Class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object.</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt id="fee.metrics.sembias.SemBias.compute">
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/sembias.html#SemBias.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.sembias.SemBias.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns accuracy for definitional, stereotype and none type
+analogies.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.metrics.sembias.SemBias.eval_bias_analogy">
+<code class="sig-name descname">eval_bias_analogy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/sembias.html#SemBias.eval_bias_analogy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.sembias.SemBias.eval_bias_analogy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Source: <a class="reference external" href="https://github.com/uclanlp/gn_glove">https://github.com/uclanlp/gn_glove</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-fee.metrics.proximity_bias"></span><dl class="py class">
+<dt id="fee.metrics.proximity_bias.ProxBias">
+<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.proximity_bias.</code><code class="sig-name descname">ProxBias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">thresh</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/proximity_bias.html#ProxBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.proximity_bias.ProxBias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proximity Bias Metric Class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object.</p>
 </dd>
+</dl>
+<dl>
+<dt>kwargs:</dt><dd><p>g (np.array): Gender direction.
+thresh (float): The minimum indirect bias threshold, above</p>
+<blockquote>
+<div><p>which the association between a word and its
+neighbour is considered biased.</p>
+</div></blockquote>
+<p>n (int): Top <cite>n</cite> neighbours according to the cosine similarity.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="fee.metrics.proximity_bias.ProxBias.compute">
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/proximity_bias.html#ProxBias.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.proximity_bias.ProxBias.compute" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>words</strong> (<em>str</em>) – A word or a list of worrds to compute the
+ProxBias for.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The average proximity bias for the given list of <cite>words</cite>.
+Proximity bias is in simple terms the ratio of biased nieghbours
+according to indirect bias with respect to a word.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-fee.metrics.pmn"></span><dl class="py class">
+<dt id="fee.metrics.pmn.PMN">
+<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.pmn.</code><code class="sig-name descname">PMN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/pmn.html#PMN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.pmn.PMN" title="Permalink to this definition">¶</a></dt>
+<dd><p>The class that computes the Percentage of Male Neighbours (PMN)
+in the top n neighbours for a word.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>kwargs:</dt><dd><p>g (np.array): Gender direction.
+n (int): Top <cite>n</cite> neighbours according to the cosine similarity.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="fee.metrics.pmn.PMN.compute">
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/pmn.html#PMN.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.pmn.PMN.compute" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>words</strong> (<em>str</em><em> or </em><em>list</em><em>[</em><em>str</em><em>]</em>) – A word or a list of worrds to
+compute the PMN for.</p>
+</dd>
+</dl>
+<dl class="simple">
 <dt>Reutrn:</dt><dd><p>The percentage of male neighbours. Note that the remaining
 percentage of neighbours can be considered to be female.</p>
 </dd>
@@ -451,53 +758,103 @@ percentage of neighbours can be considered to be female.</p>
 
 </dd></dl>
 
-<span class="target" id="module-fee.metrics.gipe"></span><dl class="py function">
-<dt id="fee.metrics.gipe.get_neighbors">
-<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">get_neighbors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.gipe.get_neighbors" title="Permalink to this definition">¶</a></dt>
-<dd><dl>
-<dt>Args:</dt><dd><p>N (dict[dict]): A dict of dict, storing the neighbours of
-each word with IDB values.
-word (str): The target word whose neighbours are to be</p>
-<blockquote>
-<div><p>fecthed.</p>
-</div></blockquote>
-<p>k (int): top <cite>k</cite> neighbours.</p>
+<span class="target" id="module-fee.metrics.gipe"></span><dl class="py class">
+<dt id="fee.metrics.gipe.GIPE">
+<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">GIPE</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E_new</span></em>, <em class="sig-param"><span class="n">E_orig</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">thresh</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/gipe.html#GIPE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.gipe.GIPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The GIPE metric class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E_new</strong> (<em>WE class object</em>) – Represents the new embedding object,
+which consists of the debiased embeddings.</p></li>
+<li><p><strong>E_orig</strong> (<em>WE class object</em>) – Represents the old/original embedding
+object, which consists of the non-debiased
+embeddings.</p></li>
+</ul>
 </dd>
-<dt>Returns:</dt><dd><p>A list of top <cite>k</cite> neighbours for <cite>word</cite>.</p>
+</dl>
+<dl>
+<dt>kwargs:</dt><dd><p>g (np.array): Gender direction.
+thresh (float): The minimum indirect bias threshold, above which</p>
+<blockquote>
+<div><p>the association between a word and its neighbour
+is considered biased.</p>
+</div></blockquote>
+<p>n (int): The top <cite>n</cite> neighbours to be considered.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="fee.metrics.gipe.GIPE.compute">
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/gipe.html#GIPE.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.gipe.GIPE.compute" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>words</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – A list of string of words, on
+which GIPE will be computed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The final computed GIPE score of a word embedding over the given
+word lists, and the corresponding created BBN.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="fee.metrics.gipe.get_neighbors">
+<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">get_neighbors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/gipe.html#get_neighbors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.gipe.get_neighbors" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>dict</em><em>[</em><em>dict</em><em>]</em>) – A dict of dict, storing the neighbours of</p></li>
+<li><p><strong>word with IDB values.</strong> (<em>each</em>) – </p></li>
+<li><p><strong>word</strong> (<em>str</em>) – The target word whose neighbours are to be
+fecthed.</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – top <cite>k</cite> neighbours.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of top <cite>k</cite> neighbours for <cite>word</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="fee.metrics.gipe.get_neighbors_idb_dict">
-<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">get_neighbors_idb_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.gipe.get_neighbors_idb_dict" title="Permalink to this definition">¶</a></dt>
-<dd><dl>
-<dt>Args:</dt><dd><dl>
-<dt>Args:</dt><dd><p>E (WE class object): Word embeddings object.
+<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">get_neighbors_idb_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/gipe.html#get_neighbors_idb_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.gipe.get_neighbors_idb_dict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>Args</strong> – E (WE class object): Word embeddings object.
 word (str): The word in consideration.</p>
 </dd>
-<dt>Returns:</dt><dd><p>A dict of dicts, storing the neighbours of each word 
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A dict of dicts, storing the neighbours of each word
 with IDB values.</p>
-<p># The key of larger dict resembles the source node, its value
+<blockquote>
+<div><p># The key of larger dict resembles the source node, its value
 # is again a dict which has keys and values. These are
 # respetively the target node and the weight of an edge
-# that is conceptually formed between the two nodes 
+# that is conceptually formed between the two nodes
 # (keys of two dicts).</p>
-</dd>
-</dl>
+</div></blockquote>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="fee.metrics.gipe.get_ns_idb">
-<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">get_ns_idb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.gipe.get_ns_idb" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Args:</dt><dd><p>E (WE class object): Word embeddings object.
-word (str): The word in consideration.
-g (np.array): Gender direction.</p>
+<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">get_ns_idb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/gipe.html#get_ns_idb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.gipe.get_ns_idb" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object.</p></li>
+<li><p><strong>word</strong> (<em>str</em>) – The word in consideration.</p></li>
+<li><p><strong>g</strong> (<em>np.array</em>) – Gender direction.</p></li>
+</ul>
 </dd>
-<dt>Returns:</dt><dd><p>A dictionary of top 100 neighbours of <cite>word</cite> and the 
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary of top 100 neighbours of <cite>word</cite> and the
 indirect bias between <cite>word</cite> and each neighbour.</p>
 </dd>
 </dl>
@@ -505,54 +862,107 @@ indirect bias between <cite>word</cite> and each neighbour.</p>
 
 <dl class="py function">
 <dt id="fee.metrics.gipe.prox_bias">
-<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">prox_bias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vals</span></em>, <em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">thresh</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.gipe.prox_bias" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Returns:</dt><dd><p>the ratio of total neighbours that have IDB above <cite>thresh</cite>.</p>
+<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">prox_bias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vals</span></em>, <em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">thresh</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/gipe.html#prox_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.gipe.prox_bias" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the ratio of total neighbours that have IDB above <cite>thresh</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="fee.metrics.gipe.score">
-<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vals</span></em>, <em class="sig-param"><span class="n">weights</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.gipe.score" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Args:</dt><dd><p>vals (dict): A dict of words and their corresponding proximity bias.
-weights (dict): The weights of an edge according to GIPE metric.</p>
+<code class="sig-prename descclassname">fee.metrics.gipe.</code><code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vals</span></em>, <em class="sig-param"><span class="n">weights</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/gipe.html#score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.gipe.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Score the values and weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vals</strong> (<em>dict</em>) – A dict of words and their corresponding proximity bias.</p></li>
+<li><p><strong>weights</strong> (<em>dict</em>) – The weights of an edge according to GIPE metric.</p></li>
+</ul>
 </dd>
-<dt>Returns:</dt><dd><p>The final computed GIPE score</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The final computed GIPE score</p>
 </dd>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-fee.metrics.direct_bias"></span><span class="target" id="module-fee.metrics.indirect_bias"></span><dl class="py class">
+<span class="target" id="module-fee.metrics.direct_bias"></span><dl class="py class">
+<dt id="fee.metrics.direct_bias.DirectBias">
+<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.direct_bias.</code><code class="sig-name descname">DirectBias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">c</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/direct_bias.html#DirectBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.direct_bias.DirectBias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Direct Bias Metric</p>
+<p>Direct bias calculation
+:param E: Word embeddings object
+:type E: WE class object</p>
+<dl class="simple">
+<dt>Kwargs:</dt><dd><p>c (float): strictness factor
+g (np.array): gender direction</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="fee.metrics.direct_bias.DirectBias.compute">
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/direct_bias.html#DirectBias.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.direct_bias.DirectBias.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute direct bias</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word_list</strong> (<em>list</em>) – list of words to compute bias for.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The direct bias of each word in the <cite>word_list</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-fee.metrics.indirect_bias"></span><dl class="py class">
 <dt id="fee.metrics.indirect_bias.IndirectBias">
-<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.indirect_bias.</code><code class="sig-name descname">IndirectBias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.indirect_bias.IndirectBias" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">fee.metrics.indirect_bias.</code><code class="sig-name descname">IndirectBias</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/indirect_bias.html#IndirectBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.indirect_bias.IndirectBias" title="Permalink to this definition">¶</a></dt>
 <dd><p>The class for computing indirect bias between a pair of words.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>kwargs:</dt><dd><p>g (np.array): Gender direction.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt id="fee.metrics.indirect_bias.IndirectBias.compute">
-<code class="sig-name descname">compute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.indirect_bias.IndirectBias.compute" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Args: </dt><dd><p>w (str): One of a pair of words.  
-v (str): The other word from the pair.</p>
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/indirect_bias.html#IndirectBias.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.indirect_bias.IndirectBias.compute" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>str</em>) – One of a pair of words.</p></li>
+<li><p><strong>v</strong> (<em>str</em>) – The other word from the pair.</p></li>
+</ul>
 </dd>
-<dt>Returns:</dt><dd><p>The indirect bias between the embeddings of <cite>w</cite> and <cite>v</cite>.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The indirect bias between the embeddings of <cite>w</cite> and <cite>v</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="fee.metrics.indirect_bias.IndirectBias.fix">
-<code class="sig-name descname">fix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.001</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.metrics.indirect_bias.IndirectBias.fix" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Args:</dt><dd><p>w (np.array): word vector</p>
+<code class="sig-name descname">fix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.001</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/metrics/indirect_bias.html#IndirectBias.fix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.metrics.indirect_bias.IndirectBias.fix" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>w</strong> (<em>np.array</em>) – word vector</p>
 </dd>
+</dl>
+<dl class="simple">
 <dt>kwargs:</dt><dd><dl class="simple">
-<dt>eps (float): threshold. If the difference between the norm</dt><dd><p>of <cite>w</cite> and 1, is greater than <cite>eps</cite>. Then 
+<dt>eps (float): threshold. If the difference between the norm</dt><dd><p>of <cite>w</cite> and 1, is greater than <cite>eps</cite>. Then
 normalize <cite>w</cite>.</p>
 </dd>
 </dl>
 </dd>
-<dt>Returns:</dt><dd><p>The normalized <cite>w</cite>.</p>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The normalized <cite>w</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -562,20 +972,271 @@ normalize <cite>w</cite>.</p>
 </div>
 <div class="section" id="module-fee.visualize.neighbour_bias_wordcloud">
 <span id="visualizations"></span><h1>Visualizations<a class="headerlink" href="#module-fee.visualize.neighbour_bias_wordcloud" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-fee.visualize.neighbour_plot"></span><dl class="py function">
+<dl class="py class">
+<dt id="fee.visualize.neighbour_bias_wordcloud.NBWordCloud">
+<em class="property">class </em><code class="sig-prename descclassname">fee.visualize.neighbour_bias_wordcloud.</code><code class="sig-name descname">NBWordCloud</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">42</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/neighbour_bias_wordcloud.html#NBWordCloud"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.neighbour_bias_wordcloud.NBWordCloud" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>NBWordCloud</cite> Class</p>
+<p>WordCloud for the neighbourhood of a word. The size of
+neighbouring words is directly propotional to the bias by
+projection of these words.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object</p></li>
+<li><p><strong>g</strong> (<em>np.array</em>) – gender direction</p></li>
+<li><p><strong>random_state</strong> (<em>int</em>) – for reproducibility</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="fee.visualize.neighbour_bias_wordcloud.NBWordCloud.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">300</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">8, 5</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">800</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">500</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/neighbour_bias_wordcloud.html#NBWordCloud.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.neighbour_bias_wordcloud.NBWordCloud.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the <cite>NBWordCloud</cite> visualization</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<em>str</em>) – word to compute neighbours of and make this plot</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – title of the plot</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – number of neighbours to consider</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em>) – size of figures in (HxW)</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – dpi of the figures</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – width of the wordcloud image</p></li>
+<li><p><strong>height</strong> (<em>int</em>) – height of the wordcloud image</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.visualize.neighbour_bias_wordcloud.NBWordCloud.visualize">
+<code class="sig-name descname">visualize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">freq_dict</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">figsize</span></em>, <em class="sig-param"><span class="n">dpi</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/neighbour_bias_wordcloud.html#NBWordCloud.visualize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.neighbour_bias_wordcloud.NBWordCloud.visualize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main <cite>NBWordCloud</cite> visualization driver function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freq_dict</strong> (<em>dict</em>) – dictionary to map size of each word</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – title of the plot</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em>) – size of figures in (HxW)</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – dpi of the figures</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – width of the wordcloud image</p></li>
+<li><p><strong>height</strong> (<em>int</em>) – height of the wordcloud image</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-fee.visualize.neighbour_plot"></span><dl class="py class">
+<dt id="fee.visualize.neighbour_plot.NeighbourPlot">
+<em class="property">class </em><code class="sig-prename descclassname">fee.visualize.neighbour_plot.</code><code class="sig-name descname">NeighbourPlot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">42</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/neighbour_plot.html#NeighbourPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.neighbour_plot.NeighbourPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>NeighbourPlot</cite> Class</p>
+<p>tSNE plot for the neighbourhood of a word color coded by
+their bias by projection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object</p></li>
+<li><p><strong>g</strong> (<em>np.array</em>) – gender direction</p></li>
+<li><p><strong>random_state</strong> (<em>int</em>) – for reproducibility</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="fee.visualize.neighbour_plot.NeighbourPlot.bias_by_projection_sort">
+<code class="sig-name descname">bias_by_projection_sort</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/neighbour_plot.html#NeighbourPlot.bias_by_projection_sort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.neighbour_plot.NeighbourPlot.bias_by_projection_sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort <cite>words</cite> by bias by projection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>words</strong> (<em>list</em>) – list of words (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.visualize.neighbour_plot.NeighbourPlot.get_neighbours">
+<code class="sig-name descname">get_neighbours</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/neighbour_plot.html#NeighbourPlot.get_neighbours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.neighbour_plot.NeighbourPlot.get_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get <cite>n</cite> neighbours for word <cite>word</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<em>str</em>) – word to computer neighbours for</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – number of neighbours to compute</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.visualize.neighbour_plot.NeighbourPlot.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">300</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">8, 5</span></em>, <em class="sig-param"><span class="n">colors</span><span class="o">=</span><span class="default_value">['blue', 'red']</span></em>, <em class="sig-param"><span class="n">fontsize</span><span class="o">=</span><span class="default_value">7</span></em>, <em class="sig-param"><span class="n">annotate</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/neighbour_plot.html#NeighbourPlot.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.neighbour_plot.NeighbourPlot.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the <cite>NeighbourPlot</cite> visualization</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<em>str</em>) – word to compute neighbours of and make this plot</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – title of the plot</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – number of neighbours to consider</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em>) – size of figures in (HxW)</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – dpi of the figures</p></li>
+<li><p><strong>colors</strong> (<em>list</em>) – list of two matplotlib compatible colors</p></li>
+<li><p><strong>fontsize</strong> (<em>int</em>) – matplotlib compatible font size for
+scatter plot</p></li>
+<li><p><strong>annotate</strong> (<em>bool</em>) – annotate points in scatter plot?</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.visualize.neighbour_plot.NeighbourPlot.visualize">
+<code class="sig-name descname">visualize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em>, <em class="sig-param"><span class="n">ranks</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">figsize</span></em>, <em class="sig-param"><span class="n">dpi</span></em>, <em class="sig-param"><span class="n">colors</span></em>, <em class="sig-param"><span class="n">s</span></em>, <em class="sig-param"><span class="n">annotate</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/neighbour_plot.html#NeighbourPlot.visualize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.neighbour_plot.NeighbourPlot.visualize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the <cite>NeighbourPlot</cite> visualization</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>words</strong> (<em>list</em>) – list of neighbours</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – title of the plot</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em>) – size of figures in (HxW)</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – dpi of the figures</p></li>
+<li><p><strong>colors</strong> (<em>list</em>) – list of two matplotlib compatible colors</p></li>
+<li><p><strong>s</strong> (<em>int</em>) – matplotlib compatible font size for
+scatter plot</p></li>
+<li><p><strong>annotate</strong> (<em>bool</em>) – annotate points in scatter plot?</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
 <dt id="fee.visualize.neighbour_plot.color_fader">
-<code class="sig-prename descclassname">fee.visualize.neighbour_plot.</code><code class="sig-name descname">color_fader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c1</span></em>, <em class="sig-param"><span class="n">c2</span></em>, <em class="sig-param"><span class="n">mix</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.visualize.neighbour_plot.color_fader" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.visualize.neighbour_plot.</code><code class="sig-name descname">color_fader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c1</span></em>, <em class="sig-param"><span class="n">c2</span></em>, <em class="sig-param"><span class="n">mix</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/neighbour_plot.html#color_fader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.neighbour_plot.color_fader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fade color between <cite>c1</cite> and <cite>c2</cite> with <cite>mix</cite>.
 See: <a class="reference external" href="https://stackoverflow.com/questions/25668828/how-to-create-colour-gradient-in-python">https://stackoverflow.com/questions/25668828/how-to-create-colour-gradient-in-python</a></p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="fee.visualize.neighbour_plot.generate_palette">
-<code class="sig-prename descclassname">fee.visualize.neighbour_plot.</code><code class="sig-name descname">generate_palette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c1</span></em>, <em class="sig-param"><span class="n">c2</span></em>, <em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fee.visualize.neighbour_plot.generate_palette" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fee.visualize.neighbour_plot.</code><code class="sig-name descname">generate_palette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c1</span></em>, <em class="sig-param"><span class="n">c2</span></em>, <em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/neighbour_plot.html#generate_palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.neighbour_plot.generate_palette" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate color palette of length <cite>n</cite> between c1 and c2</p>
 </dd></dl>
 
-<span class="target" id="module-fee.visualize.gender_cluster_tsne"></span><span class="target" id="module-fee.visualize.pca_components"></span></div>
+<span class="target" id="module-fee.visualize.gender_cluster_tsne"></span><dl class="py class">
+<dt id="fee.visualize.gender_cluster_tsne.GCT">
+<em class="property">class </em><code class="sig-prename descclassname">fee.visualize.gender_cluster_tsne.</code><code class="sig-name descname">GCT</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/gender_cluster_tsne.html#GCT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.gender_cluster_tsne.GCT" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>GCT</cite> Class</p>
+<p>Gender Cluster tnse Plot: plot the tSNE visualization for the
+neighbourhood of word color coded by computer cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object</p></li>
+<li><p><strong>random_state</strong> (<em>int</em>) – for reproducibility</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="fee.visualize.gender_cluster_tsne.GCT.cluster">
+<code class="sig-name descname">cluster</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vecs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/gender_cluster_tsne.html#GCT.cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.gender_cluster_tsne.GCT.cluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply kmeans clustering over vecs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vecs</strong> (<em>np.array</em>) – list of word vectors to cluster</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.visualize.gender_cluster_tsne.GCT.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word_list</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">300</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">8, 5</span></em>, <em class="sig-param"><span class="n">colors</span><span class="o">=</span><span class="default_value">['k', 'r']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/gender_cluster_tsne.html#GCT.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.gender_cluster_tsne.GCT.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the GCT visualization</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word_list</strong> (<em>list</em>) – list of words (list of string)</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – title of the plot</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – dpi of the figures</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em>) – size of figures in (HxW)</p></li>
+<li><p><strong>colors</strong> (<em>list</em>) – list of two matplotlib compatible colors</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.visualize.gender_cluster_tsne.GCT.visualize">
+<code class="sig-name descname">visualize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vecs</span></em>, <em class="sig-param"><span class="n">words</span></em>, <em class="sig-param"><span class="n">labels</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">figsize</span></em>, <em class="sig-param"><span class="n">dpi</span></em>, <em class="sig-param"><span class="n">colors</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/gender_cluster_tsne.html#GCT.visualize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.gender_cluster_tsne.GCT.visualize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main GCT visualization driver function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vecs</strong> (<em>np.array</em>) – list of word vectors to cluster</p></li>
+<li><p><strong>words</strong> (<em>list</em>) – list of words (list of string)</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – title of the plot</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em>) – size of figures in (HxW)</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – dpi of the figures</p></li>
+<li><p><strong>colors</strong> (<em>list</em>) – list of two matplotlib compatible colors</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-fee.visualize.pca_components"></span><dl class="py class">
+<dt id="fee.visualize.pca_components.PCAComponents">
+<em class="property">class </em><code class="sig-prename descclassname">fee.visualize.pca_components.</code><code class="sig-name descname">PCAComponents</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/pca_components.html#PCAComponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.pca_components.PCAComponents" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>PCAComponents</cite> Class</p>
+<p>Plot the PCA principle component bar graph for some direction
+of <cite>E</cite> computed using a list of pairs of words.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>E</strong> (<em>WE class object</em>) – Word embeddings object</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="fee.visualize.pca_components.PCAComponents.PlotPCA">
+<code class="sig-name descname">PlotPCA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pairs</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">num_components</span></em>, <em class="sig-param"><span class="n">dpi</span></em>, <em class="sig-param"><span class="n">figsize</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/pca_components.html#PCAComponents.PlotPCA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.pca_components.PCAComponents.PlotPCA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main <cite>PCAComponents</cite> visualization driver function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pairs</strong> (<em>list</em>) – A list of pair (tuple/list) of words. The
+direction is computed by PCA of set of
+differences of these words.</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – title of the plot</p></li>
+<li><p><strong>num_components</strong> (<em>int</em>) – number of principal components</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – dpi of the figures</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em>) – size of figures in (HxW)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="fee.visualize.pca_components.PCAComponents.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pairs</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">num_components</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">300</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">8, 5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fee/visualize/pca_components.html#PCAComponents.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fee.visualize.pca_components.PCAComponents.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the <cite>PCAComponents</cite> visualization</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pairs</strong> (<em>list</em>) – A list of pair (tuple/list) of words. The
+direction is computed by PCA of set of
+differences of these words.</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – title of the plot</p></li>
+<li><p><strong>num_components</strong> (<em>int</em>) – number of principal components</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em>) – size of figures in (HxW)</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – dpi of the figures</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
@@ -586,30 +1247,30 @@ See: <a class="reference external" href="https://stackoverflow.com/questions/256
 </div>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">fee</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="#">Documentation overview</a><ul>
-  </ul></li>
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to FEE – Fair Embedding Engine’s documentation!</a></li>
+<li><a class="reference internal" href="#module-fee.embedding.loader">Loader</a></li>
+<li><a class="reference internal" href="#module-fee.debias.hard_debias">Debiasing</a></li>
+<li><a class="reference internal" href="#module-fee.reports.biased_neighbours">Reports</a></li>
+<li><a class="reference internal" href="#module-fee.metrics.weat">Metrics</a></li>
+<li><a class="reference internal" href="#module-fee.visualize.neighbour_bias_wordcloud">Visualizations</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
-</div>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -620,32 +1281,26 @@ See: <a class="reference external" href="https://stackoverflow.com/questions/256
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2020, Vaibhav Kumar, Tenzin, Vaibhav Kumar.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/index.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to FEE – Fair Embedding Engine’s documentation!</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Vaibhav Kumar, Tenzin Singhay Bhotia, Vaibhav Kumar.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
   </body>
 </html>

@@ -1,0 +1,581 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fee.metrics.sembias &#8212; FEE -- Fair Embedding Engine 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.metrics.sembias</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for fee.metrics.sembias</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">dot</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
+
+<span class="n">SEMBIAS_DATA</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;priest:nun	dog:bitch	book:magazine	doctor:nurse</span>
+<span class="s2">priest:nun	cup:lid	algebra:geometry	manager:secretary</span>
+<span class="s2">priest:nun	sugar:flour	pen:pencil	chef:baker</span>
+<span class="s2">priest:nun	dogwood:elm	fiction:poetry	guard:cashier</span>
+<span class="s2">priest:nun	fiction:poetry	shirt:blouse	programmer:homemaker</span>
+<span class="s2">priest:nun	sugar:flour	bolt:nut	leader:assistant</span>
+<span class="s2">priest:nun	book:magazine	pillow:mattress	researcher:librarians</span>
+<span class="s2">priest:nun	duck:goose	flour:sugar	dentist:optometrist</span>
+<span class="s2">priest:nun	dog:bitch	cat:dog	dispatcher:tailor</span>
+<span class="s2">priest:nun	bolt:nut	record:cassette	engineer:dancer</span>
+<span class="s2">priest:nun	couch:recliner	duck:goose	lawyer:clerk</span>
+<span class="s2">priest:nun	pencil:pen	dog:cat	janitor:housekeeper</span>
+<span class="s2">priest:nun	cup:lid	couch:recliner	developer:counselor</span>
+<span class="s2">priest:nun	puppy:kitten	shirt:blouse	judge:stenographer</span>
+<span class="s2">priest:nun	dog:cat	jazz:blues	president:receptionist</span>
+<span class="s2">priest:nun	pillow:mattress	couch:recliner	captain:bookkeeper</span>
+<span class="s2">priest:nun	pillow:mattress	couch:recliner	warrior:nanny</span>
+<span class="s2">priest:nun	puppy:kitten	pencil:pen	architect:hairdresser</span>
+<span class="s2">priest:nun	book:magazine	jazz:blues	boss:stylist</span>
+<span class="s2">priest:nun	salt:pepper	algebra:geometry	pilot:socialite</span>
+<span class="s2">headmaster:headmistress	salt:pepper	kitten:puppy	doctor:nurse</span>
+<span class="s2">headmaster:headmistress	record:cassette	fiction:poetry	manager:secretary</span>
+<span class="s2">headmaster:headmistress	salt:pepper	canoe:kayak	chef:baker</span>
+<span class="s2">headmaster:headmistress	treble:bass	car:bus	guard:cashier</span>
+<span class="s2">headmaster:headmistress	sugar:flour	cat:dog	programmer:homemaker</span>
+<span class="s2">headmaster:headmistress	dog:bitch	pencil:pen	leader:assistant</span>
+<span class="s2">headmaster:headmistress	dog:bitch	pen:pencil	researcher:librarians</span>
+<span class="s2">headmaster:headmistress	couch:recliner	fiction:poetry	dentist:optometrist</span>
+<span class="s2">headmaster:headmistress	dog:cat	salt:pepper	dispatcher:tailor</span>
+<span class="s2">headmaster:headmistress	bolt:nut	dog:cat	engineer:dancer</span>
+<span class="s2">headmaster:headmistress	book:magazine	shirt:blouse	lawyer:clerk</span>
+<span class="s2">headmaster:headmistress	book:magazine	trout:salmon	janitor:housekeeper</span>
+<span class="s2">headmaster:headmistress	violin:cello	kitten:puppy	developer:counselor</span>
+<span class="s2">headmaster:headmistress	book:magazine	salt:pepper	judge:stenographer</span>
+<span class="s2">headmaster:headmistress	duck:goose	cat:dog	president:receptionist</span>
+<span class="s2">headmaster:headmistress	puppy:kitten	cassette:record	captain:bookkeeper</span>
+<span class="s2">headmaster:headmistress	cassette:record	canoe:kayak	warrior:nanny</span>
+<span class="s2">headmaster:headmistress	book:magazine	cassette:record	architect:hairdresser</span>
+<span class="s2">headmaster:headmistress	almond:pecan	pencil:pen	boss:stylist</span>
+<span class="s2">headmaster:headmistress	dog:bitch	book:magazine	pilot:socialite</span>
+<span class="s2">hero:heroine	couch:recliner	dog:cat	doctor:nurse</span>
+<span class="s2">hero:heroine	pillow:mattress	flour:sugar	manager:secretary</span>
+<span class="s2">hero:heroine	fiction:poetry	flour:sugar	chef:baker</span>
+<span class="s2">hero:heroine	almond:pecan	jazz:blues	guard:cashier</span>
+<span class="s2">hero:heroine	couch:recliner	cat:dog	programmer:homemaker</span>
+<span class="s2">hero:heroine	bolt:nut	jazz:blues	leader:assistant</span>
+<span class="s2">hero:heroine	pen:pencil	violin:cello	researcher:librarians</span>
+<span class="s2">hero:heroine	treble:bass	dogwood:elm	dentist:optometrist</span>
+<span class="s2">hero:heroine	car:bus	puppy:kitten	dispatcher:tailor</span>
+<span class="s2">hero:heroine	fiction:poetry	cassette:record	engineer:dancer</span>
+<span class="s2">hero:heroine	puppy:kitten	jazz:blues	lawyer:clerk</span>
+<span class="s2">hero:heroine	jazz:blues	almond:pecan	janitor:housekeeper</span>
+<span class="s2">hero:heroine	couch:recliner	pencil:pen	developer:counselor</span>
+<span class="s2">hero:heroine	record:cassette	cassette:record	judge:stenographer</span>
+<span class="s2">hero:heroine	algebra:geometry	trout:salmon	president:receptionist</span>
+<span class="s2">hero:heroine	treble:bass	jazz:blues	captain:bookkeeper</span>
+<span class="s2">hero:heroine	bolt:nut	puppy:kitten	warrior:nanny</span>
+<span class="s2">hero:heroine	kitten:puppy	treble:bass	architect:hairdresser</span>
+<span class="s2">hero:heroine	cup:lid	dog:cat	boss:stylist</span>
+<span class="s2">hero:heroine	flour:sugar	violin:cello	pilot:socialite</span>
+<span class="s2">waiter:waitress	dog:bitch	couch:recliner	doctor:nurse</span>
+<span class="s2">waiter:waitress	duck:goose	trout:salmon	manager:secretary</span>
+<span class="s2">waiter:waitress	canoe:kayak	salt:pepper	chef:baker</span>
+<span class="s2">waiter:waitress	dog:bitch	cup:lid	guard:cashier</span>
+<span class="s2">waiter:waitress	treble:bass	pencil:pen	programmer:homemaker</span>
+<span class="s2">waiter:waitress	book:magazine	almond:pecan	leader:assistant</span>
+<span class="s2">waiter:waitress	shirt:blouse	flour:sugar	researcher:librarians</span>
+<span class="s2">waiter:waitress	record:cassette	violin:cello	dentist:optometrist</span>
+<span class="s2">waiter:waitress	fiction:poetry	kitten:puppy	dispatcher:tailor</span>
+<span class="s2">waiter:waitress	book:magazine	algebra:geometry	engineer:dancer</span>
+<span class="s2">waiter:waitress	car:bus	treble:bass	lawyer:clerk</span>
+<span class="s2">waiter:waitress	shirt:blouse	treble:bass	janitor:housekeeper</span>
+<span class="s2">waiter:waitress	book:magazine	treble:bass	developer:counselor</span>
+<span class="s2">waiter:waitress	dogwood:elm	duck:goose	judge:stenographer</span>
+<span class="s2">waiter:waitress	jazz:blues	cassette:record	president:receptionist</span>
+<span class="s2">waiter:waitress	salt:pepper	canoe:kayak	captain:bookkeeper</span>
+<span class="s2">waiter:waitress	car:bus	dog:cat	warrior:nanny</span>
+<span class="s2">waiter:waitress	fiction:poetry	book:magazine	architect:hairdresser</span>
+<span class="s2">waiter:waitress	canoe:kayak	puppy:kitten	boss:stylist</span>
+<span class="s2">waiter:waitress	kitten:puppy	almond:pecan	pilot:socialite</span>
+<span class="s2">widower:widow	book:magazine	dogwood:elm	doctor:nurse</span>
+<span class="s2">widower:widow	couch:recliner	sugar:flour	manager:secretary</span>
+<span class="s2">widower:widow	canoe:kayak	pencil:pen	chef:baker</span>
+<span class="s2">widower:widow	treble:bass	trout:salmon	guard:cashier</span>
+<span class="s2">widower:widow	shirt:blouse	record:cassette	programmer:homemaker</span>
+<span class="s2">widower:widow	flour:sugar	almond:pecan	leader:assistant</span>
+<span class="s2">widower:widow	pencil:pen	record:cassette	researcher:librarians</span>
+<span class="s2">widower:widow	pillow:mattress	record:cassette	dentist:optometrist</span>
+<span class="s2">widower:widow	book:magazine	trout:salmon	dispatcher:tailor</span>
+<span class="s2">widower:widow	cup:lid	almond:pecan	engineer:dancer</span>
+<span class="s2">widower:widow	puppy:kitten	cassette:record	lawyer:clerk</span>
+<span class="s2">widower:widow	puppy:kitten	cup:lid	janitor:housekeeper</span>
+<span class="s2">widower:widow	flour:sugar	algebra:geometry	developer:counselor</span>
+<span class="s2">widower:widow	pencil:pen	canoe:kayak	judge:stenographer</span>
+<span class="s2">widower:widow	car:bus	dogwood:elm	president:receptionist</span>
+<span class="s2">widower:widow	canoe:kayak	flour:sugar	captain:bookkeeper</span>
+<span class="s2">widower:widow	bolt:nut	pen:pencil	warrior:nanny</span>
+<span class="s2">widower:widow	trout:salmon	dog:bitch	architect:hairdresser</span>
+<span class="s2">widower:widow	treble:bass	flour:sugar	boss:stylist</span>
+<span class="s2">widower:widow	cup:lid	dog:cat	pilot:socialite</span>
+<span class="s2">spokesman:spokeswoman	cat:dog	book:magazine	doctor:nurse</span>
+<span class="s2">spokesman:spokeswoman	duck:goose	cassette:record	manager:secretary</span>
+<span class="s2">spokesman:spokeswoman	jazz:blues	puppy:kitten	chef:baker</span>
+<span class="s2">spokesman:spokeswoman	pen:pencil	puppy:kitten	guard:cashier</span>
+<span class="s2">spokesman:spokeswoman	dog:bitch	almond:pecan	programmer:homemaker</span>
+<span class="s2">spokesman:spokeswoman	cassette:record	pen:pencil	leader:assistant</span>
+<span class="s2">spokesman:spokeswoman	flour:sugar	dog:bitch	researcher:librarians</span>
+<span class="s2">spokesman:spokeswoman	cassette:record	almond:pecan	dentist:optometrist</span>
+<span class="s2">spokesman:spokeswoman	dog:bitch	jazz:blues	dispatcher:tailor</span>
+<span class="s2">spokesman:spokeswoman	kitten:puppy	cassette:record	engineer:dancer</span>
+<span class="s2">spokesman:spokeswoman	dog:cat	puppy:kitten	lawyer:clerk</span>
+<span class="s2">spokesman:spokeswoman	pen:pencil	puppy:kitten	janitor:housekeeper</span>
+<span class="s2">spokesman:spokeswoman	flour:sugar	couch:recliner	developer:counselor</span>
+<span class="s2">spokesman:spokeswoman	couch:recliner	dog:bitch	judge:stenographer</span>
+<span class="s2">spokesman:spokeswoman	cat:dog	puppy:kitten	president:receptionist</span>
+<span class="s2">spokesman:spokeswoman	duck:goose	dog:bitch	captain:bookkeeper</span>
+<span class="s2">spokesman:spokeswoman	cassette:record	salt:pepper	warrior:nanny</span>
+<span class="s2">spokesman:spokeswoman	couch:recliner	dogwood:elm	architect:hairdresser</span>
+<span class="s2">spokesman:spokeswoman	treble:bass	flour:sugar	boss:stylist</span>
+<span class="s2">spokesman:spokeswoman	kitten:puppy	treble:bass	pilot:socialite</span>
+<span class="s2">chairman:chairwoman	trout:salmon	cup:lid	doctor:nurse</span>
+<span class="s2">chairman:chairwoman	trout:salmon	sugar:flour	manager:secretary</span>
+<span class="s2">chairman:chairwoman	kitten:puppy	jazz:blues	chef:baker</span>
+<span class="s2">chairman:chairwoman	jazz:blues	salt:pepper	guard:cashier</span>
+<span class="s2">chairman:chairwoman	pillow:mattress	violin:cello	programmer:homemaker</span>
+<span class="s2">chairman:chairwoman	algebra:geometry	flour:sugar	leader:assistant</span>
+<span class="s2">chairman:chairwoman	pen:pencil	sugar:flour	researcher:librarians</span>
+<span class="s2">chairman:chairwoman	fiction:poetry	cassette:record	dentist:optometrist</span>
+<span class="s2">chairman:chairwoman	puppy:kitten	salt:pepper	dispatcher:tailor</span>
+<span class="s2">chairman:chairwoman	trout:salmon	kitten:puppy	engineer:dancer</span>
+<span class="s2">chairman:chairwoman	pencil:pen	treble:bass	lawyer:clerk</span>
+<span class="s2">chairman:chairwoman	book:magazine	car:bus	janitor:housekeeper</span>
+<span class="s2">chairman:chairwoman	pen:pencil	pillow:mattress	developer:counselor</span>
+<span class="s2">chairman:chairwoman	kitten:puppy	jazz:blues	judge:stenographer</span>
+<span class="s2">chairman:chairwoman	treble:bass	dog:cat	president:receptionist</span>
+<span class="s2">chairman:chairwoman	cassette:record	cat:dog	captain:bookkeeper</span>
+<span class="s2">chairman:chairwoman	puppy:kitten	jazz:blues	warrior:nanny</span>
+<span class="s2">chairman:chairwoman	pillow:mattress	car:bus	architect:hairdresser</span>
+<span class="s2">chairman:chairwoman	pillow:mattress	couch:recliner	boss:stylist</span>
+<span class="s2">chairman:chairwoman	treble:bass	sugar:flour	pilot:socialite</span>
+<span class="s2">businessman:businesswoman	pen:pencil	fiction:poetry	doctor:nurse</span>
+<span class="s2">businessman:businesswoman	salt:pepper	couch:recliner	manager:secretary</span>
+<span class="s2">businessman:businesswoman	jazz:blues	car:bus	chef:baker</span>
+<span class="s2">businessman:businesswoman	puppy:kitten	flour:sugar	guard:cashier</span>
+<span class="s2">businessman:businesswoman	sugar:flour	kitten:puppy	programmer:homemaker</span>
+<span class="s2">businessman:businesswoman	canoe:kayak	dogwood:elm	leader:assistant</span>
+<span class="s2">businessman:businesswoman	duck:goose	couch:recliner	researcher:librarians</span>
+<span class="s2">businessman:businesswoman	car:bus	salt:pepper	dentist:optometrist</span>
+<span class="s2">businessman:businesswoman	flour:sugar	salt:pepper	dispatcher:tailor</span>
+<span class="s2">businessman:businesswoman	pencil:pen	violin:cello	engineer:dancer</span>
+<span class="s2">businessman:businesswoman	jazz:blues	almond:pecan	lawyer:clerk</span>
+<span class="s2">businessman:businesswoman	trout:salmon	pen:pencil	janitor:housekeeper</span>
+<span class="s2">businessman:businesswoman	algebra:geometry	sugar:flour	developer:counselor</span>
+<span class="s2">businessman:businesswoman	sugar:flour	puppy:kitten	judge:stenographer</span>
+<span class="s2">businessman:businesswoman	pillow:mattress	shirt:blouse	president:receptionist</span>
+<span class="s2">businessman:businesswoman	puppy:kitten	pencil:pen	captain:bookkeeper</span>
+<span class="s2">businessman:businesswoman	shirt:blouse	canoe:kayak	warrior:nanny</span>
+<span class="s2">businessman:businesswoman	kitten:puppy	couch:recliner	architect:hairdresser</span>
+<span class="s2">businessman:businesswoman	cup:lid	sugar:flour	boss:stylist</span>
+<span class="s2">businessman:businesswoman	pillow:mattress	duck:goose	pilot:socialite</span>
+<span class="s2">councilman:councilwoman	pillow:mattress	sugar:flour	doctor:nurse</span>
+<span class="s2">councilman:councilwoman	kitten:puppy	dog:bitch	manager:secretary</span>
+<span class="s2">councilman:councilwoman	bolt:nut	flour:sugar	chef:baker</span>
+<span class="s2">councilman:councilwoman	kitten:puppy	puppy:kitten	guard:cashier</span>
+<span class="s2">councilman:councilwoman	pencil:pen	car:bus	programmer:homemaker</span>
+<span class="s2">councilman:councilwoman	canoe:kayak	treble:bass	leader:assistant</span>
+<span class="s2">councilman:councilwoman	dog:cat	kitten:puppy	researcher:librarians</span>
+<span class="s2">councilman:councilwoman	bolt:nut	duck:goose	dentist:optometrist</span>
+<span class="s2">councilman:councilwoman	pillow:mattress	pen:pencil	dispatcher:tailor</span>
+<span class="s2">councilman:councilwoman	cat:dog	almond:pecan	engineer:dancer</span>
+<span class="s2">councilman:councilwoman	shirt:blouse	fiction:poetry	lawyer:clerk</span>
+<span class="s2">councilman:councilwoman	flour:sugar	violin:cello	janitor:housekeeper</span>
+<span class="s2">councilman:councilwoman	canoe:kayak	cup:lid	developer:counselor</span>
+<span class="s2">councilman:councilwoman	pen:pencil	bolt:nut	judge:stenographer</span>
+<span class="s2">councilman:councilwoman	salt:pepper	couch:recliner	president:receptionist</span>
+<span class="s2">councilman:councilwoman	canoe:kayak	duck:goose	captain:bookkeeper</span>
+<span class="s2">councilman:councilwoman	dogwood:elm	flour:sugar	warrior:nanny</span>
+<span class="s2">councilman:councilwoman	record:cassette	fiction:poetry	architect:hairdresser</span>
+<span class="s2">councilman:councilwoman	duck:goose	kitten:puppy	boss:stylist</span>
+<span class="s2">councilman:councilwoman	cat:dog	kitten:puppy	pilot:socialite</span>
+<span class="s2">statesman:stateswoman	shirt:blouse	book:magazine	doctor:nurse</span>
+<span class="s2">statesman:stateswoman	dog:cat	record:cassette	manager:secretary</span>
+<span class="s2">statesman:stateswoman	dog:cat	fiction:poetry	chef:baker</span>
+<span class="s2">statesman:stateswoman	fiction:poetry	bolt:nut	guard:cashier</span>
+<span class="s2">statesman:stateswoman	almond:pecan	sugar:flour	programmer:homemaker</span>
+<span class="s2">statesman:stateswoman	puppy:kitten	pillow:mattress	leader:assistant</span>
+<span class="s2">statesman:stateswoman	book:magazine	sugar:flour	researcher:librarians</span>
+<span class="s2">statesman:stateswoman	dog:bitch	duck:goose	dentist:optometrist</span>
+<span class="s2">statesman:stateswoman	pen:pencil	salt:pepper	dispatcher:tailor</span>
+<span class="s2">statesman:stateswoman	sugar:flour	cup:lid	engineer:dancer</span>
+<span class="s2">statesman:stateswoman	fiction:poetry	cup:lid	lawyer:clerk</span>
+<span class="s2">statesman:stateswoman	canoe:kayak	pillow:mattress	janitor:housekeeper</span>
+<span class="s2">statesman:stateswoman	kitten:puppy	record:cassette	developer:counselor</span>
+<span class="s2">statesman:stateswoman	cat:dog	cassette:record	judge:stenographer</span>
+<span class="s2">statesman:stateswoman	cassette:record	salt:pepper	president:receptionist</span>
+<span class="s2">statesman:stateswoman	violin:cello	duck:goose	captain:bookkeeper</span>
+<span class="s2">statesman:stateswoman	almond:pecan	fiction:poetry	warrior:nanny</span>
+<span class="s2">statesman:stateswoman	jazz:blues	kitten:puppy	architect:hairdresser</span>
+<span class="s2">statesman:stateswoman	puppy:kitten	jazz:blues	boss:stylist</span>
+<span class="s2">statesman:stateswoman	book:magazine	dog:cat	pilot:socialite</span>
+<span class="s2">actor:actress	pen:pencil	cassette:record	doctor:nurse</span>
+<span class="s2">actor:actress	cup:lid	pillow:mattress	manager:secretary</span>
+<span class="s2">actor:actress	bolt:nut	pencil:pen	chef:baker</span>
+<span class="s2">actor:actress	record:cassette	salt:pepper	guard:cashier</span>
+<span class="s2">actor:actress	pencil:pen	violin:cello	programmer:homemaker</span>
+<span class="s2">actor:actress	dogwood:elm	treble:bass	leader:assistant</span>
+<span class="s2">actor:actress	pen:pencil	salt:pepper	researcher:librarians</span>
+<span class="s2">actor:actress	treble:bass	couch:recliner	dentist:optometrist</span>
+<span class="s2">actor:actress	bolt:nut	kitten:puppy	dispatcher:tailor</span>
+<span class="s2">actor:actress	shirt:blouse	violin:cello	engineer:dancer</span>
+<span class="s2">actor:actress	pencil:pen	shirt:blouse	lawyer:clerk</span>
+<span class="s2">actor:actress	jazz:blues	book:magazine	janitor:housekeeper</span>
+<span class="s2">actor:actress	cup:lid	bolt:nut	developer:counselor</span>
+<span class="s2">actor:actress	cup:lid	pen:pencil	judge:stenographer</span>
+<span class="s2">actor:actress	pillow:mattress	violin:cello	president:receptionist</span>
+<span class="s2">actor:actress	canoe:kayak	pen:pencil	captain:bookkeeper</span>
+<span class="s2">actor:actress	cat:dog	fiction:poetry	warrior:nanny</span>
+<span class="s2">actor:actress	cat:dog	dog:bitch	architect:hairdresser</span>
+<span class="s2">actor:actress	cassette:record	salt:pepper	boss:stylist</span>
+<span class="s2">actor:actress	book:magazine	record:cassette	pilot:socialite</span>
+<span class="s2">gentleman:lady	dog:bitch	duck:goose	doctor:nurse</span>
+<span class="s2">gentleman:lady	pencil:pen	salt:pepper	manager:secretary</span>
+<span class="s2">gentleman:lady	jazz:blues	shirt:blouse	chef:baker</span>
+<span class="s2">gentleman:lady	car:bus	flour:sugar	guard:cashier</span>
+<span class="s2">gentleman:lady	canoe:kayak	treble:bass	programmer:homemaker</span>
+<span class="s2">gentleman:lady	bolt:nut	almond:pecan	leader:assistant</span>
+<span class="s2">gentleman:lady	pillow:mattress	trout:salmon	researcher:librarians</span>
+<span class="s2">gentleman:lady	book:magazine	salt:pepper	dentist:optometrist</span>
+<span class="s2">gentleman:lady	cat:dog	pillow:mattress	dispatcher:tailor</span>
+<span class="s2">gentleman:lady	almond:pecan	canoe:kayak	engineer:dancer</span>
+<span class="s2">gentleman:lady	canoe:kayak	almond:pecan	lawyer:clerk</span>
+<span class="s2">gentleman:lady	sugar:flour	dogwood:elm	janitor:housekeeper</span>
+<span class="s2">gentleman:lady	couch:recliner	duck:goose	developer:counselor</span>
+<span class="s2">gentleman:lady	canoe:kayak	record:cassette	judge:stenographer</span>
+<span class="s2">gentleman:lady	car:bus	treble:bass	president:receptionist</span>
+<span class="s2">gentleman:lady	dogwood:elm	cassette:record	captain:bookkeeper</span>
+<span class="s2">gentleman:lady	fiction:poetry	canoe:kayak	warrior:nanny</span>
+<span class="s2">gentleman:lady	dogwood:elm	car:bus	architect:hairdresser</span>
+<span class="s2">gentleman:lady	pillow:mattress	canoe:kayak	boss:stylist</span>
+<span class="s2">gentleman:lady	pencil:pen	book:magazine	pilot:socialite</span>
+<span class="s2">policeman:policewoman	kitten:puppy	record:cassette	doctor:nurse</span>
+<span class="s2">policeman:policewoman	puppy:kitten	trout:salmon	manager:secretary</span>
+<span class="s2">policeman:policewoman	pillow:mattress	record:cassette	chef:baker</span>
+<span class="s2">policeman:policewoman	car:bus	canoe:kayak	guard:cashier</span>
+<span class="s2">policeman:policewoman	kitten:puppy	fiction:poetry	programmer:homemaker</span>
+<span class="s2">policeman:policewoman	fiction:poetry	sugar:flour	leader:assistant</span>
+<span class="s2">policeman:policewoman	jazz:blues	kitten:puppy	researcher:librarians</span>
+<span class="s2">policeman:policewoman	pencil:pen	treble:bass	dentist:optometrist</span>
+<span class="s2">policeman:policewoman	jazz:blues	record:cassette	dispatcher:tailor</span>
+<span class="s2">policeman:policewoman	treble:bass	pencil:pen	engineer:dancer</span>
+<span class="s2">policeman:policewoman	book:magazine	kitten:puppy	lawyer:clerk</span>
+<span class="s2">policeman:policewoman	shirt:blouse	canoe:kayak	janitor:housekeeper</span>
+<span class="s2">policeman:policewoman	shirt:blouse	cat:dog	developer:counselor</span>
+<span class="s2">policeman:policewoman	duck:goose	dog:cat	judge:stenographer</span>
+<span class="s2">policeman:policewoman	fiction:poetry	pillow:mattress	president:receptionist</span>
+<span class="s2">policeman:policewoman	record:cassette	pillow:mattress	captain:bookkeeper</span>
+<span class="s2">policeman:policewoman	dog:cat	cup:lid	warrior:nanny</span>
+<span class="s2">policeman:policewoman	pencil:pen	trout:salmon	architect:hairdresser</span>
+<span class="s2">policeman:policewoman	pen:pencil	car:bus	boss:stylist</span>
+<span class="s2">policeman:policewoman	trout:salmon	fiction:poetry	pilot:socialite</span>
+<span class="s2">governor:governess	duck:goose	cup:lid	doctor:nurse</span>
+<span class="s2">governor:governess	pencil:pen	jazz:blues	manager:secretary</span>
+<span class="s2">governor:governess	pen:pencil	car:bus	chef:baker</span>
+<span class="s2">governor:governess	kitten:puppy	algebra:geometry	guard:cashier</span>
+<span class="s2">governor:governess	dog:bitch	canoe:kayak	programmer:homemaker</span>
+<span class="s2">governor:governess	pillow:mattress	dog:cat	leader:assistant</span>
+<span class="s2">governor:governess	car:bus	book:magazine	researcher:librarians</span>
+<span class="s2">governor:governess	salt:pepper	violin:cello	dentist:optometrist</span>
+<span class="s2">governor:governess	sugar:flour	kitten:puppy	dispatcher:tailor</span>
+<span class="s2">governor:governess	canoe:kayak	dog:bitch	engineer:dancer</span>
+<span class="s2">governor:governess	kitten:puppy	pen:pencil	lawyer:clerk</span>
+<span class="s2">governor:governess	violin:cello	dog:bitch	janitor:housekeeper</span>
+<span class="s2">governor:governess	book:magazine	record:cassette	developer:counselor</span>
+<span class="s2">governor:governess	dog:bitch	algebra:geometry	judge:stenographer</span>
+<span class="s2">governor:governess	treble:bass	bolt:nut	president:receptionist</span>
+<span class="s2">governor:governess	jazz:blues	cat:dog	captain:bookkeeper</span>
+<span class="s2">governor:governess	almond:pecan	kitten:puppy	warrior:nanny</span>
+<span class="s2">governor:governess	pillow:mattress	sugar:flour	architect:hairdresser</span>
+<span class="s2">governor:governess	cat:dog	sugar:flour	boss:stylist</span>
+<span class="s2">governor:governess	dog:cat	treble:bass	pilot:socialite</span>
+<span class="s2">fiance:fiancee	book:magazine	almond:pecan	doctor:nurse</span>
+<span class="s2">fiance:fiancee	cassette:record	trout:salmon	manager:secretary</span>
+<span class="s2">fiance:fiancee	shirt:blouse	couch:recliner	chef:baker</span>
+<span class="s2">fiance:fiancee	pencil:pen	kitten:puppy	guard:cashier</span>
+<span class="s2">fiance:fiancee	bolt:nut	almond:pecan	programmer:homemaker</span>
+<span class="s2">fiance:fiancee	violin:cello	bolt:nut	leader:assistant</span>
+<span class="s2">fiance:fiancee	canoe:kayak	dog:cat	researcher:librarians</span>
+<span class="s2">fiance:fiancee	record:cassette	sugar:flour	dentist:optometrist</span>
+<span class="s2">fiance:fiancee	sugar:flour	canoe:kayak	dispatcher:tailor</span>
+<span class="s2">fiance:fiancee	shirt:blouse	dogwood:elm	engineer:dancer</span>
+<span class="s2">fiance:fiancee	cat:dog	fiction:poetry	lawyer:clerk</span>
+<span class="s2">fiance:fiancee	almond:pecan	jazz:blues	janitor:housekeeper</span>
+<span class="s2">fiance:fiancee	record:cassette	canoe:kayak	developer:counselor</span>
+<span class="s2">fiance:fiancee	pillow:mattress	book:magazine	judge:stenographer</span>
+<span class="s2">fiance:fiancee	fiction:poetry	duck:goose	president:receptionist</span>
+<span class="s2">fiance:fiancee	couch:recliner	pen:pencil	captain:bookkeeper</span>
+<span class="s2">fiance:fiancee	dog:bitch	jazz:blues	warrior:nanny</span>
+<span class="s2">fiance:fiancee	pen:pencil	kitten:puppy	architect:hairdresser</span>
+<span class="s2">fiance:fiancee	canoe:kayak	duck:goose	boss:stylist</span>
+<span class="s2">fiance:fiancee	fiction:poetry	dogwood:elm	pilot:socialite</span>
+<span class="s2">horseman:horsewoman	dog:bitch	fiction:poetry	doctor:nurse</span>
+<span class="s2">horseman:horsewoman	book:magazine	dogwood:elm	manager:secretary</span>
+<span class="s2">horseman:horsewoman	flour:sugar	pencil:pen	chef:baker</span>
+<span class="s2">horseman:horsewoman	sugar:flour	pillow:mattress	guard:cashier</span>
+<span class="s2">horseman:horsewoman	trout:salmon	car:bus	programmer:homemaker</span>
+<span class="s2">horseman:horsewoman	canoe:kayak	bolt:nut	leader:assistant</span>
+<span class="s2">horseman:horsewoman	violin:cello	bolt:nut	researcher:librarians</span>
+<span class="s2">horseman:horsewoman	couch:recliner	shirt:blouse	dentist:optometrist</span>
+<span class="s2">horseman:horsewoman	cat:dog	dog:bitch	dispatcher:tailor</span>
+<span class="s2">horseman:horsewoman	pencil:pen	duck:goose	engineer:dancer</span>
+<span class="s2">horseman:horsewoman	cup:lid	puppy:kitten	lawyer:clerk</span>
+<span class="s2">horseman:horsewoman	flour:sugar	treble:bass	janitor:housekeeper</span>
+<span class="s2">horseman:horsewoman	fiction:poetry	cup:lid	developer:counselor</span>
+<span class="s2">horseman:horsewoman	couch:recliner	flour:sugar	judge:stenographer</span>
+<span class="s2">horseman:horsewoman	kitten:puppy	jazz:blues	president:receptionist</span>
+<span class="s2">horseman:horsewoman	book:magazine	canoe:kayak	captain:bookkeeper</span>
+<span class="s2">horseman:horsewoman	kitten:puppy	jazz:blues	warrior:nanny</span>
+<span class="s2">horseman:horsewoman	violin:cello	pencil:pen	architect:hairdresser</span>
+<span class="s2">horseman:horsewoman	algebra:geometry	dogwood:elm	boss:stylist</span>
+<span class="s2">horseman:horsewoman	jazz:blues	cassette:record	pilot:socialite</span>
+<span class="s2">wizard:witch	dogwood:elm	kitten:puppy	doctor:nurse</span>
+<span class="s2">wizard:witch	violin:cello	algebra:geometry	manager:secretary</span>
+<span class="s2">wizard:witch	fiction:poetry	bolt:nut	chef:baker</span>
+<span class="s2">wizard:witch	record:cassette	violin:cello	guard:cashier</span>
+<span class="s2">wizard:witch	shirt:blouse	algebra:geometry	programmer:homemaker</span>
+<span class="s2">wizard:witch	kitten:puppy	bolt:nut	leader:assistant</span>
+<span class="s2">wizard:witch	dogwood:elm	cat:dog	researcher:librarians</span>
+<span class="s2">wizard:witch	cassette:record	dogwood:elm	dentist:optometrist</span>
+<span class="s2">wizard:witch	puppy:kitten	salt:pepper	dispatcher:tailor</span>
+<span class="s2">wizard:witch	book:magazine	pen:pencil	engineer:dancer</span>
+<span class="s2">wizard:witch	cat:dog	fiction:poetry	lawyer:clerk</span>
+<span class="s2">wizard:witch	sugar:flour	pencil:pen	janitor:housekeeper</span>
+<span class="s2">wizard:witch	pencil:pen	salt:pepper	developer:counselor</span>
+<span class="s2">wizard:witch	kitten:puppy	couch:recliner	judge:stenographer</span>
+<span class="s2">wizard:witch	cat:dog	sugar:flour	president:receptionist</span>
+<span class="s2">wizard:witch	bolt:nut	car:bus	captain:bookkeeper</span>
+<span class="s2">wizard:witch	book:magazine	salt:pepper	warrior:nanny</span>
+<span class="s2">wizard:witch	sugar:flour	treble:bass	architect:hairdresser</span>
+<span class="s2">wizard:witch	pencil:pen	sugar:flour	boss:stylist</span>
+<span class="s2">wizard:witch	flour:sugar	cassette:record	pilot:socialite</span>
+<span class="s2">countrymen:countrywomen	shirt:blouse	couch:recliner	doctor:nurse</span>
+<span class="s2">countrymen:countrywomen	kitten:puppy	car:bus	manager:secretary</span>
+<span class="s2">countrymen:countrywomen	shirt:blouse	book:magazine	chef:baker</span>
+<span class="s2">countrymen:countrywomen	pillow:mattress	dogwood:elm	guard:cashier</span>
+<span class="s2">countrymen:countrywomen	fiction:poetry	pencil:pen	programmer:homemaker</span>
+<span class="s2">countrymen:countrywomen	cup:lid	salt:pepper	leader:assistant</span>
+<span class="s2">countrymen:countrywomen	canoe:kayak	dog:cat	researcher:librarians</span>
+<span class="s2">countrymen:countrywomen	shirt:blouse	dog:bitch	dentist:optometrist</span>
+<span class="s2">countrymen:countrywomen	dog:bitch	bolt:nut	dispatcher:tailor</span>
+<span class="s2">countrymen:countrywomen	shirt:blouse	pen:pencil	engineer:dancer</span>
+<span class="s2">countrymen:countrywomen	violin:cello	bolt:nut	lawyer:clerk</span>
+<span class="s2">countrymen:countrywomen	pencil:pen	kitten:puppy	janitor:housekeeper</span>
+<span class="s2">countrymen:countrywomen	dog:cat	almond:pecan	developer:counselor</span>
+<span class="s2">countrymen:countrywomen	algebra:geometry	violin:cello	judge:stenographer</span>
+<span class="s2">countrymen:countrywomen	salt:pepper	car:bus	president:receptionist</span>
+<span class="s2">countrymen:countrywomen	violin:cello	sugar:flour	captain:bookkeeper</span>
+<span class="s2">countrymen:countrywomen	treble:bass	salt:pepper	warrior:nanny</span>
+<span class="s2">countrymen:countrywomen	pencil:pen	dog:cat	architect:hairdresser</span>
+<span class="s2">countrymen:countrywomen	cat:dog	trout:salmon	boss:stylist</span>
+<span class="s2">countrymen:countrywomen	puppy:kitten	cup:lid	pilot:socialite</span>
+<span class="s2">host:hostess	pen:pencil	canoe:kayak	doctor:nurse</span>
+<span class="s2">host:hostess	kitten:puppy	record:cassette	manager:secretary</span>
+<span class="s2">host:hostess	book:magazine	jazz:blues	chef:baker</span>
+<span class="s2">host:hostess	dog:cat	kitten:puppy	guard:cashier</span>
+<span class="s2">host:hostess	cassette:record	canoe:kayak	programmer:homemaker</span>
+<span class="s2">host:hostess	algebra:geometry	flour:sugar	leader:assistant</span>
+<span class="s2">host:hostess	dog:cat	jazz:blues	researcher:librarians</span>
+<span class="s2">host:hostess	puppy:kitten	couch:recliner	dentist:optometrist</span>
+<span class="s2">host:hostess	trout:salmon	salt:pepper	dispatcher:tailor</span>
+<span class="s2">host:hostess	pillow:mattress	car:bus	engineer:dancer</span>
+<span class="s2">host:hostess	trout:salmon	book:magazine	lawyer:clerk</span>
+<span class="s2">host:hostess	pillow:mattress	kitten:puppy	janitor:housekeeper</span>
+<span class="s2">host:hostess	pen:pencil	jazz:blues	developer:counselor</span>
+<span class="s2">host:hostess	dog:cat	treble:bass	judge:stenographer</span>
+<span class="s2">host:hostess	pillow:mattress	dog:cat	president:receptionist</span>
+<span class="s2">host:hostess	fiction:poetry	kitten:puppy	captain:bookkeeper</span>
+<span class="s2">host:hostess	dog:bitch	kitten:puppy	warrior:nanny</span>
+<span class="s2">host:hostess	treble:bass	kitten:puppy	architect:hairdresser</span>
+<span class="s2">host:hostess	cup:lid	car:bus	boss:stylist</span>
+<span class="s2">host:hostess	violin:cello	flour:sugar	pilot:socialite</span>
+<span class="s2">salesman:saleswoman	canoe:kayak	treble:bass	doctor:nurse</span>
+<span class="s2">salesman:saleswoman	cat:dog	pen:pencil	manager:secretary</span>
+<span class="s2">salesman:saleswoman	record:cassette	fiction:poetry	chef:baker</span>
+<span class="s2">salesman:saleswoman	pencil:pen	violin:cello	guard:cashier</span>
+<span class="s2">salesman:saleswoman	flour:sugar	pen:pencil	programmer:homemaker</span>
+<span class="s2">salesman:saleswoman	cat:dog	bolt:nut	leader:assistant</span>
+<span class="s2">salesman:saleswoman	dog:cat	canoe:kayak	researcher:librarians</span>
+<span class="s2">salesman:saleswoman	violin:cello	dog:bitch	dentist:optometrist</span>
+<span class="s2">salesman:saleswoman	flour:sugar	puppy:kitten	dispatcher:tailor</span>
+<span class="s2">salesman:saleswoman	car:bus	fiction:poetry	engineer:dancer</span>
+<span class="s2">salesman:saleswoman	treble:bass	pillow:mattress	lawyer:clerk</span>
+<span class="s2">salesman:saleswoman	canoe:kayak	dogwood:elm	janitor:housekeeper</span>
+<span class="s2">salesman:saleswoman	violin:cello	book:magazine	developer:counselor</span>
+<span class="s2">salesman:saleswoman	cup:lid	cat:dog	judge:stenographer</span>
+<span class="s2">salesman:saleswoman	kitten:puppy	dog:cat	president:receptionist</span>
+<span class="s2">salesman:saleswoman	dog:cat	cat:dog	captain:bookkeeper</span>
+<span class="s2">salesman:saleswoman	dog:cat	shirt:blouse	warrior:nanny</span>
+<span class="s2">salesman:saleswoman	fiction:poetry	salt:pepper	architect:hairdresser</span>
+<span class="s2">salesman:saleswoman	dog:bitch	canoe:kayak	boss:stylist</span>
+<span class="s2">salesman:saleswoman	couch:recliner	canoe:kayak	pilot:socialite</span>
+<span class="s2">rake:coquette	shirt:blouse	kitten:puppy	doctor:nurse</span>
+<span class="s2">rake:coquette	algebra:geometry	flour:sugar	manager:secretary</span>
+<span class="s2">rake:coquette	shirt:blouse	pen:pencil	chef:baker</span>
+<span class="s2">rake:coquette	violin:cello	dogwood:elm	guard:cashier</span>
+<span class="s2">rake:coquette	puppy:kitten	record:cassette	programmer:homemaker</span>
+<span class="s2">rake:coquette	dog:bitch	kitten:puppy	leader:assistant</span>
+<span class="s2">rake:coquette	algebra:geometry	record:cassette	researcher:librarians</span>
+<span class="s2">rake:coquette	dog:cat	book:magazine	dentist:optometrist</span>
+<span class="s2">rake:coquette	salt:pepper	sugar:flour	dispatcher:tailor</span>
+<span class="s2">rake:coquette	jazz:blues	canoe:kayak	engineer:dancer</span>
+<span class="s2">rake:coquette	sugar:flour	flour:sugar	lawyer:clerk</span>
+<span class="s2">rake:coquette	pencil:pen	cassette:record	janitor:housekeeper</span>
+<span class="s2">rake:coquette	pen:pencil	fiction:poetry	developer:counselor</span>
+<span class="s2">rake:coquette	duck:goose	cat:dog	judge:stenographer</span>
+<span class="s2">rake:coquette	salt:pepper	cat:dog	president:receptionist</span>
+<span class="s2">rake:coquette	book:magazine	bolt:nut	captain:bookkeeper</span>
+<span class="s2">rake:coquette	violin:cello	book:magazine	warrior:nanny</span>
+<span class="s2">rake:coquette	pillow:mattress	puppy:kitten	architect:hairdresser</span>
+<span class="s2">rake:coquette	violin:cello	cassette:record	boss:stylist</span>
+<span class="s2">rake:coquette	treble:bass	pencil:pen	pilot:socialite</span>
+<span class="s2">nobleman:noblewoman	puppy:kitten	shirt:blouse	doctor:nurse</span>
+<span class="s2">nobleman:noblewoman	pen:pencil	kitten:puppy	manager:secretary</span>
+<span class="s2">nobleman:noblewoman	cassette:record	couch:recliner	chef:baker</span>
+<span class="s2">nobleman:noblewoman	treble:bass	duck:goose	guard:cashier</span>
+<span class="s2">nobleman:noblewoman	cassette:record	jazz:blues	programmer:homemaker</span>
+<span class="s2">nobleman:noblewoman	dog:cat	cassette:record	leader:assistant</span>
+<span class="s2">nobleman:noblewoman	treble:bass	duck:goose	researcher:librarians</span>
+<span class="s2">nobleman:noblewoman	canoe:kayak	puppy:kitten	dentist:optometrist</span>
+<span class="s2">nobleman:noblewoman	couch:recliner	cat:dog	dispatcher:tailor</span>
+<span class="s2">nobleman:noblewoman	fiction:poetry	shirt:blouse	engineer:dancer</span>
+<span class="s2">nobleman:noblewoman	sugar:flour	couch:recliner	lawyer:clerk</span>
+<span class="s2">nobleman:noblewoman	canoe:kayak	book:magazine	janitor:housekeeper</span>
+<span class="s2">nobleman:noblewoman	car:bus	jazz:blues	developer:counselor</span>
+<span class="s2">nobleman:noblewoman	dogwood:elm	canoe:kayak	judge:stenographer</span>
+<span class="s2">nobleman:noblewoman	duck:goose	treble:bass	president:receptionist</span>
+<span class="s2">nobleman:noblewoman	fiction:poetry	pillow:mattress	captain:bookkeeper</span>
+<span class="s2">nobleman:noblewoman	pencil:pen	canoe:kayak	warrior:nanny</span>
+<span class="s2">nobleman:noblewoman	fiction:poetry	violin:cello	architect:hairdresser</span>
+<span class="s2">nobleman:noblewoman	puppy:kitten	couch:recliner	boss:stylist</span>
+<span class="s2">nobleman:noblewoman	car:bus	puppy:kitten	pilot:socialite&quot;&quot;&quot;</span>
+
+
+
+<div class="viewcode-block" id="SemBias"><a class="viewcode-back" href="../../../index.html#fee.metrics.sembias.SemBias">[docs]</a><span class="k">class</span> <span class="nc">SemBias</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Sembias test Class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args: </span>
+<span class="sd">            E (WE class object): Word embeddings object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E</span> <span class="o">=</span> <span class="n">E</span>
+
+<div class="viewcode-block" id="SemBias.eval_bias_analogy"><a class="viewcode-back" href="../../../index.html#fee.metrics.sembias.SemBias.eval_bias_analogy">[docs]</a>    <span class="k">def</span> <span class="nf">eval_bias_analogy</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Source: https://github.com/uclanlp/gn_glove</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">definition_num</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">none_num</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">stereotype_num</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_num</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">gv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="s1">&#39;he&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="s1">&#39;she&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">SEMBIAS_DATA</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">max_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word_pair</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+                    <span class="n">word_pair</span> <span class="o">=</span> <span class="n">word_pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+                    <span class="n">pre_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">word_pair</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">word_pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">score</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">gv</span><span class="p">,</span> <span class="n">pre_v</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">gv</span><span class="p">)</span><span class="o">*</span><span class="n">norm</span><span class="p">(</span><span class="n">pre_v</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="n">max_score</span><span class="p">:</span>
+                        <span class="n">max_idx</span> <span class="o">=</span> <span class="n">i</span>
+                        <span class="n">max_score</span> <span class="o">=</span> <span class="n">score</span>
+                <span class="k">if</span> <span class="n">max_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">definition_num</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">max_idx</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">max_idx</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">none_num</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">max_idx</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">stereotype_num</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">total_num</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed for line: </span><span class="si">{</span><span class="n">l</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">score_d</span> <span class="o">=</span> <span class="n">definition_num</span> <span class="o">/</span> <span class="n">total_num</span>
+        <span class="n">score_s</span> <span class="o">=</span> <span class="n">stereotype_num</span> <span class="o">/</span> <span class="n">total_num</span>
+        <span class="n">score_n</span> <span class="o">=</span> <span class="n">none_num</span> <span class="o">/</span> <span class="n">total_num</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">score_d</span><span class="p">,</span> <span class="n">score_s</span><span class="p">,</span> <span class="n">score_n</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SemBias.compute"><a class="viewcode-back" href="../../../index.html#fee.metrics.sembias.SemBias.compute">[docs]</a>    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns accuracy for definitional, stereotype and none type</span>
+<span class="sd">        analogies.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_bias_analogy</span><span class="p">()</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">FEE -- Fair Embedding Engine 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fee.metrics.sembias</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Vaibhav Kumar, Tenzin Singhay Bhotia, Vaibhav Kumar.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

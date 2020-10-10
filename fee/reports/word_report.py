@@ -8,6 +8,7 @@ from .biased_neighbours import NeighboursAnalysis
  
 
 class WordReport():
+    """`WordReport` class"""
     def __init__(self, E, g=None):
         """Generate a word level report for some word in `E`. This 
         report computes and prints direct bias, proximity bias and
@@ -18,8 +19,8 @@ class WordReport():
         WordCloud of the given word size coded by bias by projection.
         Args:
             E (WE class object): Word embeddings object
-        Kwargs:
             g (np.array): gender direction
+        
         """         
         if g is None:
             g = get_g(E)
@@ -31,10 +32,10 @@ class WordReport():
         """Generate the wordreport for word `word`. 
         Args:
             word (str): Word to show the report for
-        Kwargs:
             n (int): number of neighbours of `word` to consider  
             figsize (tuple): size of figures in (HxW)  
             dpi (int): dpi of the figures  
+        
         """         
         direct_bias = DirectBias(self.E).compute(word)
         prox_bias = ProxBias(self.E).compute(word)

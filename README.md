@@ -57,5 +57,9 @@ wordcloud
 sklearn
 ```
 
+# Documentation
+The official documentation (WIP) is hosted on ReadTheDocs: https://fair-embedding-engine.readthedocs.io/en/latest/
+
+
 # Conclusion
 In this work, we described Fair Embedding Engine (FEE), a python library which provides central access to the state-of-the-art  techniques for quantifying, mitigating and visualizing gender bias in non-contextual word embedding models. We believe that FEE will facilitate the development and testing of debiasing methods for word embeddings models and also make it easier visualize the bias present in word vectors, demonstarting their possible impact. In future, we would like to expand the capabilities of FEE towards contextual word vectors and also provide support towards biases other than gender and language other than English.

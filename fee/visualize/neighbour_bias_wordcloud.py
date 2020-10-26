@@ -76,7 +76,8 @@ class NBWordCloud():
             width (int): width of the wordcloud image  
             height (int): height of the wordcloud image  
         
-        """                     
+        """        
+        n += 1 #first neighbour if word itself
         neighbours = self.get_neighbours(word, n)  
         neighbours_sorted_dict = self.bias_by_projection_sort(neighbours)  
         neighbours_with_freq = self.bias_score_to_freq(neighbours_sorted_dict)

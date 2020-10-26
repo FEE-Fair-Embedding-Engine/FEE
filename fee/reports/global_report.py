@@ -60,14 +60,18 @@ class GlobalReport():
         least_gendered_df['words'] = sorted_words[-n:]
         least_gendered_df['bias by projection'] = sorted_values[-n:]  
         print(most_gendered_df, "\n\n", least_gendered_df)    
+        return most_gendered_df, least_gendered_df
         
 
-    def generate(self, n=10):
+    def generate(self, n=10, ret_df=False, plot=True):
         """Generate the global report for embedding `E`
         Args:
             n (int): No. of most/least biased words to print.
         
         """
         sorted_words, sorted_values = self.get_values_and_words()
-        self.print_df(sorted_values, sorted_words, n)
-        self.plot(sorted_values)
+        most_gendered_df, least_gendered_df = self.print_df(sorted_values, sorted_words, n)
+        if plot:
+            self.plot(sorted_values)
+        if ret_df:
+            return most_gendered_df, least_gendered_df

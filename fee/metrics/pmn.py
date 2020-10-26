@@ -11,7 +11,7 @@ def _pmb(word, E, g, n):
     neighbours_indices = _get_nbs_i(E, word, n)
     male_neighbours = 0
     for i, n_i in enumerate(neighbours_indices):
-        if E.vecs[n_i].dot(g) > 0: 
+        if E.vecs[n_i].dot(g) < 0: #males have negative direct bias 
             male_neighbours += 1
     return 100*male_neighbours/n
 

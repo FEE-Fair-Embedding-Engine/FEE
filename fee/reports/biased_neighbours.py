@@ -27,6 +27,7 @@ class NeighboursAnalysis():
             n (int): number of neighbours to compute
         
         """        
+        n += 1 #first neighbour if word itself
         ns_idx = np.argsort(self.E.vecs.dot(self.E.v(word)))[-n:-1][::-1]
         return [self.E.words[i] for i in ns_idx]
     
